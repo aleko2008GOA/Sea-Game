@@ -7,15 +7,20 @@ function loadImage(src){
     });
 }
 
-const characterImages = [];
 const normalCharacterImagePromises = [];
-for(let i = 1; i <= 16; i++) normalCharacterImagePromises.push(loadImage(`./src/assets/character/main position/${i}.png`));
+const movedCharacterImagePromises = [];
+
+for(let i = 1; i <= 16; i++) normalCharacterImagePromises.push(loadImage(`./src/assets/character/boat normal/main position/${i}.png`));
+for(let i = 1; i <= 16; i++) movedCharacterImagePromises.push(loadImage(`./src/assets/character/boat normal/second position/${i}.png`));
 
 const normalCharacterImages = Promise.all(normalCharacterImagePromises)
-    .then(imgs => {
-        imgs.forEach(img => characterImages.push(img));
-        return characterImages;
-    })
+    .then(imgs => imgs)
     .catch(err => console.log('Error: ' + err));
 
-export default normalCharacterImages;
+const movedCharacterImages = Promise.all(movedCharacterImagePromises)
+    .then(imgs => imgs)
+    .catch(err => console.log('Error: ' + err));
+
+const characterImages = Promise.all([normalCharacterImages, movedCharacterImages]);
+
+export default characterImages;

@@ -3,7 +3,7 @@ import check_getting_lights from "./check_getting_light.js";
 import camera_moving from "./camera_moving.js";
 import { immutable } from "../story/starts_playing.js";
 import { lose_hearts } from "../game_over/lose_hearts.js";
-import useCharacterImages from "../images/useImages/chracter.js";
+import useCharacterImages from "../images/useImages/character.js";
 
 // canvas
 /** @type {HTMLCanvasElement} */
@@ -20,11 +20,15 @@ const animations = {
 }
 
 const normalCharacterImageArray = [];
+const movedCharacterImageArray = [];
+const characterImages = [];
 let characterImage;
 
 function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
-    characterImage = imgs[4];
-    imgs.forEach(img => normalCharacterImageArray.push(img));
+    characterImage = imgs[0][4];
+    normalCharacterImageArray.push(...imgs[0]);
+    movedCharacterImageArray.push(...imgs[1]);
+    characterImages.push(...imgs);
     // charcter starts at
     const character_position = {x: 150, y: 100};
     const moving_direction = {left: false, right: false, up: false, down: false};
@@ -124,7 +128,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             // getting everythig about lights or crashing
             check_getting_lights(lights_ctx, character_position, lights_grid, isImmune); // check if I get  any light
             let {stun, immune} = check_crashing(character_position, iceberg_grid, speed, isStunned, isImmune); // check if I lose any heart
-            characterImage = useCharacterImages(normalCharacterImageArray, characterImage, speed);
+            characterImage = useCharacterImages(characterImages, characterImage, speed);
 
             isStunned = stun;
             isImmune = immune;

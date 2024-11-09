@@ -13,7 +13,7 @@ const settings = document.querySelectorAll('.settings')
 const restart_button = document.querySelectorAll('.restart');
 const loading_screen = document.getElementById('loading');
 
-function restart(){
+function restart(characterImagesArray){
     restart_button.forEach(button =>{
         button.addEventListener('click', () =>{
             cancelAnimationFrame(animations.animationFrameId);
@@ -50,7 +50,7 @@ function restart(){
 
             const {icebrg_coordinate_arr, iceberg_grid_position} = icebergs();
             const {lights_coordinate_arr, lights_grid_position, lights_background} = lights(icebrg_coordinate_arr);
-            character_moves(iceberg_grid_position, lights_grid_position, lights_background);
+            character_moves(iceberg_grid_position, lights_grid_position, lights_background, characterImagesArray);
             loading(true, 100);
         });
     });
