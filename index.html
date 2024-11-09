@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = 'stylesheet' href = './src/style.css'>
+    <title>Sea game</title>
+</head>
+<body>
+    <div id = 'game_main_container'>
+        <canvas id = 'sea' width = '3000' height = '3000'></canvas>
+        <canvas id = 'waves_left' width = '3000' height = '3000'></canvas>
+        <canvas id = 'waves_right' width = '3000' height = '3000'></canvas>
+
+        <canvas id = 'iceberg_map' width = '3000' height = '3000'></canvas>
+        <canvas id = 'lights' width = '3000' height = '3000'></canvas>
+        <canvas id = 'main_chracter' width = '3000' height = '3000'></canvas>
+    </div>
+    <div id = 'other_instructions'>
+        <div id = 'instructions' class = 'settings'>
+            <p id = 'text'></p>
+            <button id = 'continue'>continue</button>
+        </div>
+
+        <div id = 'loading' class = 'settings'>
+            <h1>LOADING</h1>
+            <button id = 'start'>Start</button>
+        </div>
+
+        <div id = "timer" class = 'settings'>
+            <p id = 'time'></p>
+        </div>
+
+        <div id = "lose_screen" class = 'settings'>
+            <p id = 'lose_text'></p>
+            <button class = 'restart'>play again</button>
+        </div>
+
+        <div id = "win_screen" class = 'settings'>
+            <p id = 'win_text'>You won!</p>
+            <button class = 'restart'>play again</button>
+        </div>
+    </div>
+    <script type = 'module' src = './src/main.js'></script>
+</body>
+</html>
