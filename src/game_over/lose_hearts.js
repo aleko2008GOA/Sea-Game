@@ -6,6 +6,7 @@ let health = {
 }
 
 function lose_hearts(){ // losing hearts
+    health.hearts --;
     console.log(health.hearts + " you have lives")
     if(health.hearts == 0){
         immutable.immutable = true;

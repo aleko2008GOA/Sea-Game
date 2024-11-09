@@ -1,3 +1,5 @@
+import { health } from "../../game_over/lose_hearts.js";
+
 let fps = 0;
 let index = 0;
 
@@ -31,7 +33,7 @@ function useCharacterImages(imgArr, img, speed){
         else return img;
     };
 
-    return imgArr[index][a >= 11.5 ? Math.round((a - 11.25) / 22.5) % 16 : 0];
+    return imgArr[health.hearts > 0 ? 3 - health.hearts : 0][index][a >= 11.5 ? Math.round((a - 11.25) / 22.5) % 16 : 0];
 }
 
 export default useCharacterImages;

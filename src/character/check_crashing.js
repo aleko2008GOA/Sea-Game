@@ -1,5 +1,3 @@
-import { health } from "../game_over/lose_hearts.js";
-
 function check_crashing(character_position, iceberg_grid, speed, isStunned, isImmune){
     const x = Math.floor(character_position.x / 300);
     const x1 = Math.floor((character_position.x + 50) / 300);
@@ -44,7 +42,6 @@ function check_crashing(character_position, iceberg_grid, speed, isStunned, isIm
         }
 
         // lose herats if not immune
-        if(!immune) health.hearts--;
         stun = immune ? false : true;
         immune = true;
     }else if(character_position.y < 50){

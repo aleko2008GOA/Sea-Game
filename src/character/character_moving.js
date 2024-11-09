@@ -19,15 +19,11 @@ const animations = {
     flickeringIntervalId: null
 }
 
-const normalCharacterImageArray = [];
-const movedCharacterImageArray = [];
 const characterImages = [];
 let characterImage;
 
 function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
-    characterImage = imgs[0][4];
-    normalCharacterImageArray.push(...imgs[0]);
-    movedCharacterImageArray.push(...imgs[1]);
+    characterImage = imgs[0][0][4];
     characterImages.push(...imgs);
     // charcter starts at
     const character_position = {x: 150, y: 100};
