@@ -5,6 +5,7 @@ import { lights } from './objects/lights.js';
 import { character_moves } from './character/character_moving.js';
 import restart from './settings/restart.js';
 import characterImages from './images/loadingImages/character_images.js';
+import pause from './settings/pause.js';
 
 background_sea();
 const {icebrg_coordinate_arr, iceberg_grid_position} = icebergs();
@@ -17,4 +18,5 @@ characterImages
     .then(characterImagesArray => {
         restart(characterImagesArray);
     })
+pause();
 loading(true, 100);

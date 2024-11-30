@@ -1,35 +1,39 @@
-import { animations } from '../character/character_moving.js';
 import loading from '../story/loading.js';
 import { icebergs } from '../objects/icebergs.js';
 import { lights } from '../objects/lights.js';
 import { character_moves } from '../character/character_moving.js';
-import { health } from '../game_over/lose_hearts.js';
-import { immutable } from '../story/starts_playing.js';
-import { seaAnimations } from '../background/sea.js';
+import { animations, parameters } from '../globalVariables/globalVariables.js';
 
 const palyground = document.getElementById('game_main_container');
 const canvases = document.querySelectorAll('canvas');
 const settings = document.querySelectorAll('.settings')
 const restart_button = document.querySelectorAll('.restart');
 const loading_screen = document.getElementById('loading');
+const settingsBar = document.getElementById('settings_bar');
+const pauseButtonTopLeft = document.getElementById('pause_button_top_left')
 
 function restart(characterImagesArray){
     restart_button.forEach(button =>{
         button.addEventListener('click', () =>{
             cancelAnimationFrame(animations.animationFrameId);
+            cancelAnimationFrame(animations.sea.seaAnimationFrameId);
             clearTimeout(animations.stunTimeoutId);
             clearInterval(animations.flickeringIntervalId);
-            clearInterval(immutable.timeInterval);
-            clearInterval(seaAnimations.interval);
+            clearInterval(animations.generator.interval);
+
+            clearInterval(parameters.timeInterval);
 
             animations.animationFrameId = null;
             animations.stunTimeoutId = null;
             animations.flickeringIntervalId = null;
-            immutable.timeInterval = null;
-            seaAnimations.interval = null;
-            seaAnimations.waveSpeed = 1000;
-            immutable.time = 300;
-            health.hearts = 3;
+            animations.generator.interval = null;
+            animations.animationFrameFunc = null;
+            animations.sea.waveSpeed = 1000;
+
+            parameters.timeInterval = null;
+            parameters.time = 300;
+            parameters.hearts = 3;
+            parameters.speed = {left: 0, right: 0, up: 0, down: 0};
 
             canvases.forEach(val =>{
                 if(val.id != 'waves_left' && val.id != 'waves_right' && val.id != 'sea'){
@@ -42,6 +46,8 @@ function restart(characterImagesArray){
             });
 
             loading_screen.style.display = 'flex';
+            settingsBar.style.display = 'none';
+            pauseButtonTopLeft.style.display = 'inline';
 
             palyground.scrollTo({
                 top: 0,

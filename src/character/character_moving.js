@@ -1,9 +1,9 @@
 import check_crashing from "./check_crashing.js";
 import check_getting_lights from "./check_getting_light.js";
 import camera_moving from "./camera_moving.js";
-import { immutable } from "../story/starts_playing.js";
 import { lose_hearts } from "../game_over/lose_hearts.js";
 import useCharacterImages from "../images/useImages/character.js";
+import { animations, parameters } from "../globalVariables/globalVariables.js";
 
 // canvas
 /** @type {HTMLCanvasElement} */
@@ -11,13 +11,6 @@ const character_canvas = document.getElementById('main_chracter');
 
 /** @type {CanvasRenderingContext2D} */
 const character_background = character_canvas.getContext('2d');
-
-const animations = {
-    animationFrameId: null,
-    eventListenersAdded: false,
-    stunTimeoutId: null,
-    flickeringIntervalId: null
-}
 
 const characterImages = [];
 let characterImage;
@@ -28,7 +21,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     // charcter starts at
     const character_position = {x: 150, y: 100};
     const moving_direction = {left: false, right: false, up: false, down: false};
-    const speed = {left: 0, right: 0, up: 0, down: 0};
+    const speed = parameters.speed;
     // chracter stats
     let isStunned = false;
     let removeStun = true;
@@ -36,6 +29,12 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     let removeImmune = true;
     
     let cleared = false;
+
+    let stunIndex = 0;
+    let immutableIndex = 0;
+
+    animations.immutableFunc = immutableFunc;
+    animations.stunFunc = stunFunc;
     // character display
     chraracter_start();
 
@@ -45,10 +44,10 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
         character_background.strokeRect(character_position.x, character_position.y, 50, 50);
 
         document.addEventListener('keydown', (e) =>{
-            if(e.key === 'ArrowLeft') if(!immutable.immutable) moving_direction.left = true;
-            if(e.key === 'ArrowRight') if(!immutable.immutable) moving_direction.right = true;
-            if(e.key === 'ArrowUp') if(!immutable.immutable) moving_direction.up = true;
-            if(e.key === 'ArrowDown') if(!immutable.immutable) moving_direction.down = true;
+            if(e.key === 'ArrowLeft') if(!parameters.immutable) moving_direction.left = true;
+            if(e.key === 'ArrowRight') if(!parameters.immutable) moving_direction.right = true;
+            if(e.key === 'ArrowUp') if(!parameters.immutable) moving_direction.up = true;
+            if(e.key === 'ArrowDown') if(!parameters.immutable) moving_direction.down = true;
         });
         document.addEventListener('keyup', (e) =>{
             if(e.key === 'ArrowLeft') moving_direction.left = false;
@@ -57,6 +56,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             if(e.key === 'ArrowDown') moving_direction.down = false;
         });
 
+        animations.animationFrameFunc = move;
         animations.animationFrameId = requestAnimationFrame(move);
     }
 
@@ -132,31 +132,12 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             // set timeout when stuuned to remove it
             if(isStunned && removeStun){
                 removeStun = false;
-
-                animations.stunTimeoutId = setTimeout(() =>{
-                    isStunned = false;
-                    removeStun = true;
-                    lose_hearts();
-                }, 2000);
+                animations.stunFrameId = requestAnimationFrame(stunFunc);
             }
             // remove immune after a while and start flikering
             if(isImmune && removeImmune){
-                animations.flickeringIntervalId = setInterval(() => start_flickering(), 200);
                 removeImmune = false;
-
-                setTimeout(() =>{
-                    clearTimeout(animations.flickeringIntervalId);
-                    animations.flickeringIntervalId = null;
-
-                    character_background.clearRect(0, 0, character_canvas.width, character_canvas.height);
-                    character_background.strokeRect(character_position.x, character_position.y, 50, 50);
-                    character_background.drawImage(characterImage, character_position.x - 15, character_position.y - 30, 80, 80);
-                    
-                    isImmune = false;
-                    removeImmune = true;
-                    cleared = false;
-                    check_getting_lights(lights_ctx, character_position, lights_grid, isImmune);
-                }, 3500);
+                animations.immutableFrameId = requestAnimationFrame(immutableFunc);
             }
         }else{
             // if not moved check if it should be a clear canvas
@@ -174,6 +155,42 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     function start_flickering(){
         cleared = cleared ? false : true;
     }
+
+    function stunFunc(){
+        if(stunIndex < 120) {
+            stunIndex ++;
+            animations.stunFrameId = requestAnimationFrame(stunFunc);
+        }else{
+            stunIndex = 0;
+            cancelAnimationFrame(animations.stunFrameId);
+            animations.stunFrameId = null;
+
+            isStunned = false;
+            removeStun = true;
+            lose_hearts();
+        }
+    }
+
+    function immutableFunc(){
+        if(immutableIndex % 12 == 0) start_flickering();
+        if(immutableIndex < 210){
+            immutableIndex ++;
+            animations.immutableFrameId = requestAnimationFrame(immutableFunc);
+        }else{
+            immutableIndex = 0;
+            cancelAnimationFrame(animations.immutableFrameId);
+            animations.immutableFrameId = null;
+
+            character_background.clearRect(0, 0, character_canvas.width, character_canvas.height);
+            character_background.strokeRect(character_position.x, character_position.y, 50, 50);
+            character_background.drawImage(characterImage, character_position.x - 15, character_position.y - 30, 80, 80);
+            
+            isImmune = false;
+            removeImmune = true;
+            cleared = false;
+            check_getting_lights(lights_ctx, character_position, lights_grid, isImmune);
+        }
+    }
 }
 
-export { character_moves, animations }
+export { character_moves }

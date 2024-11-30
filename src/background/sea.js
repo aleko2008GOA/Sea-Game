@@ -1,3 +1,4 @@
+import { animations } from "../globalVariables/globalVariables.js";
 // canvases
 /** @type {HTMLCanvasElement} */
 const sea_canvas_waves_left = document.getElementById('waves_left');
@@ -10,7 +11,7 @@ const sea_waves_right = sea_canvas_waves_right.getContext('2d');
 let left_display = 'block';
 let right_display = 'none';
 
-const seaAnimations = { waveSpeed: 1000, interval: null };
+let index = 0;
 
 function background_sea(){
     loadImages('./src/assets/waves/wave-left.png', './src/assets/waves/wave-right.png')
@@ -71,17 +72,20 @@ function background_sea(){
     }
 
     function startAnimation(){
-        setTimeout(() =>{
+        if(index < animations.sea.waveSpeed / 1000 * 60) index++;
+        else{
+            index = 0;
+            animations.sea.waveSpeed -= 2;
+
             sea_canvas_waves_left.style.display = left_display;
             sea_canvas_waves_right.style.display = right_display;
-
+    
             left_display = left_display == 'block' ? 'none' : 'block';
             right_display = right_display == 'block' ? 'none' : 'block';
-
-            startAnimation();
-        }, seaAnimations.waveSpeed);
+        }
+        requestAnimationFrame(startAnimation);
     }
-    startAnimation();
+    animations.sea.seaAnimationFrameId = requestAnimationFrame(startAnimation);
 }
 
-export { background_sea, seaAnimations };
+export { background_sea };
