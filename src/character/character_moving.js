@@ -66,8 +66,8 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     function move(timestamp){
         let moved = false;
         let deltatime = (timestamp - lastStamp) / 1000 * 60;
-        let lastStamp = timestamp;
-        
+        lastStamp = timestamp;
+
         let maxSpeed = parameters.charMaxSpeed60FPS * deltatime;
         let deltaSpeed = parameters.charMaxSpeed60FPS * deltatime;
 
