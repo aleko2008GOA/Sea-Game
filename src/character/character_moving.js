@@ -69,7 +69,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
         lastStamp = timestamp;
 
         let maxSpeed = parameters.charMaxSpeed60FPS * deltatime;
-        let deltaSpeed = parameters.charMaxSpeed60FPS * deltatime;
+        let deltaSpeed = parameters.charDeltaSpeed60FPS * deltatime;
 
         // left
         if(moving_direction.left && !isStunned){
@@ -122,7 +122,6 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
         // if moved
         if(moved){
             camera_moving(character_position, speed);
-            console.log(character_position, speed)
             character_background.clearRect(0, 0, character_canvas.width, character_canvas.height);
             
             if(!cleared){
