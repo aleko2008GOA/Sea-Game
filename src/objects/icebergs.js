@@ -19,7 +19,7 @@ function icebergs(){
     /** @type {CanvasRenderingContext2D} */
     const icebergs_background = iceberg_canvas.getContext('2d');
 
-    const wall = loadImage(`./src/assets/icebergs/WALL.png`);
+    const wall = loadImage(`./src/assets/icebergs/wall.png`);
     const vertical_wall = loadImage(`./src/assets/icebergs/iceberg_wall_vertical.png`);
     const beach = loadImage(`./src/assets/icebergs/beach.png`);
     const arr_of_icbergs = [];
