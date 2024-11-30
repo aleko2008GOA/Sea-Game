@@ -120,6 +120,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
         // if moved
         if(moved){
             camera_moving(character_position, speed);
+            console.log(character_position, speed)
             character_background.clearRect(0, 0, character_canvas.width, character_canvas.height);
             
             if(!cleared){
@@ -127,7 +128,6 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
                 character_background.drawImage(characterImage, character_position.x - 15, character_position.y - 30, 80, 80);
             }
             // getting everythig about lights or crashing
-            console.log(character_position)
             check_getting_lights(lights_ctx, character_position, lights_grid, isImmune); // check if I get  any light
             let {stun, immune} = check_crashing(character_position, iceberg_grid, speed, isStunned, isImmune); // check if I lose any heart
             characterImage = useCharacterImages(characterImages, characterImage, speed);
