@@ -33,6 +33,8 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     let stunIndex = 0;
     let immutableIndex = 0;
 
+    let lastStamp = 0;
+
     animations.immutableFunc = immutableFunc;
     animations.stunFunc = stunFunc;
     // character display
@@ -61,53 +63,56 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     }
 
     // move using arrows
-    function move(){
+    function move(timestamp){
         let moved = false;
+        let deltatime = (timestamp - lastStamp) / 1000 * 60;
+        let maxSpeed = parameters.charMaxSpeed60FPS * deltatime;
+        let deltaSpeed = parameters.charMaxSpeed60FPS * deltatime;
 
         // left
         if(moving_direction.left && !isStunned){
-            if(speed.left < 2) speed.left += 0.02;
-            else speed.left = 2;
+            if(speed.left < maxSpeed) speed.left += deltaSpeed;
+            else speed.left = maxSpeed;
             character_position.x -= speed.left;
             moved = true;
         }else if(speed.left > 0) {
-            speed.left -= 0.02;
+            speed.left -= deltaSpeed;
             character_position.x -= speed.left;
             moved = true;
         }
 
         // right
         if(moving_direction.right && !isStunned){
-            if(speed.right < 2) speed.right += 0.02;
-            else speed.right = 2;
+            if(speed.right < maxSpeed) speed.right += deltaSpeed;
+            else speed.right = maxSpeed;
             character_position.x += speed.right;
             moved = true;
         }else if(speed.right > 0) {
-            speed.right -= 0.02;
+            speed.right -= deltaSpeed;
             character_position.x += speed.right;
             moved = true;
         }
 
         // up
         if(moving_direction.up && !isStunned){
-            if(speed.up < 2) speed.up += 0.02;
-            else speed.up = 2;
+            if(speed.up < maxSpeed) speed.up += deltaSpeed;
+            else speed.up = maxSpeed;
             character_position.y -= speed.up;
             moved = true;
         }else if(speed.up > 0) {
-            speed.up -= 0.02;
+            speed.up -= deltaSpeed;
             character_position.y -= speed.up;
             moved = true;
         }
 
         // down
         if(moving_direction.down && !isStunned){
-            if(speed.down < 2) speed.down += 0.02;
-            else speed.down = 2;
+            if(speed.down < maxSpeed) speed.down += deltaSpeed;
+            else speed.down = maxSpeed;
             character_position.y += speed.down;
             moved = true;
         }else if(speed.down > 0) {
-            speed.down -= 0.02;
+            speed.down -= deltaSpeed;
             character_position.y += speed.down;
             moved = true;
         }
@@ -149,7 +154,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             }
         }
 
-        animations.animationFrameId = requestAnimationFrame(move);
+        requestAnimationFrame(move);
     }
 
     function start_flickering(){

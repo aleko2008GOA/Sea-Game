@@ -41,6 +41,10 @@ const parameters = {
     timeInterval: null,
     timeChangeFunc: null,
     time: 300,
+
+    charWidthHeight: 50,
+    charMaxSpeed60FPS: 2,
+    charDeltaSpeed60FPS: 0.02
 }
 
 export { animations, parameters };
