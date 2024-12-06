@@ -1,6 +1,5 @@
 import win from "../game_over/win.js";
-
-let collected = 0;
+import { parameters } from "../globalVariables/globalVariables.js";
 
 function check_getting_lights(lights_ctx, character_position, lights_grid, isImmune){
     // getting is character on border of four chunks
@@ -25,7 +24,7 @@ function check_getting_lights(lights_ctx, character_position, lights_grid, isImm
     // cheking in every chunk
     if(!immune){
         if(is_on_light){
-            console.log(++collected + ' lights collected');
+            console.log(++parameters.collected + ' lights collected');
         }
 
         if(rect_topLeft && (rect_topLeft.x < character_position.x + 50 && rect_topLeft.x > character_position.x - 50) && (rect_topLeft.y < character_position.y + 50 && rect_topLeft.y > character_position.y - 50)){
@@ -46,7 +45,7 @@ function check_getting_lights(lights_ctx, character_position, lights_grid, isImm
         }
     }
 
-    if(collected === 12) win();
+    if(parameters.collected === 12) win();
 }
 
 export default check_getting_lights;

@@ -37,6 +37,8 @@ const parameters = {
     device: null,
     // health
     hearts: 3,
+    // lights
+    collected: 0,
     // other
     speed: {
         left: 0, right: 0, up: 0, down: 0
@@ -48,7 +50,8 @@ const parameters = {
 
     charWidthHeight: 50,
     charMaxSpeed60FPS: 2,
-    charDeltaSpeed60FPS: 0.02
+    charDeltaSpeed60FPS: 0.02,
+    lastStamp: 0,
 }
 
 export { animations, parameters };

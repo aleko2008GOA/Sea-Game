@@ -33,8 +33,6 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     let stunIndex = 0;
     let immutableIndex = 0;
 
-    let laststamp = 0;
-
     animations.immutableFunc = immutableFunc;
     animations.stunFunc = stunFunc;
     // character display
@@ -66,8 +64,8 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     function move(timestamp){
         let moved = false;
 
-        let deltaStamp = (timestamp - laststamp) / 1000 * 60;
-        laststamp = timestamp;
+        let deltaStamp = (timestamp - parameters.lastStamp) / 1000 * 60;
+        parameters.lastStamp = timestamp;
 
         let maxSpeed = parameters.charMaxSpeed60FPS * deltaStamp;
         let deltaSpeed = parameters.charDeltaSpeed60FPS * deltaStamp ** 2;

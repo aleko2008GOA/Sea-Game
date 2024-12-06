@@ -42,6 +42,7 @@ function pause(){
                 pauseButtonTopLeft.style.display = 'none';
             }else{
                 animations.moment.pause = false;
+                parameters.lastStamp = performance.now();
 
                 if(animations.moment.generating && !animations.generator.interval)
                     animations.generator.intervalFunc();

@@ -34,6 +34,7 @@ function restart(characterImagesArray){
             parameters.time = 300;
             parameters.hearts = 3;
             parameters.speed = {left: 0, right: 0, up: 0, down: 0};
+            parameters.collected = 0;
 
             canvases.forEach(val =>{
                 if(val.id != 'waves_left' && val.id != 'waves_right' && val.id != 'sea'){
