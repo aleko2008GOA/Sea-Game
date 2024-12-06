@@ -2,7 +2,8 @@ const animations = {
     // background sea
     sea: {
         waveSpeed: 1000,
-        seaAnimationFrameId: null
+        seaAnimationFrameId: null,
+        seaFrameFunc: null
     },
     // text generating
     generator: {
@@ -15,7 +16,8 @@ const animations = {
         generating: false,
         loseWinPause: false,
         gameProcess: false,
-        gameWinLose: false
+        gameWinLose: false,
+        pause: false
     },
     // character
     animationFrameId: null,
@@ -31,6 +33,8 @@ const animations = {
 }
 
 const parameters = {
+    // device
+    device: null,
     // health
     hearts: 3,
     // other

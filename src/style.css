@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 /* main container */
 #game_main_container{
     border:1px solid;
@@ -67,6 +71,16 @@
     will-change: transform;
     z-index:5;
     background-color:transparent;
+}
+/* on mobile */
+#on_mobile{
+    position:absolute;
+    width: 250px; 
+    height: 250px;
+    z-index: 300;
+    display: none;
+    bottom: 0;
+    left: 0;
 }
 
 #start{

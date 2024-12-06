@@ -12,6 +12,8 @@ function pause(){
     pauseButton.forEach(but => {
         but.addEventListener('click', () =>{
             if(window.getComputedStyle(settingsBar).display === 'none'){
+                animations.moment.pause = true;
+
                 if(animations.moment.generating && animations.generator.interval){
                     clearInterval(animations.generator.interval);
                     animations.generator.interval = null;
@@ -39,6 +41,8 @@ function pause(){
                 settingsBar.style.display = 'flex';
                 pauseButtonTopLeft.style.display = 'none';
             }else{
+                animations.moment.pause = false;
+
                 if(animations.moment.generating && !animations.generator.interval)
                     animations.generator.intervalFunc();
                 else if(animations.moment.gameProcess){

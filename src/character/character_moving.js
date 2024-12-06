@@ -33,7 +33,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     let stunIndex = 0;
     let immutableIndex = 0;
 
-    let lastStamp = 0;
+    let laststamp = 0;
 
     animations.immutableFunc = immutableFunc;
     animations.stunFunc = stunFunc;
@@ -65,11 +65,12 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     // move using arrows
     function move(timestamp){
         let moved = false;
-        let deltatime = (timestamp - lastStamp) / 1000 * 60;
-        lastStamp = timestamp;
 
-        let maxSpeed = parameters.charMaxSpeed60FPS * deltatime;
-        let deltaSpeed = parameters.charDeltaSpeed60FPS * deltatime;
+        let deltaStamp = (timestamp - laststamp) / 1000 * 60;
+        laststamp = timestamp;
+
+        let maxSpeed = parameters.charMaxSpeed60FPS * deltaStamp;
+        let deltaSpeed = parameters.charDeltaSpeed60FPS * deltaStamp ** 2;
 
         // left
         if(moving_direction.left && !isStunned){
@@ -78,10 +79,10 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             character_position.x -= speed.left;
             moved = true;
         }else if(speed.left > 0) {
-            speed.left -= deltaSpeed;
+            speed.left = speed.left - deltaSpeed >= 0 ? speed.left - deltaSpeed : 0;
             character_position.x -= speed.left;
             moved = true;
-        }
+        }else if(speed.left < 0) speed.left = 0;
 
         // right
         if(moving_direction.right && !isStunned){
@@ -90,10 +91,10 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             character_position.x += speed.right;
             moved = true;
         }else if(speed.right > 0) {
-            speed.right -= deltaSpeed;
+            speed.right = speed.right - deltaSpeed >= 0 ? speed.right - deltaSpeed : 0;
             character_position.x += speed.right;
             moved = true;
-        }
+        }else if(speed.right < 0) speed.right = 0;
 
         // up
         if(moving_direction.up && !isStunned){
@@ -102,10 +103,10 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             character_position.y -= speed.up;
             moved = true;
         }else if(speed.up > 0) {
-            speed.up -= deltaSpeed;
+            speed.up = speed.up - deltaSpeed >= 0 ? speed.up - deltaSpeed : 0;
             character_position.y -= speed.up;
             moved = true;
-        }
+        }else if(speed.up < 0) speed.up = 0;
 
         // down
         if(moving_direction.down && !isStunned){
@@ -114,10 +115,10 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             character_position.y += speed.down;
             moved = true;
         }else if(speed.down > 0) {
-            speed.down -= deltaSpeed;
+            speed.down = speed.down - deltaSpeed >= 0 ? speed.down - deltaSpeed : 0;
             character_position.y += speed.down;
             moved = true;
-        }
+        }else if(speed.down < 0) speed.down = 0;
 
         // if moved
         if(moved){
@@ -131,7 +132,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             // getting everythig about lights or crashing
             check_getting_lights(lights_ctx, character_position, lights_grid, isImmune); // check if I get  any light
             let {stun, immune} = check_crashing(character_position, iceberg_grid, speed, isStunned, isImmune); // check if I lose any heart
-            characterImage = useCharacterImages(characterImages, characterImage, speed);
+            characterImage = useCharacterImages(characterImages, characterImage, speed, deltaStamp);
 
             isStunned = stun;
             isImmune = immune;
@@ -156,7 +157,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             }
         }
 
-        requestAnimationFrame(move);
+        animations.animationFrameId = requestAnimationFrame(move);
     }
 
     function start_flickering(){
