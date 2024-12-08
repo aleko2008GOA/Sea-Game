@@ -26,11 +26,11 @@ function start_generation_text(){
             }else{
                 document.getElementById('pause_button_top_left').style.display = 'none';
                 continue_button.removeEventListener('click', continue_dialog);
+                instructions.style.display = 'none';
                 setTimeout(() =>{
                     animations.moment.generating = false;
                     animations.moment.loseWinPause = true;
 
-                    instructions.style.display = 'none';
                     start_playing();
                 }, 1000);
             }
