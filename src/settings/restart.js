@@ -35,7 +35,6 @@ function restart(characterImagesArray){
             animations.moment.startSrceen = true;
 
             animations.sea.seaAnimationFrameId = null;
-            animations.sea.seaFrameFunc = null;
             animations.sea.waveSpeed = 1000;
 
             animations.generator.interval = null;
