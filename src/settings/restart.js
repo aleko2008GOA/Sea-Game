@@ -33,7 +33,6 @@ function restart(characterImagesArray){
             Object.keys(animations.moment).forEach(key => animations.moment[key] = false);
             animations.moment.startSrceen = true;
 
-            animations.sea.seaAnimationFrameId = null;
             animations.sea.waveSpeed = 1000;
 
             animations.generator.interval = null;
@@ -47,6 +46,8 @@ function restart(characterImagesArray){
 
             parameters.timeChangeFunc = null;
             parameters.immutable = true;
+
+            animations.sea.seaAnimationFrameId = requestAnimationFrame(animations.sea.seaFrameFunc);
 
             canvases.forEach(val =>{
                 if(val.id != 'waves_left' && val.id != 'waves_right' && val.id != 'sea'){

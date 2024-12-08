@@ -11,7 +11,16 @@ function start_generation_text(){
     animations.generator.intervalFunc = generating;
 
     instructions.style.display = 'flex';
+
     continue_button.addEventListener('click', continue_dialog);
+    if(animations.generator.eventListenersAdded){
+        continue_button.removeEventListener('click', animations.generator.eventListenerFunc);
+    }
+
+    continue_button.addEventListener('click', continue_dialog);
+    animations.generator.eventListenerFunc = continue_dialog;
+    animations.generator.eventListenersAdded = true;
+    
     generating();
 
     function continue_dialog(){
@@ -25,7 +34,6 @@ function start_generation_text(){
                 generating();
             }else{
                 document.getElementById('pause_button_top_left').style.display = 'none';
-                continue_button.removeEventListener('click', continue_dialog);
                 instructions.style.display = 'none';
                 setTimeout(() =>{
                     animations.moment.generating = false;

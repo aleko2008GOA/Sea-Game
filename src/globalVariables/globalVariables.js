@@ -8,7 +8,9 @@ const animations = {
     // text generating
     generator: {
         interval: null,
-        intervalFunc: null
+        intervalFunc: null,
+        eventListenersAdded: false,
+        eventListenerFunc: null
     },
     // game moment
     moment: {
