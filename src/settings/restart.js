@@ -17,8 +17,7 @@ function restart(characterImagesArray){
         button.addEventListener('click', () =>{
             cancelAnimationFrame(animations.animationFrameId);
             cancelAnimationFrame(animations.immutableFrameId);
-            cancelAnimationFrame(animations.sea.seaAnimationFrameId);
-            clearTimeout(animations.stunTimeoutId);
+            clearInterval(animations.stunTimeoutId);
             clearInterval(animations.flickeringIntervalId);
             clearInterval(animations.generator.interval);
 
