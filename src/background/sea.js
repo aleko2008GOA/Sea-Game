@@ -95,10 +95,10 @@ function background_sea(){
     function startAnimation(timeStamp){
         let deltaStamp = (timeStamp - lastStamp) / 1000;
         lastStamp = timeStamp;
-        if(animations.moment.gameProcess && !animations.moment.pause) seconds += deltaStamp;
+        if(animations.moment.gameProcess && !animations.moment.pause && animations.sea.waveSpeed > 200) seconds += deltaStamp;
         
         if(seconds >= 1){
-            animations.sea.waveSpeed -= 2 * Math.floor(seconds);
+            animations.sea.waveSpeed -= 2.5 * Math.floor(seconds);
             seconds -= Math.floor(seconds);
         }
 
@@ -112,7 +112,7 @@ function background_sea(){
             left_display = left_display == 'block' ? 'none' : 'block';
             right_display = right_display == 'block' ? 'none' : 'block';
         }
-        requestAnimationFrame(startAnimation);
+        animations.sea.seaAnimationFrameId = requestAnimationFrame(startAnimation);
     }
 }
 

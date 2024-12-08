@@ -129,7 +129,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             }
             // getting everythig about lights or crashing
             check_getting_lights(lights_ctx, character_position, lights_grid, isImmune); // check if I get  any light
-            let {stun, immune} = check_crashing(character_position, iceberg_grid, speed, isStunned, isImmune); // check if I lose any heart
+            let {stun, immune} = check_crashing(character_position, iceberg_grid, speed, isStunned, isImmune, deltaStamp); // check if I lose any heart
             characterImage = useCharacterImages(characterImages, characterImage, speed, deltaStamp);
 
             isStunned = stun;

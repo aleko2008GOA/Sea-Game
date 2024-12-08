@@ -60,6 +60,9 @@ function moveMobile(e){
     let x = position.x;
     let y = position.y;
     let diagonal = Math.sqrt(x ** 2 + y ** 2);
+
+    var alpha = (Math.atan2(y, x) * 180 / Math.PI) >= 0 ? (Math.atan2(y, x) * 180 / Math.PI) : Math.atan2(y, x) * 180 / Math.PI + 360;
+    console.log(alpha)
     
     if(diagonal < 30){
         onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";

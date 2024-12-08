@@ -29,11 +29,11 @@ function camera_moving(character_position, speed){
 
     function scrollRight(){ // func to scroll right
         right += (speed.right - speed.left);
-        if(right >= 1){
+        if(right > 1){
             container.scrollTo({
                 left: container.scrollLeft + Math.ceil(right),
             });
-            right -= Math.floor(right);
+            right -= Math.ceil(right);
         }
     }
 
@@ -50,11 +50,11 @@ function camera_moving(character_position, speed){
 
     function scrollDown(){ // funct to scroll down
         down += (speed.down - speed.up);
-        if(down >= 1){
+        if(down > 1){
             container.scrollTo({
                 top: container.scrollTop + Math.ceil(down),
             });
-            down -= Math.floor(down);
+            down -= Math.ceil(down);
             timer.style.top = container.scrollTop;
         }
     }

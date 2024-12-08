@@ -37,6 +37,10 @@ function pause(){
                         needToBeImmune = true;
                     }
                 }
+                if(animations.sea.seaAnimationFrameId){
+                    cancelAnimationFrame(animations.sea.seaAnimationFrameId);
+                    animations.sea.seaAnimationFrameId = null;
+                }
 
                 settingsBar.style.display = 'flex';
                 pauseButtonTopLeft.style.display = 'none';
@@ -60,6 +64,8 @@ function pause(){
                         animations.immutableFrameId = requestAnimationFrame(animations.immutableFunc);
                     }
                 }
+                if(!animations.sea.seaAnimationFrameId)
+                    animations.sea.seaAnimationFrameId = requestAnimationFrame(animations.sea.seaFrameFunc);
 
                 settingsBar.style.display = 'none';
                 pauseButtonTopLeft.style.display = 'inline';

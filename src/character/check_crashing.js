@@ -1,4 +1,6 @@
-function check_crashing(character_position, iceberg_grid, speed, isStunned, isImmune){
+import { parameters } from "../globalVariables/globalVariables.js";
+
+function check_crashing(character_position, iceberg_grid, speed, isStunned, isImmune, deltaStamp){
     const x = Math.floor(character_position.x / 300);
     const x1 = Math.floor((character_position.x + 50) / 300);
     const y = Math.floor(character_position.y / 300);
@@ -26,18 +28,18 @@ function check_crashing(character_position, iceberg_grid, speed, isStunned, isIm
     if(check_rects || character_position.x < 50 || character_position.x > 2900 || character_position.y > 2900){
         // back flipp
         if(speed.left > speed.right){
-            speed.right = speed.left > 1 ? speed.left + 0.2 : 1;
+            speed.right = speed.left > 1 ? speed.left + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
             speed.left = 0;
         }else{
-            speed.left = speed.right > 1 ? speed.right + 0.2 : 1;
+            speed.left = speed.right > 1 ? speed.right + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
             speed.right = 0;
         }
 
         if(speed.up > speed.down){
-            speed.down = speed.up > 1 ? speed.up + 0.2 : 1;
+            speed.down = speed.up > 1 ? speed.up + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
             speed.up = 0;
         }else{
-            speed.up = speed.down > 1 ? speed.down + 0.2 : 1;
+            speed.up = speed.down > 1 ? speed.down + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
             speed.down = 0;
         }
 
@@ -46,7 +48,7 @@ function check_crashing(character_position, iceberg_grid, speed, isStunned, isIm
         immune = true;
     }else if(character_position.y < 50){
         speed.up = 0;
-        speed.down = 0.2;
+        speed.down = parameters.charDeltaSpeed60FPS * deltaStamp ** 2;
     }
 
     return {stun, immune};
