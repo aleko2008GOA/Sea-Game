@@ -16,6 +16,7 @@ function restart(characterImagesArray){
     restart_button.forEach(button =>{
         button.addEventListener('click', () =>{
             cancelAnimationFrame(animations.animationFrameId);
+            cancelAnimationFrame(animations.immutableFrameId);
             cancelAnimationFrame(animations.sea.seaAnimationFrameId);
             clearTimeout(animations.stunTimeoutId);
             clearInterval(animations.flickeringIntervalId);
@@ -24,17 +25,30 @@ function restart(characterImagesArray){
             clearInterval(parameters.timeInterval);
 
             animations.animationFrameId = null;
-            animations.stunTimeoutId = null;
-            animations.flickeringIntervalId = null;
-            animations.generator.interval = null;
             animations.animationFrameFunc = null;
+            animations.stunFunc = null;
+            animations.stunFrameId = null;
+            animations.immutableFunc = null;
+            animations.immutableFrameId = null;
+
+            Object.keys(animations.moment).forEach(key => animations.moment[key] = false);
+            animations.moment.startSrceen = true;
+
+            animations.sea.seaAnimationFrameId = null;
+            animations.sea.seaFrameFunc = null;
             animations.sea.waveSpeed = 1000;
+
+            animations.generator.interval = null;
+            animations.generator.intervalFunc = null;
 
             parameters.timeInterval = null;
             parameters.time = 300;
             parameters.hearts = 3;
-            parameters.speed = {left: 0, right: 0, up: 0, down: 0};
+            Object.keys(parameters.speed).forEach(key => parameters.speed[key] = 0);
             parameters.collected = 0;
+
+            parameters.timeChangeFunc = null;
+            parameters.immutable = true;
 
             canvases.forEach(val =>{
                 if(val.id != 'waves_left' && val.id != 'waves_right' && val.id != 'sea'){
