@@ -6,7 +6,7 @@ import { character_moves } from './character/character_moving.js';
 import restart from './settings/restart.js';
 import characterImages from './images/loadingImages/character_images.js';
 import pause from './settings/pause.js';
-import checkDevice from './settings/onMobile.js';
+import { checkDevice } from './settings/onMobile.js';
 
 checkDevice();
 background_sea();

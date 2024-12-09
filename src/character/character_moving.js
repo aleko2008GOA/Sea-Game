@@ -4,6 +4,7 @@ import camera_moving from "./camera_moving.js";
 import { lose_hearts } from "../game_over/lose_hearts.js";
 import useCharacterImages from "../images/useImages/character.js";
 import { animations, parameters } from "../globalVariables/globalVariables.js";
+import { moveMobile } from "../settings/onMobile.js";
 
 // canvas
 /** @type {HTMLCanvasElement} */
@@ -70,53 +71,57 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
         let maxSpeed = parameters.charMaxSpeed60FPS * deltaStamp;
         let deltaSpeed = parameters.charDeltaSpeed60FPS * deltaStamp ** 2;
 
-        // left
-        if(moving_direction.left && !isStunned){
-            if(speed.left < maxSpeed) speed.left += deltaSpeed;
-            else speed.left = maxSpeed;
-            character_position.x -= speed.left;
-            moved = true;
-        }else if(speed.left > 0) {
-            speed.left = speed.left - deltaSpeed >= 0 ? speed.left - deltaSpeed : 0;
-            character_position.x -= speed.left;
-            moved = true;
-        }else if(speed.left < 0) speed.left = 0;
+        if(parameters.device.includes('Mobile') || parameters.device.includes('Tablet') || parameters.device.includes('Ebook'))
+            moved = moveMobile(speed, character_position, isStunned, maxSpeed, deltaSpeed);
+        else{
+            // left
+            if(moving_direction.left && !isStunned){
+                if(speed.left < maxSpeed) speed.left += deltaSpeed;
+                else speed.left = maxSpeed;
+                character_position.x -= speed.left;
+                moved = true;
+            }else if(speed.left > 0) {
+                speed.left = speed.left - deltaSpeed >= 0 ? speed.left - deltaSpeed : 0;
+                character_position.x -= speed.left;
+                moved = true;
+            }else if(speed.left < 0) speed.left = 0;
 
-        // right
-        if(moving_direction.right && !isStunned){
-            if(speed.right < maxSpeed) speed.right += deltaSpeed;
-            else speed.right = maxSpeed;
-            character_position.x += speed.right;
-            moved = true;
-        }else if(speed.right > 0) {
-            speed.right = speed.right - deltaSpeed >= 0 ? speed.right - deltaSpeed : 0;
-            character_position.x += speed.right;
-            moved = true;
-        }else if(speed.right < 0) speed.right = 0;
+            // right
+            if(moving_direction.right && !isStunned){
+                if(speed.right < maxSpeed) speed.right += deltaSpeed;
+                else speed.right = maxSpeed;
+                character_position.x += speed.right;
+                moved = true;
+            }else if(speed.right > 0) {
+                speed.right = speed.right - deltaSpeed >= 0 ? speed.right - deltaSpeed : 0;
+                character_position.x += speed.right;
+                moved = true;
+            }else if(speed.right < 0) speed.right = 0;
 
-        // up
-        if(moving_direction.up && !isStunned){
-            if(speed.up < maxSpeed) speed.up += deltaSpeed;
-            else speed.up = maxSpeed;
-            character_position.y -= speed.up;
-            moved = true;
-        }else if(speed.up > 0) {
-            speed.up = speed.up - deltaSpeed >= 0 ? speed.up - deltaSpeed : 0;
-            character_position.y -= speed.up;
-            moved = true;
-        }else if(speed.up < 0) speed.up = 0;
+            // up
+            if(moving_direction.up && !isStunned){
+                if(speed.up < maxSpeed) speed.up += deltaSpeed;
+                else speed.up = maxSpeed;
+                character_position.y -= speed.up;
+                moved = true;
+            }else if(speed.up > 0) {
+                speed.up = speed.up - deltaSpeed >= 0 ? speed.up - deltaSpeed : 0;
+                character_position.y -= speed.up;
+                moved = true;
+            }else if(speed.up < 0) speed.up = 0;
 
-        // down
-        if(moving_direction.down && !isStunned){
-            if(speed.down < maxSpeed) speed.down += deltaSpeed;
-            else speed.down = maxSpeed;
-            character_position.y += speed.down;
-            moved = true;
-        }else if(speed.down > 0) {
-            speed.down = speed.down - deltaSpeed >= 0 ? speed.down - deltaSpeed : 0;
-            character_position.y += speed.down;
-            moved = true;
-        }else if(speed.down < 0) speed.down = 0;
+            // down
+            if(moving_direction.down && !isStunned){
+                if(speed.down < maxSpeed) speed.down += deltaSpeed;
+                else speed.down = maxSpeed;
+                character_position.y += speed.down;
+                moved = true;
+            }else if(speed.down > 0) {
+                speed.down = speed.down - deltaSpeed >= 0 ? speed.down - deltaSpeed : 0;
+                character_position.y += speed.down;
+                moved = true;
+            }else if(speed.down < 0) speed.down = 0;
+        }
 
         // if moved
         if(moved){

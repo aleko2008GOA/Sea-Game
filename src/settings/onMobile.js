@@ -6,9 +6,6 @@ const onMobile = document.getElementById('on_mobile');
 /** @type {CanvasRenderingContext2D} */
 const onMobileCanvas = onMobile.getContext('2d');
 
-let animation = null;
-let position = {x: 0, y: 0};
-
 function checkDevice(){
     const userAgent = navigator.userAgent.toLowerCase();
     let sensore = navigator.maxTouchPoints;
@@ -27,7 +24,7 @@ function checkDevice(){
 
     parameters.device = deviceType;
 
-    if(deviceType.includes('Mobile') || deviceType.includes('Notebook')){
+    if(deviceType.includes('Mobile') || deviceType.includes('Tablet') || deviceType.includes('Ebook')){
         onMobile.style.display = 'block';
 
         onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
@@ -37,16 +34,15 @@ function checkDevice(){
         onMobileCanvas.fill();
 
         onMobile.addEventListener('mousedown', e =>{
-            position.x = e.clientX - onMobile.getBoundingClientRect().left - 125;
-            position.y = e.clientY - onMobile.getBoundingClientRect().top - 125;
-            animation = requestAnimationFrame(moveMobile);
+            parameters.positionMobile.x = e.clientX - onMobile.getBoundingClientRect().left - 125;
+            parameters.positionMobile.y = e.clientY - onMobile.getBoundingClientRect().top - 125;
         });
         onMobile.addEventListener('mousemove', e =>{
-            position.x = e.clientX - onMobile.getBoundingClientRect().left - 125;
-            position.y = e.clientY - onMobile.getBoundingClientRect().top - 125;
+            parameters.positionMobile.x = e.clientX - onMobile.getBoundingClientRect().left - 125;
+            parameters.positionMobile.y = e.clientY - onMobile.getBoundingClientRect().top - 125;
         });
         onMobile.addEventListener('mouseup', () =>{
-            cancelAnimationFrame(animation);
+            Object.keys(parameters.charMaxSpeed60FPSMobile).forEach(key => parameters.charMaxSpeed60FPSMobile[key] = 0);
             onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
             onMobileCanvas.beginPath();
             onMobileCanvas.clearRect(0, 0, onMobile.width, onMobile.height);
@@ -56,14 +52,80 @@ function checkDevice(){
     } 
 }
 
-function moveMobile(e){
-    let x = position.x;
-    let y = position.y;
+function moveMobile(speed, character_position, isStunned, maxSpeed, deltaSpeed){
+    let moved = false;
+    let x = parameters.positionMobile.x;
+    let y = parameters.positionMobile.y;
     let diagonal = Math.sqrt(x ** 2 + y ** 2);
 
-    var alpha = (Math.atan2(y, x) * 180 / Math.PI) >= 0 ? (Math.atan2(y, x) * 180 / Math.PI) : Math.atan2(y, x) * 180 / Math.PI + 360;
-    console.log(alpha)
-    
+    if(Math.abs(x) >= Math.abs(y)){
+        parameters.charMaxSpeed60FPSMobile.right = x > 0 && diagonal >= 30 ? maxSpeed : 0;
+        parameters.charMaxSpeed60FPSMobile.left = x < 0 && diagonal >= 30 ? maxSpeed : 0;
+
+        parameters.charMaxSpeed60FPSMobile.down = y > 0 && diagonal >= 30 ? maxSpeed * Math.abs(y / x) : 0;
+        parameters.charMaxSpeed60FPSMobile.up = y < 0 && diagonal >= 30 ? maxSpeed * Math.abs(y / x) : 0;
+    }else{
+        parameters.charMaxSpeed60FPSMobile.right = x > 0 && diagonal >= 30 ? maxSpeed * Math.abs(x / y) : 0;
+        parameters.charMaxSpeed60FPSMobile.left = x < 0 && diagonal >= 30 ? maxSpeed * Math.abs(x / y) : 0;
+
+        parameters.charMaxSpeed60FPSMobile.down = y > 0 && diagonal >= 30 ? maxSpeed : 0;
+        parameters.charMaxSpeed60FPSMobile.up = y < 0 && diagonal >= 30 ? maxSpeed : 0;
+    }
+
+    if(!isStunned && diagonal >= 30 && !parameters.immutable){
+        // left
+        if(speed.left < parameters.charMaxSpeed60FPSMobile.left) speed.left += deltaSpeed;
+        else speed.left = parameters.charMaxSpeed60FPSMobile.left;
+        character_position.x -= speed.left;
+
+        // right
+        if(speed.right < parameters.charMaxSpeed60FPSMobile.right) speed.right += deltaSpeed;
+        else speed.right = parameters.charMaxSpeed60FPSMobile.right;
+        character_position.x += speed.right;
+
+        // up
+        if(speed.up < parameters.charMaxSpeed60FPSMobile.up) speed.up += deltaSpeed;
+        else speed.up = parameters.charMaxSpeed60FPSMobile.up;
+        character_position.y -= speed.up;
+
+        // down 
+        if(speed.down < parameters.charMaxSpeed60FPSMobile.down) speed.down += deltaSpeed;
+        else speed.down = parameters.charMaxSpeed60FPSMobile.down;
+        character_position.y += speed.down;
+
+        moved = true;
+    }else{
+        if(speed.left > 0) {
+            speed.left = speed.left - deltaSpeed >= 0 ? speed.left - deltaSpeed : 0;
+            character_position.x -= speed.left;
+            moved = true;
+        }else if(speed.left < 0) speed.left = 0;
+        
+        if(speed.right > 0) {
+            speed.right = speed.right - deltaSpeed >= 0 ? speed.right - deltaSpeed : 0;
+            character_position.x += speed.right;
+            moved = true;
+        }else if(speed.right < 0) speed.right = 0;
+        
+        if(speed.up > 0) {
+            speed.up = speed.up - deltaSpeed >= 0 ? speed.up - deltaSpeed : 0;
+            character_position.y -= speed.up;
+            moved = true;
+        }else if(speed.up < 0) speed.up = 0;
+        
+        if(speed.down > 0) {
+            speed.down = speed.down - deltaSpeed >= 0 ? speed.down - deltaSpeed : 0;
+            character_position.y += speed.down;
+            moved = true;
+        }else if(speed.down < 0) speed.down = 0;
+    }
+
+    drawOnCanvas(diagonal, x, y);
+
+    return moved;
+}
+
+function drawOnCanvas(diagonal, x, y){
     if(diagonal < 30){
         onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
         onMobileCanvas.beginPath();
@@ -87,7 +149,6 @@ function moveMobile(e){
         }
         onMobileCanvas.fill();
     }
-    animation = requestAnimationFrame(() => moveMobile(e));
 }
 
-export default checkDevice;
+export { checkDevice, moveMobile };
