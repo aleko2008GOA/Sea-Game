@@ -49,6 +49,23 @@ function checkDevice(){
             onMobileCanvas.arc(125, 125, 75, 0, 2 * Math.PI);
             onMobileCanvas.fill();
         });
+
+        onMobile.addEventListener('touchstart', e =>{
+            parameters.positionMobile.x = e.clientX - onMobile.getBoundingClientRect().left - 125;
+            parameters.positionMobile.y = e.clientY - onMobile.getBoundingClientRect().top - 125;
+        });
+        onMobile.addEventListener('touchmove', e =>{
+            parameters.positionMobile.x = e.clientX - onMobile.getBoundingClientRect().left - 125;
+            parameters.positionMobile.y = e.clientY - onMobile.getBoundingClientRect().top - 125;
+        });
+        onMobile.addEventListener("touchend", () =>{
+            Object.keys(parameters.charMaxSpeed60FPSMobile).forEach(key => parameters.charMaxSpeed60FPSMobile[key] = 0);
+            onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
+            onMobileCanvas.beginPath();
+            onMobileCanvas.clearRect(0, 0, onMobile.width, onMobile.height);
+            onMobileCanvas.arc(125, 125, 75, 0, 2 * Math.PI);
+            onMobileCanvas.fill();
+        })
     } 
 }
 
