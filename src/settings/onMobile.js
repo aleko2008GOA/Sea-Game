@@ -51,12 +51,12 @@ function checkDevice(){
         });
 
         onMobile.addEventListener('touchstart', e =>{
-            parameters.positionMobile.x = e.clientX - onMobile.getBoundingClientRect().left - 125;
-            parameters.positionMobile.y = e.clientY - onMobile.getBoundingClientRect().top - 125;
+            parameters.positionMobile.x = e.touches[0].clientX - onMobile.getBoundingClientRect().left - 125;
+            parameters.positionMobile.y = e.touches[0].clientY - onMobile.getBoundingClientRect().top - 125;
         });
         onMobile.addEventListener('touchmove', e =>{
-            parameters.positionMobile.x = e.clientX - onMobile.getBoundingClientRect().left - 125;
-            parameters.positionMobile.y = e.clientY - onMobile.getBoundingClientRect().top - 125;
+            parameters.positionMobile.x = e.touches[0].clientX - onMobile.getBoundingClientRect().left - 125;
+            parameters.positionMobile.y = e.touches[0].clientY - onMobile.getBoundingClientRect().top - 125;
         });
         onMobile.addEventListener("touchend", () =>{
             Object.keys(parameters.charMaxSpeed60FPSMobile).forEach(key => parameters.charMaxSpeed60FPSMobile[key] = 0);
