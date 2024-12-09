@@ -71,7 +71,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
         let maxSpeed = parameters.charMaxSpeed60FPS * deltaStamp;
         let deltaSpeed = parameters.charDeltaSpeed60FPS * deltaStamp ** 2;
 
-        if(parameters.device.includes('Mobile') || parameters.device.includes('Tablet') || parameters.device.includes('Ebook'))
+        if(parameters.device.includes('Mobile') || parameters.device.includes('Tablet') || parameters.device.includes('Ebook') || parameters.device.includes('Notebook'))
             moved = moveMobile(speed, character_position, isStunned, maxSpeed, deltaSpeed);
         else{
             // left
