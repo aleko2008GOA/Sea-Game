@@ -1,3 +1,4 @@
+import setParameters from './settings/setParameters.js';
 import loading from './story/loading.js';
 import { background_sea } from './background/sea.js';
 import { icebergs } from './objects/icebergs.js';
@@ -5,9 +6,10 @@ import { lights } from './objects/lights.js';
 import { character_moves } from './character/character_moving.js';
 import restart from './settings/restart.js';
 import characterImages from './images/loadingImages/character_images.js';
-import pause from './settings/pause.js';
+import './settings/pause.js';
 import { checkDevice } from './settings/onMobile.js';
 
+setParameters();
 checkDevice();
 background_sea();
 const {icebrg_coordinate_arr, iceberg_grid_position} = icebergs();
@@ -19,6 +21,5 @@ characterImages
     })
     .then(characterImagesArray => {
         restart(characterImagesArray);
-    })
-pause();
+    });
 loading(true, 100);

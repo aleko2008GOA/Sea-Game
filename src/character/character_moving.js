@@ -17,10 +17,13 @@ const characterImages = [];
 let characterImage;
 
 function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
+    let characterWidth = parameters.standartSize.character.width;
+    let characterHeight = parameters.standartSize.character.height;
+    
     characterImage = imgs[0][0][4];
     characterImages.push(...imgs);
     // charcter starts at
-    const character_position = {x: 150, y: 100};
+    const character_position = {x: 3 * characterWidth, y: 2 * characterHeight};
     const moving_direction = {left: false, right: false, up: false, down: false};
     const speed = parameters.speed;
     // chracter stats
@@ -41,20 +44,20 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
 
     // moving
     function chraracter_start(){
-        character_background.drawImage(characterImage, character_position.x - 15, character_position.y - 30, 80, 80);
-        character_background.strokeRect(character_position.x, character_position.y, 50, 50);
+        character_background.strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
+        character_background.drawImage(characterImage, character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, characterWidth * 1.6, characterHeight * 1.6);
 
         document.addEventListener('keydown', (e) =>{
-            if(e.key === 'ArrowLeft') if(!parameters.immutable) moving_direction.left = true;
-            if(e.key === 'ArrowRight') if(!parameters.immutable) moving_direction.right = true;
-            if(e.key === 'ArrowUp') if(!parameters.immutable) moving_direction.up = true;
-            if(e.key === 'ArrowDown') if(!parameters.immutable) moving_direction.down = true;
+            if(e.key === 'ArrowLeft' || e.key === 'a') if(!parameters.immutable) moving_direction.left = true;
+            if(e.key === 'ArrowRight' || e.key === 'd') if(!parameters.immutable) moving_direction.right = true;
+            if(e.key === 'ArrowUp' || e.key === 'w') if(!parameters.immutable) moving_direction.up = true;
+            if(e.key === 'ArrowDown' || e.key === 's') if(!parameters.immutable) moving_direction.down = true;
         });
         document.addEventListener('keyup', (e) =>{
-            if(e.key === 'ArrowLeft') moving_direction.left = false;
-            if(e.key === 'ArrowRight') moving_direction.right = false;
-            if(e.key === 'ArrowUp') moving_direction.up = false;
-            if(e.key === 'ArrowDown') moving_direction.down = false;
+            if(e.key === 'ArrowLeft' || e.key === 'a') moving_direction.left = false;
+            if(e.key === 'ArrowRight' || e.key === 'd') moving_direction.right = false;
+            if(e.key === 'ArrowUp' || e.key === 'w') moving_direction.up = false;
+            if(e.key === 'ArrowDown' || e.key === 's') moving_direction.down = false;
         });
 
         animations.animationFrameFunc = move;
@@ -129,8 +132,8 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             character_background.clearRect(0, 0, character_canvas.width, character_canvas.height);
             
             if(!cleared){
-                character_background.strokeRect(character_position.x, character_position.y, 50, 50);
-                character_background.drawImage(characterImage, character_position.x - 15, character_position.y - 30, 80, 80);
+                character_background.strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
+                character_background.drawImage(characterImage, character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, characterWidth * 1.6, characterHeight * 1.6);
             }
             // getting everythig about lights or crashing
             check_getting_lights(lights_ctx, character_position, lights_grid, isImmune); // check if I get  any light
@@ -155,8 +158,8 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             character_background.clearRect(0, 0, character_canvas.width, character_canvas.height);
             
             if(!cleared){
-                character_background.strokeRect(character_position.x, character_position.y, 50, 50);
-                character_background.drawImage(characterImage, character_position.x - 15, character_position.y - 30, 80, 80);
+                character_background.strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
+                character_background.drawImage(characterImage, character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, characterWidth * 1.6, characterHeight * 1.6);
             }
         }
 
@@ -193,8 +196,8 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             animations.immutableFrameId = null;
 
             character_background.clearRect(0, 0, character_canvas.width, character_canvas.height);
-            character_background.strokeRect(character_position.x, character_position.y, 50, 50);
-            character_background.drawImage(characterImage, character_position.x - 15, character_position.y - 30, 80, 80);
+            character_background.drawImage(characterImage, character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, characterWidth * 1.6, characterHeight * 1.6);
+            character_background.strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
             
             isImmune = false;
             removeImmune = true;

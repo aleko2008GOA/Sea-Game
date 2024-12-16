@@ -56,8 +56,11 @@ function background_sea(){
     }
 
     // wave animation
-    const waveWidth = 30;
-    const waveHeight = 15;
+    const waveWidth = parameters.standartSize.wave.fullWidth;
+    const waveHeight = parameters.standartSize.wave.fullHeight;
+
+    const imgWidth = parameters.standartSize.wave.imgWidth;
+    const imgHeight = parameters.standartSize.wave.imgHeight;
     let waves = 0;
 
     let lastStamp = 0;
@@ -67,26 +70,26 @@ function background_sea(){
     function wave_animation(img_left, img_right){
         for (let i = 0; i < 201; i++) {
             for (let j = 0; j < 101; j++) {
-                let x1 = i % 2 == waves ? waveWidth * (j - 1) + 5 : waveWidth * (j - 1) + 15;
-                let y1 = waveHeight * (i - 1) + 5;
+                let x1 = i % 2 == waves ? waveWidth * (j - 1) + 5 : waveWidth * (j - 1) + 5 + waveWidth - imgWidth;
+                let y1 = waveHeight * (i - 1) + imgHeight;
 
                 if (j % 2 == waves) {
-                    sea_waves_left.drawImage(img_left, x1, y1, 20, 5);
+                    sea_waves_left.drawImage(img_left, x1, y1, imgWidth, imgHeight);
                 } else {
-                    sea_waves_left.drawImage(img_right, x1, y1 + 5, 20, 5);
+                    sea_waves_left.drawImage(img_right, x1, y1 + imgHeight, imgWidth, imgHeight);
                 }
             }
         }
 
         for (let i = 0; i < 201; i++) {
             for (let j = 0; j < 101; j++) {
-                let x1 = i % 2 == waves ? waveWidth * (j - 1) + 5 : waveWidth * (j - 1) + 15;
-                let y1 = waveHeight * (i - 1) + 5;
+                let x1 = i % 2 == waves ? waveWidth * (j - 1) + 5 : waveWidth * (j - 1) + 5 + waveWidth - imgWidth;
+                let y1 = waveHeight * (i - 1) + imgHeight;
 
                 if (j % 2 != waves) {
-                    sea_waves_right.drawImage(img_left, x1, y1, 20, 5);
+                    sea_waves_right.drawImage(img_left, x1, y1, imgWidth, imgHeight);
                 } else {
-                    sea_waves_right.drawImage(img_right, x1, y1 + 5, 20, 5);
+                    sea_waves_right.drawImage(img_right, x1, y1 + imgHeight, imgWidth, imgHeight);
                 }
             }
         }

@@ -60,6 +60,47 @@ const parameters = {
     },
     charDeltaSpeed60FPS: 0.02,
     lastStamp: 0,
+    // object sizes
+    standartSize: {
+        canvas: {
+            width: 3000,
+            height: 3000
+        },
+        screen: {
+            width: 800,
+            height: 500,
+        },
+        instructions: {
+            width: 300,
+            minHeight: 100,
+            maxHeight: 300 
+        },
+        joystick: {
+            width: 250,
+            height: 250,
+            joisticRadius: 75,
+            joisticCircleRadius: 50
+        },
+
+        character: {
+            width: 50,
+            height: 50
+        },
+        iceberg: {
+            width: 50,
+            height: 50
+        },
+        light: {
+            width: 50,
+            height: 50
+        },
+        wave: {
+            fullWidth: 30,
+            fullHeight: 15,
+            imgWidth: 20,
+            imgHeight: 5
+        }
+    }
 }
 
 export { animations, parameters };

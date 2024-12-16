@@ -1,4 +1,13 @@
+import { parameters } from "../globalVariables/globalVariables.js";
+
 function icebergs(){
+    const icebergWidth = Math.round(parameters.standartSize.iceberg.width);
+    const icebergHeight = Math.round(parameters.standartSize.iceberg.height);
+    const canvasWidth = Math.round(parameters.standartSize.canvas.width);
+    const canvasHeight = Math.round(parameters.standartSize.canvas.height);
+    const chunkX = canvasWidth / 10;
+    const chunkY = canvasHeight / 10;
+
     const icebrg_coordinate_arr = [];
     const iceberg_grid_position = [
         [[], [], [], [], [], [], [], [], [], []],
@@ -33,21 +42,26 @@ function icebergs(){
     // promice images generating
     Promise.all([wall, beach, vertical_wall, ...arr_of_icbergs])
         .then(([w_img, b_img, v_img, ...i_imgs]) =>{
-            for(let i = 0; i < Math.ceil(3000 / (w_img.width / (w_img.height / 70))); i++){
-                icebergs_background.drawImage(w_img, i * (w_img.width / (w_img.height / 70)), 2940, w_img.width / (w_img.height / 70), 70);
+            for(let i = 0; i < Math.ceil(canvasWidth / (w_img.width / (w_img.height / icebergHeight))); i++){
+                icebergs_background.drawImage(w_img, i * (w_img.width / (w_img.height / icebergHeight)), canvasHeight - icebergHeight, w_img.width / (w_img.height / icebergHeight), icebergHeight);
             }
 
-            for(let i = 0; i < Math.ceil(3000 / (b_img.width / (b_img.height / 30))); i++){
-                icebergs_background.drawImage(b_img, i * (b_img.width / (b_img.height / 30)), 0, b_img.width / (b_img.height / 30), 30);
+            for(let i = 0; i < Math.ceil(canvasWidth / (b_img.width / (b_img.height / icebergHeight))); i++){
+                icebergs_background.drawImage(b_img, i * (b_img.width / (b_img.height / icebergHeight)), 0, b_img.width / (b_img.height / icebergHeight), icebergHeight);
             }
 
-            for(let i = 0; i < Math.ceil(v_img.height / (v_img.width / 130)); i++){
-                icebergs_background.drawImage(v_img, -50, i * (v_img.height / (v_img.width / 130)), 130, v_img.height / (v_img.width / 130));
+            for(let i = 0; i < Math.ceil(v_img.height / (v_img.width / icebergWidth)); i++){
+                icebergs_background.drawImage(v_img, 0, i * (v_img.height / (v_img.width / icebergWidth)), icebergWidth, v_img.height / (v_img.width / icebergWidth));
             }
 
-            for(let i = 0; i < Math.ceil(v_img.height / (v_img.width / 130)); i++){
-                icebergs_background.drawImage(v_img, 2930, i * (v_img.height / (v_img.width / 130)), 130, v_img.height / (v_img.width / 130));
+            for(let i = 0; i < Math.ceil(v_img.height / (v_img.width / icebergWidth)); i++){
+                icebergs_background.drawImage(v_img, canvasWidth - icebergWidth, i * (v_img.height / (v_img.width / icebergWidth)), icebergWidth, v_img.height / (v_img.width / icebergWidth));
             }
+
+            icebergs_background.strokeRect(0, 0, icebergWidth, canvasHeight);
+            icebergs_background.strokeRect(0, 0, canvasWidth, icebergHeight);
+            icebergs_background.strokeRect(canvasWidth - icebergWidth, 0, icebergWidth, canvasHeight);
+            icebergs_background.strokeRect(0, canvasHeight - icebergHeight, canvasWidth, icebergHeight);
 
             create_random_iceberg_images(i_imgs);
         })
@@ -76,7 +90,7 @@ function icebergs(){
         icebergs_background.lineWidth = 2;
         for(let i = 0; i < 10; i++){
             for(let j = 0; j < 10; j++){
-                icebergs_background.strokeRect(i * 300, j * 300, 300, 300)
+                icebergs_background.strokeRect(i * chunkX, j * chunkY, chunkX, chunkY);
             }
         }
 
@@ -84,8 +98,8 @@ function icebergs(){
         let num_of_double = 0;
         for(let i = 0; i < 50; i++){
             do{
-                var x = (Math.floor(Math.random() * 8) + 1) * 300;
-                var y = (Math.floor(Math.random() * 8) + 1) * 300;
+                var x = (Math.floor(Math.random() * 8) + 1) * chunkX;
+                var y = (Math.floor(Math.random() * 8) + 1) * chunkY;
             } while(arr.find(elem => elem.x == x && elem.y == y));
 
             if(Math.random() < 0.5 && num_of_double < 20 || 20 - num_of_double == 50 - i){
@@ -101,17 +115,17 @@ function icebergs(){
                 do{
                     var x1 = val.x1 + Math.floor(Math.random() * 251);
                     var y1 = val.y1 + Math.floor(Math.random() * 251);
-                }while((x1 < x + 50 && x1 > x - 50) && (y1 < y + 50 && y1 > y - 50));
+                }while((x1 < x + icebergWidth && x1 > x - icebergWidth) && (y1 < y + icebergHeight && y1 > y - icebergHeight));
 
-                icebergs_background.strokeRect(x1, y1, 50, 50);
+                icebergs_background.strokeRect(x1, y1, icebergWidth, icebergHeight);
 
-                icebrg_coordinate_arr.push({x: x1, y: y1, width: 50, height: 50});
-                iceberg_grid_position[val.y1 / 300][val.x1 / 300].push({x: x1, y: y1, width: 50, height: 50});
+                icebrg_coordinate_arr.push({x: x1, y: y1, width: icebergWidth, height: icebergHeight});
+                iceberg_grid_position[val.y1 / chunkY][val.x1 / chunkX].push({x: x1, y: y1, width: icebergWidth, height: icebergHeight});
             }
-            icebergs_background.strokeRect(x, y, 50, 50);
+            icebergs_background.strokeRect(x, y, icebergWidth, icebergHeight);
 
-            icebrg_coordinate_arr.push({x, y, width: 50, height: 50});
-            iceberg_grid_position[val.y / 300][val.x / 300].push({x, y, width: 50, height: 50});
+            icebrg_coordinate_arr.push({x, y, width: icebergWidth, height: icebergHeight});
+            iceberg_grid_position[val.y / chunkY][val.x / chunkX].push({x, y, width: icebergWidth, height: icebergHeight});
         });
     }
     

@@ -10,8 +10,7 @@
     background-color: aliceblue;
     position:absolute;
     left:50%;
-    top:50%;
-    transform:translate(-50%, -50%);
+    transform:translate(-50%, 0);
     z-index:2;
     overflow: hidden;
 }
@@ -22,8 +21,13 @@
     position:absolute;
     z-index:20;
     left:50%;
-    top:50%;
-    transform:translate(-50%, -50%);
+    transform:translate(-50%, 0);
+}
+#fullScreen{
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    z-index: 900;
 }
 /* sea */
 #waves_left, #waves_right{

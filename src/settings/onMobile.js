@@ -6,6 +6,11 @@ const onMobile = document.getElementById('on_mobile');
 /** @type {CanvasRenderingContext2D} */
 const onMobileCanvas = onMobile.getContext('2d');
 
+let startPointX;
+let startPointY;
+let joisticRadius;
+let circleRadius;
+
 function checkDevice(){
     const userAgent = navigator.userAgent.toLowerCase();
     let sensore = navigator.maxTouchPoints;
@@ -24,46 +29,51 @@ function checkDevice(){
 
     parameters.device = deviceType;
 
+    startPointX = parameters.standartSize.joystick.width / 2;
+    startPointY = parameters.standartSize.joystick.height / 2;
+    joisticRadius = parameters.standartSize.joystick.joisticRadius;
+    circleRadius = parameters.standartSize.joystick.joisticCircleRadius;
+
     if(deviceType.includes('Mobile') || deviceType.includes('Tablet') || deviceType.includes('Ebook') || deviceType.includes('Notebook')){
         onMobile.style.display = 'block';
 
         onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
         onMobileCanvas.beginPath();
 
-        onMobileCanvas.arc(125, 125, 75, 0, 2 * Math.PI);
+        onMobileCanvas.arc(startPointX, startPointY, joisticRadius, 0, 2 * Math.PI);
         onMobileCanvas.fill();
 
         onMobile.addEventListener('mousedown', e =>{
-            parameters.positionMobile.x = e.clientX - onMobile.getBoundingClientRect().left - 125;
-            parameters.positionMobile.y = e.clientY - onMobile.getBoundingClientRect().top - 125;
+            parameters.positionMobile.x = e.clientX - onMobile.getBoundingClientRect().left - startPointX;
+            parameters.positionMobile.y = e.clientY - onMobile.getBoundingClientRect().top - startPointY;
         });
         onMobile.addEventListener('mousemove', e =>{
-            parameters.positionMobile.x = e.clientX - onMobile.getBoundingClientRect().left - 125;
-            parameters.positionMobile.y = e.clientY - onMobile.getBoundingClientRect().top - 125;
+            parameters.positionMobile.x = e.clientX - onMobile.getBoundingClientRect().left - startPointX;
+            parameters.positionMobile.y = e.clientY - onMobile.getBoundingClientRect().top - startPointY;
         });
         onMobile.addEventListener('mouseup', () =>{
             Object.keys(parameters.charMaxSpeed60FPSMobile).forEach(key => parameters.charMaxSpeed60FPSMobile[key] = 0);
             onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
             onMobileCanvas.beginPath();
             onMobileCanvas.clearRect(0, 0, onMobile.width, onMobile.height);
-            onMobileCanvas.arc(125, 125, 75, 0, 2 * Math.PI);
+            onMobileCanvas.arc(startPointX, startPointY, joisticRadius, 0, 2 * Math.PI);
             onMobileCanvas.fill();
         });
 
         onMobile.addEventListener('touchstart', e =>{
-            parameters.positionMobile.x = e.touches[0].clientX - onMobile.getBoundingClientRect().left - 125;
-            parameters.positionMobile.y = e.touches[0].clientY - onMobile.getBoundingClientRect().top - 125;
+            parameters.positionMobile.x = e.touches[0].clientX - onMobile.getBoundingClientRect().left - startPointX;
+            parameters.positionMobile.y = e.touches[0].clientY - onMobile.getBoundingClientRect().top - startPointY;
         });
         onMobile.addEventListener('touchmove', e =>{
-            parameters.positionMobile.x = e.touches[0].clientX - onMobile.getBoundingClientRect().left - 125;
-            parameters.positionMobile.y = e.touches[0].clientY - onMobile.getBoundingClientRect().top - 125;
+            parameters.positionMobile.x = e.touches[0].clientX - onMobile.getBoundingClientRect().left - startPointX;
+            parameters.positionMobile.y = e.touches[0].clientY - onMobile.getBoundingClientRect().top - startPointY;
         });
         onMobile.addEventListener("touchend", () =>{
             Object.keys(parameters.charMaxSpeed60FPSMobile).forEach(key => parameters.charMaxSpeed60FPSMobile[key] = 0);
             onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
             onMobileCanvas.beginPath();
             onMobileCanvas.clearRect(0, 0, onMobile.width, onMobile.height);
-            onMobileCanvas.arc(125, 125, 75, 0, 2 * Math.PI);
+            onMobileCanvas.arc(startPointX, startPointY, joisticRadius, 0, 2 * Math.PI);
             onMobileCanvas.fill();
         })
     } 
@@ -76,20 +86,20 @@ function moveMobile(speed, character_position, isStunned, maxSpeed, deltaSpeed){
     let diagonal = Math.sqrt(x ** 2 + y ** 2);
 
     if(Math.abs(x) >= Math.abs(y)){
-        parameters.charMaxSpeed60FPSMobile.right = x > 0 && diagonal >= 30 ? maxSpeed : 0;
-        parameters.charMaxSpeed60FPSMobile.left = x < 0 && diagonal >= 30 ? maxSpeed : 0;
+        parameters.charMaxSpeed60FPSMobile.right = x > 0 && diagonal >= 0.6 * circleRadius ? maxSpeed : 0;
+        parameters.charMaxSpeed60FPSMobile.left = x < 0 && diagonal >= 0.6 * circleRadius ? maxSpeed : 0;
 
-        parameters.charMaxSpeed60FPSMobile.down = y > 0 && diagonal >= 30 ? maxSpeed * Math.abs(y / x) : 0;
-        parameters.charMaxSpeed60FPSMobile.up = y < 0 && diagonal >= 30 ? maxSpeed * Math.abs(y / x) : 0;
+        parameters.charMaxSpeed60FPSMobile.down = y > 0 && diagonal >= 0.6 * circleRadius ? maxSpeed * Math.abs(y / x) : 0;
+        parameters.charMaxSpeed60FPSMobile.up = y < 0 && diagonal >= 0.6 * circleRadius ? maxSpeed * Math.abs(y / x) : 0;
     }else{
-        parameters.charMaxSpeed60FPSMobile.right = x > 0 && diagonal >= 30 ? maxSpeed * Math.abs(x / y) : 0;
-        parameters.charMaxSpeed60FPSMobile.left = x < 0 && diagonal >= 30 ? maxSpeed * Math.abs(x / y) : 0;
+        parameters.charMaxSpeed60FPSMobile.right = x > 0 && diagonal >= 0.6 * circleRadius ? maxSpeed * Math.abs(x / y) : 0;
+        parameters.charMaxSpeed60FPSMobile.left = x < 0 && diagonal >= 0.6 * circleRadius ? maxSpeed * Math.abs(x / y) : 0;
 
-        parameters.charMaxSpeed60FPSMobile.down = y > 0 && diagonal >= 30 ? maxSpeed : 0;
-        parameters.charMaxSpeed60FPSMobile.up = y < 0 && diagonal >= 30 ? maxSpeed : 0;
+        parameters.charMaxSpeed60FPSMobile.down = y > 0 && diagonal >= 0.6 * circleRadius ? maxSpeed : 0;
+        parameters.charMaxSpeed60FPSMobile.up = y < 0 && diagonal >= 0.6 * circleRadius ? maxSpeed : 0;
     }
 
-    if(!isStunned && diagonal >= 30 && !parameters.immutable){
+    if(!isStunned && diagonal >= 0.6 * circleRadius && !parameters.immutable){
         // left
         if(speed.left < parameters.charMaxSpeed60FPSMobile.left) speed.left += deltaSpeed;
         else speed.left = parameters.charMaxSpeed60FPSMobile.left;
@@ -143,26 +153,26 @@ function moveMobile(speed, character_position, isStunned, maxSpeed, deltaSpeed){
 }
 
 function drawOnCanvas(diagonal, x, y){
-    if(diagonal < 30){
+    if(diagonal < 0.6 * circleRadius){
         onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
         onMobileCanvas.beginPath();
         onMobileCanvas.clearRect(0, 0, onMobile.width, onMobile.height);
-        onMobileCanvas.arc(125, 125, 75, 0, 2 * Math.PI);
+        onMobileCanvas.arc(startPointX, startPointY, joisticRadius, 0, 2 * Math.PI);
         onMobileCanvas.fill();
     }else{
         onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
         onMobileCanvas.beginPath();
         onMobileCanvas.clearRect(0, 0, onMobile.width, onMobile.height);
-        onMobileCanvas.arc(125, 125, 75, 0, 2 * Math.PI);
+        onMobileCanvas.arc(startPointX, startPointY, joisticRadius, 0, 2 * Math.PI);
         onMobileCanvas.fill();
 
         onMobileCanvas.beginPath();
         onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.7)";
-        if(diagonal < 75){
-            onMobileCanvas.arc(x + 125, y + 125, 50, 0, 2 * Math.PI);
+        if(diagonal < joisticRadius){
+            onMobileCanvas.arc(x + startPointX, y + startPointY, circleRadius, 0, 2 * Math.PI);
         }else{
-            let k = 75 / diagonal;
-            onMobileCanvas.arc(k * x + 125, k * y + 125, 50, 0, 2 * Math.PI);
+            let k = joisticRadius / diagonal;
+            onMobileCanvas.arc(k * x + startPointX, k * y + startPointY, circleRadius, 0, 2 * Math.PI);
         }
         onMobileCanvas.fill();
     }

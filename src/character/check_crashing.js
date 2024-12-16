@@ -1,10 +1,20 @@
 import { parameters } from "../globalVariables/globalVariables.js";
 
 function check_crashing(character_position, iceberg_grid, speed, isStunned, isImmune, deltaStamp){
-    const x = Math.floor(character_position.x / 300);
-    const x1 = Math.floor((character_position.x + 50) / 300);
-    const y = Math.floor(character_position.y / 300);
-    const y1 = Math.floor((character_position.y + 50) / 300);
+    const icebergWidth = Math.round(parameters.standartSize.iceberg.width);
+    const icebergHeight = Math.round(parameters.standartSize.iceberg.height);
+    const charWidth = Math.round(parameters.standartSize.character.width);
+    const charHeight = Math.round(parameters.standartSize.character.height);
+
+    const canvasWidth = Math.round(parameters.standartSize.canvas.width);
+    const canvasHeight = Math.round(parameters.standartSize.canvas.height);
+    const chunkX = canvasWidth / 10;
+    const chunkY = canvasHeight / 10;
+
+    const x = Math.floor(character_position.x / chunkX);
+    const x1 = Math.floor((character_position.x + charWidth) / chunkX);
+    const y = Math.floor(character_position.y / chunkY);
+    const y1 = Math.floor((character_position.y + charHeight) / chunkY);
 
     const rect_topLeft = iceberg_grid[y][x];
     const rect_topRight = iceberg_grid[y][x1];
@@ -15,17 +25,17 @@ function check_crashing(character_position, iceberg_grid, speed, isStunned, isIm
     let immune = isImmune;
 
     const check_rects = rect_topLeft.find(iceberg => {
-        return (iceberg.x < character_position.x + 50 && iceberg.x > character_position.x - 50) && (iceberg.y < character_position.y + 50 && iceberg.y > character_position.y - 50);
+        return (iceberg.x < character_position.x + charWidth && iceberg.x > character_position.x - charWidth) && (iceberg.y < character_position.y + charHeight && iceberg.y > character_position.y - charHeight);
     }) || rect_topRight.find(iceberg => {
-        return (iceberg.x < character_position.x + 50 && iceberg.x > character_position.x - 50) && (iceberg.y < character_position.y + 50 && iceberg.y > character_position.y - 50);
+        return (iceberg.x < character_position.x + charWidth && iceberg.x > character_position.x - charWidth) && (iceberg.y < character_position.y + charHeight && iceberg.y > character_position.y - charHeight);
     }) || rect_bottomLeft.find(iceberg => {
-        return (iceberg.x < character_position.x + 50 && iceberg.x > character_position.x - 50) && (iceberg.y < character_position.y + 50 && iceberg.y > character_position.y - 50);
+        return (iceberg.x < character_position.x + charWidth && iceberg.x > character_position.x - charWidth) && (iceberg.y < character_position.y + charHeight && iceberg.y > character_position.y - charHeight);
     }) || rect_bottomRight.find(iceberg => {
-        return (iceberg.x < character_position.x + 50 && iceberg.x > character_position.x - 50) && (iceberg.y < character_position.y + 50 && iceberg.y > character_position.y - 50);
+        return (iceberg.x < character_position.x + charWidth && iceberg.x > character_position.x - charWidth) && (iceberg.y < character_position.y + charHeight && iceberg.y > character_position.y - charHeight);
     })
     
     // if on iceberg (any part)
-    if(check_rects || character_position.x < 50 || character_position.x > 2900 || character_position.y > 2900){
+    if(check_rects || character_position.x < icebergWidth || character_position.x > canvasWidth - icebergWidth - charWidth || character_position.y > canvasHeight - icebergHeight - charHeight){
         // back flipp
         if(speed.left > speed.right){
             speed.right = speed.left > parameters.charMaxSpeed60FPS * deltaStamp / 2 ? speed.left + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
@@ -46,9 +56,9 @@ function check_crashing(character_position, iceberg_grid, speed, isStunned, isIm
         // lose herats if not immune
         stun = immune ? false : true;
         immune = true;
-    }else if(character_position.y < 50){
+    }else if(character_position.y < icebergHeight){
         speed.up = 0;
-        speed.down = parameters.charDeltaSpeed60FPS * deltaStamp ** 2;
+        character_position.y = icebergHeight;
     }
 
     return {stun, immune};

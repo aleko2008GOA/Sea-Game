@@ -1,4 +1,5 @@
 import light_normal_image from "../images/loadingImages/lights_images.js";
+import { parameters } from "../globalVariables/globalVariables.js";
 
 // canvas
 /** @type {HTMLCanvasElement} */
@@ -11,6 +12,13 @@ let light_image = light_normal_image;
 let imagesLoaded = false;
 
 function lights(icebrg_coordinate_arr){
+    const lightWidth = Math.round(parameters.standartSize.light.width);
+    const lightHeight = Math.round(parameters.standartSize.light.height);
+    const canvasWidth = Math.round(parameters.standartSize.canvas.width);
+    const canvasHeight = Math.round(parameters.standartSize.canvas.height);
+    const chunkX = canvasWidth / 10;
+    const chunkY = canvasHeight / 10;
+
     const lights_coordinate_arr = [];
     const lights_grid_position = [
         [null, null, null, null, null, null, null, null, null, null],
@@ -44,7 +52,7 @@ function lights(icebrg_coordinate_arr){
 
         for(let y = 0; y < 8; y++){
             for(let x = 0; x < 8; x++){
-                let coord = {x: (x + 1) * 300, y: (y + 1) * 300};
+                let coord = {x: (x + 1) * chunkX, y: (y + 1) * chunkY};
                 lights.push(coord);
             }
         }
@@ -58,20 +66,20 @@ function lights(icebrg_coordinate_arr){
                 var x = Math.floor(Math.random() * 251) + light_coord.x;
                 var y = Math.floor(Math.random() * 251) + light_coord.y;
             }while(icebrg_coordinate_arr.find(val => {
-                return (val.x < x + 50 && val.x > x - 50) && (val.y < y + 50 && val.y > y - 50);
+                return (val.x < x + lightWidth && val.x > x - lightWidth) && (val.y < y + lightHeight && val.y > y - lightHeight);
             }));
             set_of_lights.delete(light_coord);
 
-            lights_background.strokeRect(x, y, 50, 50);
+            lights_background.strokeRect(x, y, lightWidth, lightHeight);
             lights_coordinate_arr.push({x, y});
-            lights_grid_position[Math.floor(y / 300)][Math.floor(x / 300)] = {x, y};
+            lights_grid_position[Math.floor(y / chunkY)][Math.floor(x / chunkX)] = {x, y};
         }
     }
 
     // drawing images on canvas
-    function create_random_lights_images(l_img){
+    function create_random_lights_images(){
         lights_coordinate_arr.forEach(val =>{
-            lights_background.drawImage(light_image, val.x, val.y, 50, 50);
+            lights_background.drawImage(light_image, val.x, val.y, lightWidth, lightHeight);
         });
     }
     
