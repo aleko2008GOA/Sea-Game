@@ -8,8 +8,8 @@ html, body {
 
 #game{
     border: 1px solid;
-    width: 700px;
-    height: 500px;
+    width: 800px;
+    height: 450px;
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);

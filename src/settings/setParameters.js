@@ -101,9 +101,6 @@ function setParameters(){
         canvas.style.width = parameters.standartSize.canvas.width + 'px';
         canvas.style.height = parameters.standartSize.canvas.height + 'px';
     });
-
-    game.style.width = parameters.defaultScreen.width + 'px';
-    game.style.height = parameters.defaultScreen.height + 'px';
     
     onMobile.width = parameters.standartSize.joystick.width;
     onMobile.height = parameters.standartSize.joystick.height;
