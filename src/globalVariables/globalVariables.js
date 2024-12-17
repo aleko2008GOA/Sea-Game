@@ -14,6 +14,7 @@ const animations = {
     },
     // game moment
     moment: {
+        notLoaded: true,
         startSrceen: false,
         generating: false,
         loseWinPause: false,
@@ -60,6 +61,7 @@ const parameters = {
     },
     charDeltaSpeed60FPS: 0.02,
     lastStamp: 0,
+    gameStarted: false,
     // object sizes
     standartSize: {
         canvas: {
@@ -68,7 +70,7 @@ const parameters = {
         },
         screen: {
             width: 800,
-            height: 500,
+            height: 450,
         },
         instructions: {
             width: 300,
@@ -76,10 +78,10 @@ const parameters = {
             maxHeight: 300 
         },
         joystick: {
-            width: 250,
-            height: 250,
-            joisticRadius: 75,
-            joisticCircleRadius: 50
+            width: 225,
+            height: 225,
+            joisticRadius: 65,
+            joisticCircleRadius: 40
         },
 
         character: {
@@ -100,6 +102,14 @@ const parameters = {
             imgWidth: 20,
             imgHeight: 5
         }
+    },
+    defaultScreen: {
+        width: 800,
+        height: 450,
+    },
+
+    images: {
+        characterImages: null
     }
 }
 

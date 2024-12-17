@@ -1,28 +1,99 @@
 import { animations, parameters } from "../globalVariables/globalVariables.js";
 import pause from "./pause.js"
+import { restartAllFunctions } from "./restart.js";
 
 const gameMainContainer = document.getElementById('game_main_container');
 const otherInstructions = document.getElementById('other_instructions');
+const game = document.getElementById('game');
 const onMobile = document.getElementById('on_mobile');
-const screenWidth = screen.width;
-const screenHeight = screen.height;
+const fullScreenButtonMain = document.getElementById('fullScreenStart');
+
+const screenWidth = Math.max(screen.width, screen.height);
+const screenHeight = Math.min(screen.width, screen.height);
+
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        restartAllFunctions(parameters.images.characterImages);
+        fullScreenButtonMain.style.display = 'inline';
+        animations.moment.notLoaded = true;
+    }
+});
+document.addEventListener('webkitfullscreenchange', () => {
+    if (!document.webkitFullscreenElement) {
+        restartAllFunctions(parameters.images.characterImages);
+        fullScreenButtonMain.style.display = 'inline';
+        animations.moment.notLoaded = true;
+    }
+});
+document.addEventListener('mozfullscreenchange', () => {
+    if (!document.mozFullScreenElement) {
+        restartAllFunctions(parameters.images.characterImages);
+        fullScreenButtonMain.style.display = 'inline';
+        animations.moment.notLoaded = true;
+    }
+});
+document.addEventListener('msfullscreenchange', () => {
+    if (!document.msFullscreenElement) {
+        restartAllFunctions(parameters.images.characterImages);
+        fullScreenButtonMain.style.display = 'inline';
+        animations.moment.notLoaded = true;
+    }
+});
+
+async function fullScreen(){
+    if(screen.width < screen.height){
+        alert("rotate your device!");
+        return;
+    }
+    try{
+        if(!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement){
+            if(game.requestFullscreen) // modern
+                await game.requestFullscreen();
+            else if(game.mozRequestFullScreen) // Firefox
+                await game.mozRequestFullScreen();
+            else if(game.webkitRequestFullscreen) // Chrome, Safari, Opera
+                await game.webkitRequestFullscreen();
+            else if(game.msRequestFullscreen) // Internet Explorer / Edge
+                await game.msRequestFullscreen();
+
+            fullScreenButtonMain.style.display = 'none';
+            animations.moment.notLoaded = false;
+        }else{
+            if(document.exitFullscreen) // modern
+                await document.exitFullscreen();
+            else if (document.mozCancelFullScreen) // Firefox
+                await document.mozCancelFullScreen();
+            else if (document.webkitExitFullscreen) // Chrome, Safari, Opera
+                await document.webkitExitFullscreen();
+            else if (document.msExitFullscreen) // Internet Explorer / Edge
+                await document.msExitFullscreen();
+
+            restartAllFunctions(parameters.images.characterImages);
+            fullScreenButtonMain.style.display = 'inline';
+            animations.moment.notLoaded = true;
+        }
+    }catch(err){
+        console.error('Your browser does not support out game, check for updates');
+        console.error(new Error(err));
+    }
+}
 
 function setParameters(){
     document.addEventListener('visibilitychange', () =>{
-        if(document.hidden && !animations.moment.pause && !animations.moment.gameWinLose && !animations.moment.loseWinPause && !animations.moment.startSrceen) pause();
+        if(document.hidden && !animations.moment.pause && !animations.moment.gameWinLose && !animations.moment.loseWinPause && !animations.moment.startSrceen && !animations.moment.notLoaded) 
+            pause();
     });
 
-    document.getElementById('fullScreen').addEventListener('click', () => {
-        if(!document.fullscreenElement) document.documentElement.requestFullscreen();
-        else document.exitFullscreen();
-    });
-
-    let index = Math.floor((screenHeight - 50) / parameters.standartSize.screen.height * 10) / 10;
+    let index = screenWidth / screenHeight >= 16 / 9 
+        ? Math.floor(screenHeight / parameters.standartSize.screen.height * 100) / 100
+        : Math.floor(screenWidth / parameters.standartSize.screen.width * 100) / 100;
     Object.keys(parameters.standartSize).forEach(key =>{
         Object.keys(parameters.standartSize[key]).forEach(miniKey => parameters.standartSize[key][miniKey] *= index);
     });
     parameters.charMaxSpeed60FPS *= index;
     parameters.charDeltaSpeed60FPS *= index;
+    parameters.standartSize.screen.width = screenWidth;
+    parameters.standartSize.screen.height = screenHeight;
     
     gameMainContainer.querySelectorAll('canvas').forEach(canvas =>{
         canvas.width = parameters.standartSize.canvas.width;
@@ -30,11 +101,9 @@ function setParameters(){
         canvas.style.width = parameters.standartSize.canvas.width + 'px';
         canvas.style.height = parameters.standartSize.canvas.height + 'px';
     });
-    
-    gameMainContainer.style.width = parameters.standartSize.screen.width + 'px';
-    gameMainContainer.style.height = parameters.standartSize.screen.height + 'px';
-    otherInstructions.style.width = parameters.standartSize.screen.width + 'px';
-    otherInstructions.style.height = parameters.standartSize.screen.height + 'px';
+
+    game.style.width = parameters.defaultScreen.width + 'px';
+    game.style.height = parameters.defaultScreen.height + 'px';
     
     onMobile.width = parameters.standartSize.joystick.width;
     onMobile.height = parameters.standartSize.joystick.height;
@@ -42,4 +111,4 @@ function setParameters(){
     onMobile.style.height = parameters.standartSize.joystick.height + 'px';
 }
 
-export default setParameters;
+export { fullScreen, setParameters };
