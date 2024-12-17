@@ -13,7 +13,7 @@ import { parameters } from './globalVariables/globalVariables.js';
 setParameters();
 document.querySelectorAll('.fullScreen').forEach(but => {
     but.addEventListener('click', () => {
-        fullScreen().then(() =>{
+        screen.width > screen.height ? fullScreen().then(() =>{
             if(!parameters.gameStarted){
                 parameters.gameStarted = true;
                 checkDevice();
@@ -31,6 +31,6 @@ document.querySelectorAll('.fullScreen').forEach(but => {
                     });
                 loading(true, 100);
             }
-        });
+        }) : alert("Rotate your devise!");
     });
 });

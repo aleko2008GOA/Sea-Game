@@ -41,40 +41,36 @@ document.addEventListener('msfullscreenchange', () => {
 });
 
 async function fullScreen(){
-    if(screen.width < screen.height){
-        alert("rotate your device!");
-    }else{
-        try{
-            if(!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement){
-                if(game.requestFullscreen) // modern
-                    await game.requestFullscreen();
-                else if(game.mozRequestFullScreen) // Firefox
-                    await game.mozRequestFullScreen();
-                else if(game.webkitRequestFullscreen) // Chrome, Safari, Opera
-                    await game.webkitRequestFullscreen();
-                else if(game.msRequestFullscreen) // Internet Explorer / Edge
-                    await game.msRequestFullscreen();
+    try{
+        if(!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement){
+            if(game.requestFullscreen) // modern
+                await game.requestFullscreen();
+            else if(game.mozRequestFullScreen) // Firefox
+                await game.mozRequestFullScreen();
+            else if(game.webkitRequestFullscreen) // Chrome, Safari, Opera
+                await game.webkitRequestFullscreen();
+            else if(game.msRequestFullscreen) // Internet Explorer / Edge
+                await game.msRequestFullscreen();
 
-                fullScreenButtonMain.style.display = 'none';
-                animations.moment.notLoaded = false;
-            }else{
-                if(document.exitFullscreen) // modern
-                    await document.exitFullscreen();
-                else if (document.mozCancelFullScreen) // Firefox
-                    await document.mozCancelFullScreen();
-                else if (document.webkitExitFullscreen) // Chrome, Safari, Opera
-                    await document.webkitExitFullscreen();
-                else if (document.msExitFullscreen) // Internet Explorer / Edge
-                    await document.msExitFullscreen();
+            fullScreenButtonMain.style.display = 'none';
+            animations.moment.notLoaded = false;
+        }else{
+            if(document.exitFullscreen) // modern
+                await document.exitFullscreen();
+            else if (document.mozCancelFullScreen) // Firefox
+                await document.mozCancelFullScreen();
+            else if (document.webkitExitFullscreen) // Chrome, Safari, Opera
+                await document.webkitExitFullscreen();
+            else if (document.msExitFullscreen) // Internet Explorer / Edge
+                await document.msExitFullscreen();
 
-                restartAllFunctions(parameters.images.characterImages);
-                fullScreenButtonMain.style.display = 'inline';
-                animations.moment.notLoaded = true;
-            }
-        }catch(err){
-            console.error('Your browser does not support out game, check for updates');
-            console.error(new Error(err));
+            restartAllFunctions(parameters.images.characterImages);
+            fullScreenButtonMain.style.display = 'inline';
+            animations.moment.notLoaded = true;
         }
+    }catch(err){
+        console.error('Your browser does not support out game, check for updates');
+        console.error(new Error(err));
     }
 }
 
