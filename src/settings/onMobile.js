@@ -28,6 +28,7 @@ function checkDevice(){
     }else deviceType = 'Unknown';
 
     parameters.device = deviceType;
+    document.getElementById('continue').innerHTML = `${deviceType}`
 
     startPointX = parameters.standartSize.joystick.width / 2;
     startPointY = parameters.standartSize.joystick.height / 2;
