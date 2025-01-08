@@ -15,20 +15,20 @@ function checkDevice(){
     const userAgent = navigator.userAgent.toLowerCase();
     let sensore = navigator.maxTouchPoints;
     let deviceType = null;
-    if(userAgent.includes('macintosh') || userAgent.includes('mac os x') || userAgent.includes('linux') || userAgent.includes('windows nt')){
+    if((userAgent.includes('macintosh') || userAgent.includes('mac os x') || userAgent.includes('linux') || userAgent.includes('windows nt')) && !userAgent.includes('mobile')){
         deviceType = sensore > 0 ? 'Notebook' : 'PC/Notebook';
-    }else if(userAgent.includes('iphone') || userAgent.includes('ipod') || userAgent.includes('windows phone')){
+    }else if(userAgent.includes('iphone') || userAgent.includes('ipod') || userAgent.includes('windows phone') || userAgent.includes('mobile')){
         deviceType = 'Mobile';
     }else if(userAgent.includes('ipad')){
         deviceType = 'Tablet';
-    }else if(userAgent.includes('android')){
+    }else if((userAgent.includes('android') || userAgent.includes('linux')) && userAgent.includes('mobile')){
         deviceType = 'Mobile/Tablet';
     }else if(userAgent.includes('kindle') || userAgent.includes('kobo') || userAgent.includes('ebook')){
         deviceType = 'Ebook';
     }else deviceType = 'Unknown';
 
     parameters.device = deviceType;
-    document.getElementById('continue').innerHTML = `${deviceType}`
+    document.getElementById('continue').innerHTML = `${userAgent}`
 
     startPointX = parameters.standartSize.joystick.width / 2;
     startPointY = parameters.standartSize.joystick.height / 2;
