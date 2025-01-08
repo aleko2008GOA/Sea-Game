@@ -79,10 +79,9 @@ function setParameters(){
         if(document.hidden && !animations.moment.pause && !animations.moment.gameWinLose && !animations.moment.loseWinPause && !animations.moment.startSrceen && !animations.moment.notLoaded) 
             pause();
     });
-
     let index = screenWidth / screenHeight >= 16 / 9 
-        ? Math.floor(screenHeight / parameters.standartSize.screen.height * 100) / 100
-        : Math.floor(screenWidth / parameters.standartSize.screen.width * 100) / 100;
+        ? screenHeight / parameters.standartSize.screen.height 
+        : screenWidth / parameters.standartSize.screen.width;
     Object.keys(parameters.standartSize).forEach(key =>{
         Object.keys(parameters.standartSize[key]).forEach(miniKey => parameters.standartSize[key][miniKey] *= index);
     });

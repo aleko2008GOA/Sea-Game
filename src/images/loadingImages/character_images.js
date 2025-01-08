@@ -23,8 +23,8 @@ for(let i = 1; i <= 16; i++){
     normalCharacterImagePromisesHalfBoat.push(loadImage(`./src/assets/character/boat halfBroken/main position/${i}.png`));
     movedCharacterImagePromisesHalfBoat.push(loadImage(`./src/assets/character/boat halfBroken/second position/${i}.png`));
 
-    normalCharacterImagePromisesBrokenBoat.push(loadImage(`./src/assets/character/boat halfBroken/main position/${i}.png`));
-    movedCharacterImagePromisesBrokenBoat.push(loadImage(`./src/assets/character/boat halfBroken/second position/${i}.png`));
+    normalCharacterImagePromisesBrokenBoat.push(loadImage(`./src/assets/character/boat broken/main position/${i}.png`));
+    movedCharacterImagePromisesBrokenBoat.push(loadImage(`./src/assets/character/boat broken/second position/${i}.png`));
 }
 
 const characterImages = Promise.all([

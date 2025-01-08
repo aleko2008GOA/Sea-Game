@@ -34,7 +34,7 @@ function checkDevice(){
     joisticRadius = parameters.standartSize.joystick.joisticRadius;
     circleRadius = parameters.standartSize.joystick.joisticCircleRadius;
 
-    if(deviceType.includes('Mobile') || deviceType.includes('Tablet') || deviceType.includes('Ebook') || deviceType.includes('Notebook')){
+    if(deviceType.includes('Mobile') || deviceType.includes('Tablet') || deviceType.includes('Ebook')){
         onMobile.style.display = 'block';
 
         onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";

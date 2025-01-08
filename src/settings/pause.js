@@ -20,29 +20,27 @@ function pause(){
             clearInterval(animations.generator.interval);
             animations.generator.interval = null;
         }else if(animations.moment.gameProcess){
-            if(animations.animationFrameId){
-                cancelAnimationFrame(animations.animationFrameId);
-                animations.animationFrameId = null;
-            }
+            if(animations.animationFrameId) animations.animationFrameId = false;
             if(parameters.timeInterval){
                 clearInterval(parameters.timeInterval);
                 parameters.timeInterval = null;
             }
             if(animations.stunFrameId){
-                cancelAnimationFrame(animations.stunFrameId);
-                animations.stunFrameId = null;
+                animations.stunFrameId = false;
                 needToBeStunned = true;
             }
             if(animations.immutableFrameId){
-                cancelAnimationFrame(animations.immutableFunc);
-                animations.immutableFrameId = null;
+                animations.immutableFrameId = false;
                 needToBeImmune = true;
             }
         }
         if(animations.sea.seaAnimationFrameId){
-            cancelAnimationFrame(animations.sea.seaAnimationFrameId);
-            animations.sea.seaAnimationFrameId = null;
+            cancelAnimationFrame(animations.allFrameId);
+            animations.sea.seaAnimationFrameId = false;
         }
+
+        cancelAnimationFrame(animations.allFrameId);
+        animations.allFrameId = null;
 
         settingsBar.style.display = 'flex';
         pauseButtonTopLeft.style.display = 'none';
@@ -54,21 +52,23 @@ function pause(){
             animations.generator.intervalFunc();
         else if(animations.moment.gameProcess){
             if(!animations.animationFrameId)
-                animations.animationFrameId = requestAnimationFrame(animations.animationFrameFunc);
+                animations.animationFrameId = true;
             if(!parameters.timeInterval)
                 parameters.timeInterval = setInterval(() => parameters.timeChangeFunc(), 10);
             if(!animations.stunFrameId && needToBeStunned){
                 needToBeStunned = false;
-                animations.stunFrameId = requestAnimationFrame(animations.stunFunc);
+                animations.stunFrameId = true;
             }
             if(!animations.immutableFrameId && needToBeImmune){
                 needToBeImmune = false;
-                animations.immutableFrameId = requestAnimationFrame(animations.immutableFunc);
+                animations.immutableFrameId = true;
             }
         }
         if(!animations.sea.seaAnimationFrameId)
-            animations.sea.seaAnimationFrameId = requestAnimationFrame(animations.sea.seaFrameFunc);
+            animations.sea.seaAnimationFrameId = true;
 
+        animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
+        
         settingsBar.style.display = 'none';
         pauseButtonTopLeft.style.display = 'inline';
     }

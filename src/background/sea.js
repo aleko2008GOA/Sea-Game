@@ -18,7 +18,6 @@ function background_sea(){
         .then(([img_left, img_right]) =>{
             wave_animation(img_left, img_right);
             animations.sea.seaFrameFunc = startAnimation;
-            animations.sea.seaAnimationFrameId = requestAnimationFrame(startAnimation);
         })
         .catch((err) => console.log('Waves generating error: ' + err));
 
@@ -115,7 +114,6 @@ function background_sea(){
             left_display = left_display == 'block' ? 'none' : 'block';
             right_display = right_display == 'block' ? 'none' : 'block';
         }
-        animations.sea.seaAnimationFrameId = requestAnimationFrame(startAnimation);
     }
 }
 

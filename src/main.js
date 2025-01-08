@@ -8,7 +8,8 @@ import { restart } from './settings/restart.js';
 import characterImages from './images/loadingImages/character_images.js';
 import './settings/pause.js';
 import { checkDevice } from './settings/onMobile.js';
-import { parameters } from './globalVariables/globalVariables.js';
+import { animations, parameters } from './globalVariables/globalVariables.js';
+import './settings/animationFrameFPS.js';
 
 setParameters();
 document.querySelectorAll('.fullScreen').forEach(but => {
@@ -16,6 +17,7 @@ document.querySelectorAll('.fullScreen').forEach(but => {
         screen.width > screen.height ? fullScreen().then(() =>{
             if(!parameters.gameStarted){
                 parameters.gameStarted = true;
+                animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
                 checkDevice();
                 background_sea();
                 const {icebrg_coordinate_arr, iceberg_grid_position} = icebergs();

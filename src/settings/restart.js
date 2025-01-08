@@ -10,7 +10,7 @@ const settings = document.querySelectorAll('.settings')
 const restart_button = document.querySelectorAll('.restart');
 const loading_screen = document.getElementById('loading');
 const settingsBar = document.getElementById('settings_bar');
-const pauseButtonTopLeft = document.getElementById('pause_button_top_left')
+const pauseButtonTopLeft = document.getElementById('pause_button_top_left');
 
 function restart(characterImagesArray){
     restart_button.forEach(button =>{
@@ -21,20 +21,17 @@ function restart(characterImagesArray){
 }
 
 function restartAllFunctions(characterImagesArray){
-    cancelAnimationFrame(animations.animationFrameId);
-    cancelAnimationFrame(animations.immutableFrameId);
-    clearInterval(animations.stunTimeoutId);
-    clearInterval(animations.flickeringIntervalId);
+    cancelAnimationFrame(animations.allFrameId);
     clearInterval(animations.generator.interval);
-
     clearInterval(parameters.timeInterval);
 
-    animations.animationFrameId = null;
+    animations.animationFrameId = false;
     animations.animationFrameFunc = null;
     animations.stunFunc = null;
-    animations.stunFrameId = null;
+    animations.stunFrameId = false;
     animations.immutableFunc = null;
-    animations.immutableFrameId = null;
+    animations.immutableFrameId = false;
+    animations.sea.seaAnimationFrameId = true;
 
     Object.keys(animations.moment).forEach(key => animations.moment[key] = false);
     animations.moment.startSrceen = true;
@@ -52,8 +49,6 @@ function restartAllFunctions(characterImagesArray){
 
     parameters.timeChangeFunc = null;
     parameters.immutable = true;
-
-    animations.sea.seaAnimationFrameId = requestAnimationFrame(animations.sea.seaFrameFunc);
 
     canvases.forEach(val =>{
         if(val.id != 'waves_left' && val.id != 'waves_right' && val.id != 'sea'){
@@ -74,6 +69,7 @@ function restartAllFunctions(characterImagesArray){
         left: 0
     });
 
+    animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
     const {icebrg_coordinate_arr, iceberg_grid_position} = icebergs();
     const {lights_coordinate_arr, lights_grid_position, lights_background} = lights(icebrg_coordinate_arr);
     character_moves(iceberg_grid_position, lights_grid_position, lights_background, characterImagesArray);

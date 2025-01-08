@@ -2,8 +2,8 @@ const animations = {
     // background sea
     sea: {
         waveSpeed: 1000,
-        seaAnimationFrameId: null,
-        seaFrameFunc: null
+        seaFrameFunc: null,
+        seaAnimationFrameId: false
     },
     // text generating
     generator: {
@@ -23,16 +23,19 @@ const animations = {
         pause: false
     },
     // character
-    animationFrameId: null,
     animationFrameFunc: null,
+    animationFrameId: false,
 
     stunFunc: null,
-    stunFrameId: null,
+    stunFrameId: false,
 
     immutableFunc: null,
-    immutableFrameId: null,
+    immutableFrameId: false,
     
     eventListenersAdded: false,
+
+    allFrameId: null,
+    allFrameFunc: null
 }
 
 const parameters = {
@@ -60,7 +63,7 @@ const parameters = {
         x: 0, y: 0
     },
     charDeltaSpeed60FPS: 0.02,
-    lastStamp: 0,
+    lastStamp: null,
     gameStarted: false,
     // object sizes
     standartSize: {

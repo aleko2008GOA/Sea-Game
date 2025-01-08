@@ -61,20 +61,21 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
         });
 
         animations.animationFrameFunc = move;
-        animations.animationFrameId = requestAnimationFrame(move);
+        animations.animationFrameId = true;
     }
 
     // move using arrows
     function move(timestamp){
         let moved = false;
 
-        let deltaStamp = (timestamp - parameters.lastStamp) / 1000 * 60;
+        if(!parameters.lastStamp) parameters.lastStamp = performance.now();
+        let deltaStamp = (timestamp - parameters.lastStamp) / (1000 / 60);
         parameters.lastStamp = timestamp;
 
         let maxSpeed = parameters.charMaxSpeed60FPS * deltaStamp;
         let deltaSpeed = parameters.charDeltaSpeed60FPS * deltaStamp ** 2;
 
-        if(parameters.device.includes('Mobile') || parameters.device.includes('Tablet') || parameters.device.includes('Ebook') || parameters.device.includes('Notebook'))
+        if(parameters.device.includes('Mobile') || parameters.device.includes('Tablet') || parameters.device.includes('Ebook'))
             moved = moveMobile(speed, character_position, isStunned, maxSpeed, deltaSpeed);
         else{
             // left
@@ -146,12 +147,12 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             // set timeout when stuuned to remove it
             if(isStunned && removeStun){
                 removeStun = false;
-                animations.stunFrameId = requestAnimationFrame(stunFunc);
+                animations.stunFrameId = true;
             }
             // remove immune after a while and start flikering
             if(isImmune && removeImmune){
                 removeImmune = false;
-                animations.immutableFrameId = requestAnimationFrame(immutableFunc);
+                animations.immutableFrameId = true;
             }
         }else{
             // if not moved check if it should be a clear canvas
@@ -162,8 +163,6 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
                 character_background.drawImage(characterImage, character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, characterWidth * 1.6, characterHeight * 1.6);
             }
         }
-
-        animations.animationFrameId = requestAnimationFrame(move);
     }
 
     function start_flickering(){
@@ -171,13 +170,10 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     }
 
     function stunFunc(){
-        if(stunIndex < 120) {
-            stunIndex ++;
-            animations.stunFrameId = requestAnimationFrame(stunFunc);
-        }else{
+        if(stunIndex < 120) stunIndex ++;
+        else{
             stunIndex = 0;
-            cancelAnimationFrame(animations.stunFrameId);
-            animations.stunFrameId = null;
+            animations.stunFrameId = false;
 
             isStunned = false;
             removeStun = true;
@@ -187,13 +183,10 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
 
     function immutableFunc(){
         if(immutableIndex % 12 == 0) start_flickering();
-        if(immutableIndex < 210){
-            immutableIndex ++;
-            animations.immutableFrameId = requestAnimationFrame(immutableFunc);
-        }else{
+        if(immutableIndex < 210) immutableIndex ++;
+        else{
             immutableIndex = 0;
-            cancelAnimationFrame(animations.immutableFrameId);
-            animations.immutableFrameId = null;
+            animations.immutableFrameId = false;
 
             character_background.clearRect(0, 0, character_canvas.width, character_canvas.height);
             character_background.drawImage(characterImage, character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, characterWidth * 1.6, characterHeight * 1.6);
