@@ -34,10 +34,7 @@ function pause(){
                 needToBeImmune = true;
             }
         }
-        if(animations.sea.seaAnimationFrameId){
-            cancelAnimationFrame(animations.allFrameId);
-            animations.sea.seaAnimationFrameId = false;
-        }
+        if(animations.sea.seaAnimationFrameId) animations.sea.seaAnimationFrameId = false;
 
         cancelAnimationFrame(animations.allFrameId);
         animations.allFrameId = null;
@@ -64,11 +61,10 @@ function pause(){
                 animations.immutableFrameId = true;
             }
         }
-        if(!animations.sea.seaAnimationFrameId)
-            animations.sea.seaAnimationFrameId = true;
+        if(!animations.sea.seaAnimationFrameId) animations.sea.seaAnimationFrameId = true;
 
         animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
-        
+
         settingsBar.style.display = 'none';
         pauseButtonTopLeft.style.display = 'inline';
     }
