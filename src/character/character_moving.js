@@ -130,7 +130,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
         // if moved
         if(moved){
             camera_moving(character_position, speed);
-            character_background.clearRect(0, 0, character_canvas.width, character_canvas.height);
+            character_background.clearRect(character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, Math.ceil(characterWidth * 1.6) + 1, Math.ceil(characterHeight * 1.6) + 1);
             
             if(!cleared){
                 character_background.strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
@@ -154,9 +154,9 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
                 removeImmune = false;
                 animations.immutableFrameId = true;
             }
-        }else{
+        }else if(isImmune){
             // if not moved check if it should be a clear canvas
-            character_background.clearRect(0, 0, character_canvas.width, character_canvas.height);
+            character_background.clearRect(character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, Math.ceil(characterWidth * 1.6), Math.ceil(characterHeight * 1.6));
             
             if(!cleared){
                 character_background.strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);

@@ -3,7 +3,7 @@ const animations = {
     sea: {
         waveSpeed: 1000,
         seaFrameFunc: null,
-        seaAnimationFrameId: true
+        seaAnimationFrameId: false
     },
     // text generating
     generator: {
