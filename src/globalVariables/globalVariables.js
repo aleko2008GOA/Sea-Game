@@ -67,6 +67,10 @@ const parameters = {
     gameStarted: false,
     // object sizes
     standartSize: {
+        chunck: {
+            width: 600,
+            height: 600
+        },
         canvas: {
             width: 3000,
             height: 3000

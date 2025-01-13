@@ -5,13 +5,7 @@ import { lose_hearts } from "../game_over/lose_hearts.js";
 import useCharacterImages from "../images/useImages/character.js";
 import { animations, parameters } from "../globalVariables/globalVariables.js";
 import { moveMobile } from "../settings/onMobile.js";
-
-// canvas
-/** @type {HTMLCanvasElement} */
-const character_canvas = document.getElementById('main_chracter');
-
-/** @type {CanvasRenderingContext2D} */
-const character_background = character_canvas.getContext('2d');
+import chooseRightCanvas from "./chooseCanvas.js";
 
 const characterImages = [];
 let characterImage;
@@ -40,12 +34,13 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     animations.immutableFunc = immutableFunc;
     animations.stunFunc = stunFunc;
     // character display
+    const arrayOfChuncks = chooseRightCanvas(character_position);
     chraracter_start();
 
     // moving
     function chraracter_start(){
-        character_background.strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
-        character_background.drawImage(characterImage, character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, characterWidth * 1.6, characterHeight * 1.6);
+        // arrayOfChuncks[0].strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
+        // arrayOfChuncks[0].drawImage(characterImage, character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, characterWidth * 1.6, characterHeight * 1.6);
 
         document.addEventListener('keydown', (e) =>{
             if(e.key === 'ArrowLeft' || e.key === 'a') if(!parameters.immutable) moving_direction.left = true;

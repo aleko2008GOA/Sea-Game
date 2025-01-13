@@ -2,11 +2,12 @@ import { animations, parameters } from "../globalVariables/globalVariables.js";
 import pause from "./pause.js"
 import { restartAllFunctions } from "./restart.js";
 
-const gameMainContainer = document.getElementById('game_main_container');
+const defaultCanvases = document.getElementById('defaultCanvases');
 const otherInstructions = document.getElementById('other_instructions');
 const game = document.getElementById('game');
 const onMobile = document.getElementById('on_mobile');
 const fullScreenButtonMain = document.getElementById('fullScreenStart');
+const mainCharacter = document.getElementById('main_character');
 
 const screenWidth = Math.max(screen.width, screen.height);
 const screenHeight = Math.min(screen.width, screen.height);
@@ -90,11 +91,21 @@ function setParameters(){
     parameters.standartSize.screen.width = screenWidth;
     parameters.standartSize.screen.height = screenHeight;
     
-    gameMainContainer.querySelectorAll('canvas').forEach(canvas =>{
+    defaultCanvases.querySelectorAll('canvas').forEach(canvas =>{
         canvas.width = parameters.standartSize.canvas.width;
         canvas.height = parameters.standartSize.canvas.height;
         canvas.style.width = parameters.standartSize.canvas.width + 'px';
         canvas.style.height = parameters.standartSize.canvas.height + 'px';
+    });
+    
+    mainCharacter.style.width = parameters.standartSize.canvas.width + 'px';
+    mainCharacter.style.height = parameters.standartSize.canvas.height + 'px';
+
+    mainCharacter.querySelectorAll('section').forEach(section => getComputedStyle(section));
+    mainCharacter.querySelectorAll('canvas').forEach(miniCanvas =>{
+        miniCanvas.width = 0;
+        miniCanvas.height = 0;
+        getComputedStyle(miniCanvas);
     });
     
     onMobile.width = parameters.standartSize.joystick.width;

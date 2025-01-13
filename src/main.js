@@ -24,9 +24,9 @@ document.querySelectorAll('.fullScreen').forEach(but => {
                 const {lights_coordinate_arr, lights_grid_position, lights_background} = lights(icebrg_coordinate_arr);
                 characterImages
                     .then(characterImagesArray =>{
-                        character_moves(iceberg_grid_position, lights_grid_position, lights_background, characterImagesArray);
+                        // character_moves(iceberg_grid_position, lights_grid_position, lights_background, characterImagesArray);
                         parameters.images.characterImages = characterImagesArray;
-                        return characterImagesArray;
+                        return characterImagesArray || null;
                     })
                     .then(characterImagesArray => {
                         restart(characterImagesArray);

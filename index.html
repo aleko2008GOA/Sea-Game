@@ -9,13 +9,52 @@
 <body>
     <div id = "game">
         <div id = 'game_main_container'>
-            <canvas id = 'sea' width = '3000' height = '3000'></canvas>
-            <canvas id = 'waves_left' width = '3000' height = '3000'></canvas>
-            <canvas id = 'waves_right' width = '3000' height = '3000'></canvas>
+            <div id="defaultCanvases">
+                <canvas id = 'sea' width = '3000' height = '3000'></canvas>
+                <canvas id = 'waves_left' width = '3000' height = '3000'></canvas>
+                <canvas id = 'waves_right' width = '3000' height = '3000'></canvas>
 
-            <canvas id = 'iceberg_map' width = '3000' height = '3000'></canvas>
-            <canvas id = 'lights' width = '3000' height = '3000'></canvas>
-            <canvas id = 'main_chracter' width = '3000' height = '3000'></canvas>
+                <canvas id = 'iceberg_map' width = '3000' height = '3000'></canvas>
+                <canvas id = 'lights' width = '3000' height = '3000'></canvas>
+            </div>
+            <div id = 'main_character'>
+                <section id="row-0">
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                </section>
+                <section id="row-1">
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                </section>
+                <section id="row-2">
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                </section>
+                <section id="row-3">
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                </section>
+                <section id="row-4">
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                    <canvas></canvas>
+                </section>
+            </div>
+            <!-- <canvas width="3000" height="3000" id="main_character"></canvas> -->
         </div>
         <div id = 'other_instructions'>
             <button id = "fullScreenStart" class = "fullScreen">Full screen</button>
