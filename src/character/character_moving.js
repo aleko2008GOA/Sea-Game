@@ -34,13 +34,13 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     animations.immutableFunc = immutableFunc;
     animations.stunFunc = stunFunc;
     // character display
-    const arrayOfChuncks = chooseRightCanvas(character_position);
+    const { arrayOfChuncks, arrayOfCoordinates, arrayOfCanvases } = chooseRightCanvas(character_position);
     chraracter_start();
 
     // moving
     function chraracter_start(){
         // arrayOfChuncks[0].strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
-        // arrayOfChuncks[0].drawImage(characterImage, character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, characterWidth * 1.6, characterHeight * 1.6);
+        arrayOfCanvases[0].drawImage(characterImage, arrayOfCoordinates[0][0], arrayOfCoordinates[0][1], arrayOfCoordinates[0][2], arrayOfCoordinates[0][3]);
 
         document.addEventListener('keydown', (e) =>{
             if(e.key === 'ArrowLeft' || e.key === 'a') if(!parameters.immutable) moving_direction.left = true;
@@ -121,15 +121,31 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
                 moved = true;
             }else if(speed.down < 0) speed.down = 0;
         }
-
+        
+        const { arrayOfChuncks, arrayOfCoordinates, arrayOfCanvases } = chooseRightCanvas(character_position);
         // if moved
         if(moved){
             camera_moving(character_position, speed);
-            character_background.clearRect(character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, Math.ceil(characterWidth * 1.6) + 1, Math.ceil(characterHeight * 1.6) + 1);
+
+            arrayOfCanvases[0].clearRect(0, 0, arrayOfChuncks[0].width, arrayOfChuncks[0].height);
+            if(arrayOfCanvases[1]) 
+                arrayOfCanvases[1].clearRect(0, 0, arrayOfChuncks[1].width, arrayOfChuncks[1].height);
             
             if(!cleared){
-                character_background.strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
-                character_background.drawImage(characterImage, character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, characterWidth * 1.6, characterHeight * 1.6);
+                // arrayOfCanvases[0].strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
+                arrayOfCanvases[0].drawImage(characterImage, arrayOfCoordinates[0][0], arrayOfCoordinates[0][1], arrayOfCoordinates[0][2], arrayOfCoordinates[0][3]);
+                if(arrayOfCanvases[1])
+                    arrayOfCanvases[1].drawImage(
+                        characterImage, 
+                        arrayOfCoordinates[1][0] * characterImage.width, 
+                        arrayOfCoordinates[1][1] * characterImage.height, 
+                        arrayOfCoordinates[1][2] * characterImage.width, 
+                        arrayOfCoordinates[1][3] * characterImage.height, 
+                        arrayOfCoordinates[1][4],
+                        arrayOfCoordinates[1][5],
+                        arrayOfCoordinates[1][6],
+                        arrayOfCoordinates[1][7]
+                    );
             }
             // getting everythig about lights or crashing
             check_getting_lights(lights_ctx, character_position, lights_grid, isImmune); // check if I get  any light
@@ -151,11 +167,11 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             }
         }else if(isImmune){
             // if not moved check if it should be a clear canvas
-            character_background.clearRect(character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, Math.ceil(characterWidth * 1.6), Math.ceil(characterHeight * 1.6));
+            arrayOfCanvases[0].clearRect(0, 0, arrayOfChuncks[0].width, arrayOfChuncks[0].height);
             
             if(!cleared){
-                character_background.strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
-                character_background.drawImage(characterImage, character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, characterWidth * 1.6, characterHeight * 1.6);
+                // character_background.strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
+                arrayOfCanvases[0].drawImage(characterImage, arrayOfCoordinates[0][0], arrayOfCoordinates[0][1], arrayOfCoordinates[0][2], arrayOfCoordinates[0][3]);
             }
         }
     }
