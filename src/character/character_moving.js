@@ -5,7 +5,7 @@ import { lose_hearts } from "../game_over/lose_hearts.js";
 import useCharacterImages from "../images/useImages/character.js";
 import { animations, parameters } from "../globalVariables/globalVariables.js";
 import { moveMobile } from "../settings/onMobile.js";
-import chooseRightCanvas from "./chooseCanvas.js";
+import { chooseRightCanvas } from "./chooseCanvas.js";
 
 const characterImages = [];
 let characterImage;
@@ -29,18 +29,18 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     let cleared = false;
 
     let stunIndex = 0;
-    let immutableIndex = 0;
-
-    animations.immutableFunc = immutableFunc;
     animations.stunFunc = stunFunc;
+
+    let immutableIndex = 0;
+    let lastImmutableIndex = 0;
+    animations.immutableFunc = immutableFunc;
+
     // character display
-    const { arrayOfChuncks, arrayOfCoordinates, arrayOfCanvases } = chooseRightCanvas(character_position);
     chraracter_start();
 
     // moving
     function chraracter_start(){
-        // arrayOfChuncks[0].strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
-        arrayOfCanvases[0].drawImage(characterImage, arrayOfCoordinates[0][0], arrayOfCoordinates[0][1], arrayOfCoordinates[0][2], arrayOfCoordinates[0][3]);
+        chooseRightCanvas(character_position, characterImage, cleared);
 
         document.addEventListener('keydown', (e) =>{
             if(e.key === 'ArrowLeft' || e.key === 'a') if(!parameters.immutable) moving_direction.left = true;
@@ -60,12 +60,8 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     }
 
     // move using arrows
-    function move(timestamp){
+    function move(deltaStamp){
         let moved = false;
-
-        if(!parameters.lastStamp) parameters.lastStamp = performance.now();
-        let deltaStamp = (timestamp - parameters.lastStamp) / (1000 / 60);
-        parameters.lastStamp = timestamp;
 
         let maxSpeed = parameters.charMaxSpeed60FPS * deltaStamp;
         let deltaSpeed = parameters.charDeltaSpeed60FPS * deltaStamp ** 2;
@@ -121,35 +117,15 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
                 moved = true;
             }else if(speed.down < 0) speed.down = 0;
         }
-        
-        const { arrayOfChuncks, arrayOfCoordinates, arrayOfCanvases } = chooseRightCanvas(character_position);
         // if moved
         if(moved){
+            chooseRightCanvas(character_position, characterImage, cleared);
+            
             camera_moving(character_position, speed);
 
-            arrayOfCanvases[0].clearRect(0, 0, arrayOfChuncks[0].width, arrayOfChuncks[0].height);
-            if(arrayOfCanvases[1]) 
-                arrayOfCanvases[1].clearRect(0, 0, arrayOfChuncks[1].width, arrayOfChuncks[1].height);
-            
-            if(!cleared){
-                // arrayOfCanvases[0].strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
-                arrayOfCanvases[0].drawImage(characterImage, arrayOfCoordinates[0][0], arrayOfCoordinates[0][1], arrayOfCoordinates[0][2], arrayOfCoordinates[0][3]);
-                if(arrayOfCanvases[1])
-                    arrayOfCanvases[1].drawImage(
-                        characterImage, 
-                        arrayOfCoordinates[1][0] * characterImage.width, 
-                        arrayOfCoordinates[1][1] * characterImage.height, 
-                        arrayOfCoordinates[1][2] * characterImage.width, 
-                        arrayOfCoordinates[1][3] * characterImage.height, 
-                        arrayOfCoordinates[1][4],
-                        arrayOfCoordinates[1][5],
-                        arrayOfCoordinates[1][6],
-                        arrayOfCoordinates[1][7]
-                    );
-            }
             // getting everythig about lights or crashing
             check_getting_lights(lights_ctx, character_position, lights_grid, isImmune); // check if I get  any light
-            let {stun, immune} = check_crashing(character_position, iceberg_grid, speed, isStunned, isImmune, deltaStamp); // check if I lose any heart
+            let { stun, immune } = check_crashing(character_position, iceberg_grid, speed, isStunned, isImmune, deltaStamp); // check if I lose any heart
             characterImage = useCharacterImages(characterImages, characterImage, speed, deltaStamp);
 
             isStunned = stun;
@@ -165,47 +141,38 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
                 removeImmune = false;
                 animations.immutableFrameId = true;
             }
-        }else if(isImmune){
-            // if not moved check if it should be a clear canvas
-            arrayOfCanvases[0].clearRect(0, 0, arrayOfChuncks[0].width, arrayOfChuncks[0].height);
-            
-            if(!cleared){
-                // character_background.strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
-                arrayOfCanvases[0].drawImage(characterImage, arrayOfCoordinates[0][0], arrayOfCoordinates[0][1], arrayOfCoordinates[0][2], arrayOfCoordinates[0][3]);
-            }
-        }
+        }else if(isImmune)
+            chooseRightCanvas(character_position, characterImage, cleared);
     }
 
-    function start_flickering(){
-        cleared = cleared ? false : true;
-    }
-
-    function stunFunc(){
-        if(stunIndex < 120) stunIndex ++;
+    function stunFunc(deltaStamp){
+        if(stunIndex < 120) stunIndex += deltaStamp;
         else{
             stunIndex = 0;
             animations.stunFrameId = false;
-
+    
             isStunned = false;
             removeStun = true;
             lose_hearts();
         }
     }
 
-    function immutableFunc(){
-        if(immutableIndex % 12 == 0) start_flickering();
-        if(immutableIndex < 210) immutableIndex ++;
+    function immutableFunc(deltaStamp){
+        if(Math.floor(immutableIndex) % 12 === 0 && Math.floor(immutableIndex) !== lastImmutableIndex){
+            cleared = !cleared;
+            lastImmutableIndex = Math.floor(immutableIndex);
+        }
+        if(immutableIndex < 210) immutableIndex += deltaStamp;
         else{
             immutableIndex = 0;
+            lastImmutableIndex = 0;
             animations.immutableFrameId = false;
 
-            character_background.clearRect(0, 0, character_canvas.width, character_canvas.height);
-            character_background.drawImage(characterImage, character_position.x - characterWidth * 0.3, character_position.y - characterHeight * 0.6, characterWidth * 1.6, characterHeight * 1.6);
-            character_background.strokeRect(character_position.x, character_position.y, characterWidth, characterHeight);
-            
+            cleared = false;
             isImmune = false;
             removeImmune = true;
-            cleared = false;
+            
+            chooseRightCanvas(character_position, characterImage, cleared);
             check_getting_lights(lights_ctx, character_position, lights_grid, isImmune);
         }
     }

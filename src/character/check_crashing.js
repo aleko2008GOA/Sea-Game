@@ -36,21 +36,39 @@ function check_crashing(character_position, iceberg_grid, speed, isStunned, isIm
     
     // if on iceberg (any part)
     if(check_rects || character_position.x < icebergWidth || character_position.x > canvasWidth - icebergWidth - charWidth || character_position.y > canvasHeight - icebergHeight - charHeight){
-        // back flipp
-        if(speed.left > speed.right){
-            speed.right = speed.left > parameters.charMaxSpeed60FPS * deltaStamp / 2 ? speed.left + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
-            speed.left = 0;
-        }else{
-            speed.left = speed.right > parameters.charMaxSpeed60FPS * deltaStamp / 2 ? speed.right + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
-            speed.right = 0;
-        }
+        // back flip
+        if(isImmune){
+            if(speed.left > speed.right){
+                character_position.x += speed.left;
+                speed.left = 0;
+            }else{
+                character_position.x -= speed.right;
+                speed.right = 0;
+            }
 
-        if(speed.up > speed.down){
-            speed.down = speed.up > parameters.charMaxSpeed60FPS * deltaStamp / 2 ? speed.up + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
-            speed.up = 0;
+            if(speed.up > speed.down){
+                character_position.y += speed.up;
+                speed.up = 0;
+            }else{
+                character_position.y -= speed.down;
+                speed.down = 0;
+            }
         }else{
-            speed.up = speed.down > parameters.charMaxSpeed60FPS * deltaStamp / 2 ? speed.down + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
-            speed.down = 0;
+            if(speed.left > speed.right){
+                speed.right = speed.left > parameters.charMaxSpeed60FPS * deltaStamp / 2 ? speed.left + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
+                speed.left = 0;
+            }else{
+                speed.left = speed.right > parameters.charMaxSpeed60FPS * deltaStamp / 2 ? speed.right + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
+                speed.right = 0;
+            }
+
+            if(speed.up > speed.down){
+                speed.down = speed.up > parameters.charMaxSpeed60FPS * deltaStamp / 2 ? speed.up + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
+                speed.up = 0;
+            }else{
+                speed.up = speed.down > parameters.charMaxSpeed60FPS * deltaStamp / 2 ? speed.down + parameters.charDeltaSpeed60FPS * deltaStamp ** 2 : parameters.charMaxSpeed60FPS * deltaStamp / 2;
+                speed.down = 0;
+            }
         }
 
         // lose herats if not immune
@@ -61,7 +79,7 @@ function check_crashing(character_position, iceberg_grid, speed, isStunned, isIm
         character_position.y = icebergHeight;
     }
 
-    return {stun, immune};
+    return { stun, immune };
 }
 
 export default check_crashing;

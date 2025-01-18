@@ -26,8 +26,8 @@ const animations = {
     animationFrameFunc: null,
     animationFrameId: false,
 
-    stunFunc: null,
     stunFrameId: false,
+    stunFunc: null,
 
     immutableFunc: null,
     immutableFrameId: false,
@@ -68,8 +68,8 @@ const parameters = {
     // object sizes
     standartSize: {
         chunck: {
-            width: 600,
-            height: 600
+            width: 300,
+            height: 300
         },
         canvas: {
             width: 3000,

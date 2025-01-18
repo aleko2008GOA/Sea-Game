@@ -95,9 +95,7 @@ function background_sea(){
         }
     }
 
-    function startAnimation(timeStamp){
-        let deltaStamp = (timeStamp - lastStamp) / 1000;
-        lastStamp = timeStamp;
+    function startAnimation(deltaStamp){
         if(animations.moment.gameProcess && !animations.moment.pause && animations.sea.waveSpeed > 200) seconds += deltaStamp;
         
         if(seconds >= 1){
@@ -105,7 +103,7 @@ function background_sea(){
             seconds -= Math.floor(seconds);
         }
 
-        if(index < animations.sea.waveSpeed / 1000 / deltaStamp) index++;
+        if(index < animations.sea.waveSpeed / 1000 * (60 / deltaStamp)) index++;
         else{
             index = 0;
 

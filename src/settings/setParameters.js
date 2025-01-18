@@ -1,6 +1,7 @@
 import { animations, parameters } from "../globalVariables/globalVariables.js";
 import pause from "./pause.js"
 import { restartAllFunctions } from "./restart.js";
+import { changedSize } from "../character/chooseCanvas.js";
 
 const defaultCanvases = document.getElementById('defaultCanvases');
 const otherInstructions = document.getElementById('other_instructions');
@@ -112,6 +113,8 @@ function setParameters(){
     onMobile.height = parameters.standartSize.joystick.height;
     onMobile.style.width = parameters.standartSize.joystick.width + 'px';
     onMobile.style.height = parameters.standartSize.joystick.height + 'px';
+
+    changedSize();
 }
 
 export { fullScreen, setParameters };

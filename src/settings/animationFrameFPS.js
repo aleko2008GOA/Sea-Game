@@ -2,12 +2,16 @@ import { animations, parameters } from "../globalVariables/globalVariables.js";
 
 animations.allFrameFunc = startFrames;
 
-function startFrames(timeStamp){
-    if(animations.animationFrameId) animations.animationFrameFunc(timeStamp);
-    if(animations.sea.seaAnimationFrameId) animations.sea.seaFrameFunc(timeStamp);
+function startFrames(timestamp){
+    if(!parameters.lastStamp) parameters.lastStamp = performance.now();
+    let deltaStamp = (timestamp - parameters.lastStamp) / (1000 / 60);
+    parameters.lastStamp = timestamp;
 
-    if(animations.stunFrameId) animations.stunFunc(timeStamp);
-    if(animations.immutableFrameId) animations.immutableFunc(timeStamp);
+    if(animations.animationFrameId) animations.animationFrameFunc(deltaStamp);
+    if(animations.sea.seaAnimationFrameId) animations.sea.seaFrameFunc(deltaStamp);
+
+    if(animations.stunFrameId) animations.stunFunc(deltaStamp);
+    if(animations.immutableFrameId) animations.immutableFunc(deltaStamp);
 
     animations.allFrameId = requestAnimationFrame(startFrames);
 }
