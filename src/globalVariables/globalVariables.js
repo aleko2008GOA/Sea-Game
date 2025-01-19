@@ -117,7 +117,8 @@ const parameters = {
 
     images: {
         characterImages: null
-    }
+    },
+    FPS: 'auto'
 }
 
 export { animations, parameters };

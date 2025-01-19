@@ -10,6 +10,7 @@ import './settings/pause.js';
 import { checkDevice } from './settings/onMobile.js';
 import { animations, parameters } from './globalVariables/globalVariables.js';
 import './settings/animationFrameFPS.js';
+import './settings/setFPS.js';
 
 setParameters();
 document.querySelectorAll('.fullScreen').forEach(but => {

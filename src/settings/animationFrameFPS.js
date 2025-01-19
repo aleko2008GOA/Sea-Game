@@ -1,5 +1,7 @@
 import { animations, parameters } from "../globalVariables/globalVariables.js";
 
+let sumStamp = 0;
+
 animations.allFrameFunc = startFrames;
 
 function startFrames(timestamp){
@@ -7,11 +9,26 @@ function startFrames(timestamp){
     let deltaStamp = (timestamp - parameters.lastStamp) / (1000 / 60);
     parameters.lastStamp = timestamp;
 
-    if(animations.animationFrameId) animations.animationFrameFunc(deltaStamp);
-    if(animations.sea.seaAnimationFrameId) animations.sea.seaFrameFunc(deltaStamp);
+    let index = parameters.fps === 'auto' ? null : 60 / parameters.FPS;
+    sumStamp += deltaStamp;
+    
+    if(index){
+        while(sumStamp > index){
+            sumStamp -= index;
 
-    if(animations.stunFrameId) animations.stunFunc(deltaStamp);
-    if(animations.immutableFrameId) animations.immutableFunc(deltaStamp);
+            if(animations.animationFrameId) animations.animationFrameFunc(index);
+            if(animations.sea.seaAnimationFrameId) animations.sea.seaFrameFunc(index);
+
+            if(animations.stunFrameId) animations.stunFunc(index);
+            if(animations.immutableFrameId) animations.immutableFunc(index);
+        }
+    }else{
+        if(animations.animationFrameId) animations.animationFrameFunc(deltaStamp);
+        if(animations.sea.seaAnimationFrameId) animations.sea.seaFrameFunc(deltaStamp);
+
+        if(animations.stunFrameId) animations.stunFunc(deltaStamp);
+        if(animations.immutableFrameId) animations.immutableFunc(deltaStamp);
+    }
 
     animations.allFrameId = requestAnimationFrame(startFrames);
 }

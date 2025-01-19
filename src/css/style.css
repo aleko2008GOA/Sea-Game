@@ -9,8 +9,8 @@ html, body {
 
 #game {
   border: 1px solid;
-  width: 800px;
-  height: 450px;
+  width: 1200px;
+  height: 675px;
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
@@ -160,7 +160,28 @@ html, body {
   color: white;
 }
 #game #settings_bar {
+  display: none;
   position: absolute;
+  z-index: 30;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(211, 211, 211, 0.5);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#game #settings_bar #main-settings {
+  z-index: 30;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+#game #settings_bar #fps {
+  width: 100%;
   z-index: 30;
   width: 100%;
   height: 100%;
@@ -168,8 +189,13 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 20px;
-  background-color: rgba(211, 211, 211, 0.5);
   display: none;
+}
+#game #settings_bar #fps .active-button {
+  background-color: green;
+}
+#game #settings_bar #fps .active-button:hover {
+  background-color: darkgreen;
 }
 #game #settings_bar button {
   width: 70%;
@@ -196,17 +222,24 @@ html, body {
 #game #pause_button_top_left:hover {
   background-color: green;
 }
-@media (max-width: 768px) {
-  #game #game {
-    width: 400px;
-    height: 225px;
+@media (max-width: 1920px) {
+  #game {
+    width: 768px;
+    height: 432px;
     font-size: 16px;
   }
 }
-@media (max-width: 480px) {
-  #game .element {
-    width: 100%;
-    height: auto;
+@media (max-width: 768px) {
+  #game {
+    width: 480px;
+    height: 270px;
     font-size: 14px;
+  }
+}
+@media (max-width: 480px) {
+  #game {
+    width: 100%;
+    height: 270px;
+    font-size: 10px;
   }
 }/*# sourceMappingURL=style.css.map */

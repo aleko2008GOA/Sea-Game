@@ -3,7 +3,10 @@ import { animations, parameters } from "../globalVariables/globalVariables.js";
 const pauseButton = document.querySelectorAll('.pause_button');
 const pauseButtonTopLeft = document.getElementById('pause_button_top_left');
 const pauseButtonOnscreen = document.getElementById('pause_button_onscreen');
+
 const settingsBar = document.getElementById('settings_bar');
+const mainSettings = document.getElementById('main-settings');
+const fpsSection = document.getElementById('fps');
 
 let needToBeStunned = false;
 let needToBeImmune = false;
@@ -41,6 +44,9 @@ function pause(){
 
         settingsBar.style.display = 'flex';
         pauseButtonTopLeft.style.display = 'none';
+        
+        fpsSection.style.display = 'none';
+        mainSettings.style.display = 'flex';
     }else{
         animations.moment.pause = false;
         parameters.lastStamp = performance.now();

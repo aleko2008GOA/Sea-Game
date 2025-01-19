@@ -1,3 +1,5 @@
+$standart-size-index: 450px / 800px;
+
 * {
     box-sizing: border-box;
 }
@@ -9,8 +11,8 @@ html, body {
 
 #game {
     border: 1px solid;
-    width: 800px;
-    height: 450px;
+    width: 1200px;
+    height: $standart-size-index * 1200px;
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
@@ -178,16 +180,45 @@ html, body {
     }
 
     #settings_bar {
+        display: none;
         position: absolute;
         z-index: 30;
         width: 100%;
         height: 100%;
+        background-color: rgba(211, 211, 211, 0.5);
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 20px;
-        background-color: rgba(211, 211, 211, 0.5);
-        display: none;
+
+        #main-settings{
+            z-index: 30;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        #fps{
+            width: 100%;
+            z-index: 30;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            display: none;
+
+            .active-button{
+                background-color: green;
+                &:hover{
+                    background-color: darkgreen;
+                }
+            }
+        }
 
         button {
             width: 70%;
@@ -219,19 +250,21 @@ html, body {
         }
     }
 
+    @media (max-width: 1920px) {
+        width: 768px;
+        height: $standart-size-index * 768px;
+        font-size: 16px;
+    }
+
     @media (max-width: 768px) {
-        #game {
-            width: 400px;
-            height: 225px;
-            font-size: 16px;
-        }
+        width: 480px;
+        height: $standart-size-index * 480px;
+        font-size: 14px;
     }
 
     @media (max-width: 480px) {
-        .element {
-            width: 100%;
-            height: auto;
-            font-size: 14px;
-        }
+        width: 100%;
+        height: $standart-size-index * 480px;
+        font-size: 10px;
     }
 }
