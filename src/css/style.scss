@@ -27,6 +27,46 @@ html, body {
         top: 0;
         z-index: 2;
         overflow: hidden;
+
+        #defaultCanvases {
+            > * {
+                width: 3000px;
+                height: 3000px;
+                position: absolute;
+                background-color: transparent;
+
+                &#sea {
+                    background-color: #4682B4;
+                }
+            }
+
+            #sea { z-index: 1; }
+            #waves_left, #waves_right { z-index: 3; }
+            #waves_right { display: none; }
+            #iceberg_map_front { z-index: 6; } 
+            #iceberg_map_back { z-index: 4; }
+            #lights { z-index: 5; }
+        }
+
+        /* character */
+        #main_character {
+            overflow: hidden;
+            position: absolute;
+            width: 3000px;
+            height: 3000px;
+            z-index: 5;
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+
+            #character_canvas{
+                width: 100px;
+                height: 81.25px;
+                left: 150px;
+                top: 100px;
+                position: absolute;
+            }
+        }
     }
 
     #other_instructions {
@@ -36,217 +76,151 @@ html, body {
         left: 0;
         top: 0;
         z-index: 20;
-    }
 
-    #fullScreenStart {
-        position: absolute;
-        left: 10px;
-        bottom: 10px;
-        z-index: 900;
-    }
-
-    /* sea */
-    #waves_left, #waves_right {
-        position: absolute;
-        width: 3000px;
-        height: 3000px;
-        will-change: transform;
-        z-index: 3;
-        background-color: transparent;
-    }
-
-    #waves_right {
-        display: none;
-    }
-
-    /* background */
-    #sea {
-        position: absolute;
-        width: 3000px;
-        height: 3000px;
-        z-index: 1;
-        background-color: #4682B4;
-    }
-
-    /* icebergs */
-    #iceberg_map {
-        position: absolute;
-        width: 3000px;
-        height: 3000px;
-        z-index: 4;
-        background-color: transparent;
-    }
-
-    /* lights */
-    #lights {
-        position: absolute;
-        width: 3000px;
-        height: 3000px;
-        z-index: 4;
-        background-color: transparent;
-    }
-
-    /* character */
-    #main_character {
-        overflow: hidden;
-        position: absolute;
-        width: 3000px;
-        height: 3000px;
-        z-index: 5;
-        background-color: transparent;
-        display: flex;
-        flex-direction: column;
-
-        section{
-            display: flex;
-            flex-direction: row;
-            width: 100%;
-            height: 10%;
-
-            canvas{
-                border: 1px solid red;
-                height: 100%;
-                width: 10%;
-            }
+        #fullScreenStart {
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+            z-index: 900;
         }
-    }
-
-    /* on mobile */
-    #on_mobile {
-        position: absolute;
-        width: 250px;
-        height: 250px;
-        z-index: 300;
-        display: none;
-        bottom: 0;
-        left: 0;
-    }
-
-    #start {
-        display: none;
-    }
-
-    #loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        z-index: 100;
-        background-color: black;
-        color: white;
-    }
-
-    #instructions {
-        background-color: white;
-        position: fixed;
-        left: 0;
-        top: 0;
-        z-index: 20;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        width: 300px;
-        min-height: 100px;
-        max-height: 300px;
-    }
-
-    #text {
-        text-align: center;
-    }
-
-    #timer {
-        background-color: black;
-        color: white;
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 10;
-        padding: 5px 20px;
-        display: none;
-    }
-
-    #lose_screen, #win_screen {
-        display: none;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        z-index: 100;
-        background-color: black;
-        color: white;
-    }
-
-    #settings_bar {
-        display: none;
-        position: absolute;
-        z-index: 30;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(211, 211, 211, 0.5);
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        #main-settings{
-            z-index: 30;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        #fps{
-            width: 100%;
-            z-index: 30;
-            width: 100%;
-            height: 100%;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
+    
+        /* on mobile */
+        #on_mobile {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            z-index: 300;
             display: none;
-
-            .active-button{
-                background-color: green;
-                &:hover{
-                    background-color: darkgreen;
+            bottom: 0;
+            left: 0;
+        }
+    
+        #start {
+            display: none;
+        }
+    
+        #loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background-color: black;
+            color: white;
+        }
+    
+        #instructions {
+            background-color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 20;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            width: 300px;
+            min-height: 100px;
+            max-height: 300px;
+        }
+    
+        #text {
+            text-align: center;
+        }
+    
+        #timer {
+            background-color: black;
+            color: white;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 10;
+            padding: 5px 20px;
+            display: none;
+        }
+    
+        #lose_screen, #win_screen {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background-color: black;
+            color: white;
+        }
+    
+        #settings_bar {
+            display: none;
+            position: absolute;
+            z-index: 30;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(211, 211, 211, 0.5);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+    
+            #main-settings{
+                z-index: 30;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 20px;
+            }
+    
+            #fps{
+                width: 100%;
+                z-index: 30;
+                width: 100%;
+                height: 100%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 20px;
+                display: none;
+    
+                .active-button{
+                    background-color: green;
+                    &:hover{
+                        background-color: darkgreen;
+                    }
+                }
+            }
+    
+            button {
+                width: 70%;
+                border: none;
+                border-radius: 10px;
+                height: 40px;
+                background-color: rgb(0, 255, 0);
+                transition: 0.5s background-color;
+    
+                &:hover {
+                    background-color: green;
                 }
             }
         }
-
-        button {
-            width: 70%;
+    
+        #pause_button_top_left {
+            position: absolute;
+            z-index: 30;
+            right: 100px;
+            top: 20px;
             border: none;
             border-radius: 10px;
             height: 40px;
             background-color: rgb(0, 255, 0);
             transition: 0.5s background-color;
-
+    
             &:hover {
                 background-color: green;
             }
-        }
-    }
-
-    #pause_button_top_left {
-        position: absolute;
-        z-index: 30;
-        right: 100px;
-        top: 20px;
-        border: none;
-        border-radius: 10px;
-        height: 40px;
-        background-color: rgb(0, 255, 0);
-        transition: 0.5s background-color;
-
-        &:hover {
-            background-color: green;
         }
     }
 

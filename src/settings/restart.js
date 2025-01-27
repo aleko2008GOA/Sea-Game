@@ -14,8 +14,9 @@ const pauseButtonTopLeft = document.getElementById('pause_button_top_left');
 
 function restart(characterImagesArray){
     restart_button.forEach(button =>{
-        button.addEventListener('click', () =>{
-            restartAllFunctions(characterImagesArray);
+        button.addEventListener('click', async () =>{
+            restartAllFunctions();
+            await startAgain(characterImagesArray);
         });
     });
 }
@@ -68,12 +69,14 @@ function restartAllFunctions(characterImagesArray){
         top: 0,
         left: 0
     });
+}
 
+async function startAgain(characterImagesArray){
     animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
-    const {icebrg_coordinate_arr, iceberg_grid_position} = icebergs();
-    const {lights_coordinate_arr, lights_grid_position, lights_background} = lights(icebrg_coordinate_arr);
-    character_moves(iceberg_grid_position, lights_grid_position, lights_background, characterImagesArray);
+    const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
+    const { lightsCoordinateArr, lightsGridPosition, lightsBackground } = await lights(icebergCoordinateArr);
+    character_moves(icebergGridPosition, lightsGridPosition, lightsBackground, characterImagesArray);
     loading(true, 100);
 }
 
-export { restart, restartAllFunctions };
+export { restart, restartAllFunctions, startAgain };

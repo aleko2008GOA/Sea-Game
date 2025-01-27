@@ -5,7 +5,12 @@ import { lose_hearts } from "../game_over/lose_hearts.js";
 import useCharacterImages from "../images/useImages/character.js";
 import { animations, parameters } from "../globalVariables/globalVariables.js";
 import { moveMobile } from "../settings/onMobile.js";
-import { chooseRightCanvas } from "./chooseCanvas.js";
+
+/** @type {HTMLCanvasElement} */
+const characterCanvas = document.getElementById('character_canvas');
+
+/** @type {CanvasRenderingContext2D} */
+const characterBackground = characterCanvas.getContext('2d');
 
 const characterImages = [];
 let characterImage;
@@ -40,7 +45,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
 
     // moving
     function chraracter_start(){
-        chooseRightCanvas(character_position, characterImage, cleared);
+        drawOnCanvas();
 
         document.addEventListener('keydown', (e) =>{
             if(e.key === 'ArrowLeft' || e.key === 'a') if(!parameters.immutable) moving_direction.left = true;
@@ -119,7 +124,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
         }
         // if moved
         if(moved){
-            chooseRightCanvas(character_position, characterImage, cleared);
+            drawOnCanvas();
             
             camera_moving(character_position, speed);
 
@@ -141,8 +146,8 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
                 removeImmune = false;
                 animations.immutableFrameId = true;
             }
-        }else if(isImmune)
-            chooseRightCanvas(character_position, characterImage, cleared);
+        } else if(isImmune)
+            drawOnCanvas();
     }
 
     function stunFunc(deltaStamp){
@@ -172,9 +177,16 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             isImmune = false;
             removeImmune = true;
             
-            chooseRightCanvas(character_position, characterImage, cleared);
+            drawOnCanvas();
             check_getting_lights(lights_ctx, character_position, lights_grid, isImmune);
         }
+    }
+
+    function drawOnCanvas(){
+        characterBackground.clearRect(0, 0, characterCanvas.width, characterCanvas.height)
+        characterBackground.drawImage(characterImage, 0, 0, characterCanvas.width, characterCanvas.height);
+        characterCanvas.style.left = (character_position.x - parameters.standartSize.character.width / 2) + 'px';
+        characterCanvas.style.top = (character_position.y - parameters.standartSize.character.height * (260 / 320)) + 'px';
     }
 }
 

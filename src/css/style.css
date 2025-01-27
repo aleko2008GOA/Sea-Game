@@ -15,12 +15,6 @@ html, body {
   left: 50%;
   transform: translate(-50%, 0);
   /* main container */
-  /* sea */
-  /* background */
-  /* icebergs */
-  /* lights */
-  /* character */
-  /* on mobile */
 }
 #game #game_main_container {
   width: 100%;
@@ -31,54 +25,36 @@ html, body {
   top: 0;
   z-index: 2;
   overflow: hidden;
+  /* character */
 }
-#game #other_instructions {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 20;
-}
-#game #fullScreenStart {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  z-index: 900;
-}
-#game #waves_left, #game #waves_right {
-  position: absolute;
+#game #game_main_container #defaultCanvases > * {
   width: 3000px;
   height: 3000px;
-  will-change: transform;
-  z-index: 3;
+  position: absolute;
   background-color: transparent;
 }
-#game #waves_right {
-  display: none;
-}
-#game #sea {
-  position: absolute;
-  width: 3000px;
-  height: 3000px;
-  z-index: 1;
+#game #game_main_container #defaultCanvases > *#sea {
   background-color: #4682B4;
 }
-#game #iceberg_map {
-  position: absolute;
-  width: 3000px;
-  height: 3000px;
-  z-index: 4;
-  background-color: transparent;
+#game #game_main_container #defaultCanvases #sea {
+  z-index: 1;
 }
-#game #lights {
-  position: absolute;
-  width: 3000px;
-  height: 3000px;
-  z-index: 4;
-  background-color: transparent;
+#game #game_main_container #defaultCanvases #waves_left, #game #game_main_container #defaultCanvases #waves_right {
+  z-index: 3;
 }
-#game #main_character {
+#game #game_main_container #defaultCanvases #waves_right {
+  display: none;
+}
+#game #game_main_container #defaultCanvases #iceberg_map_front {
+  z-index: 6;
+}
+#game #game_main_container #defaultCanvases #iceberg_map_back {
+  z-index: 4;
+}
+#game #game_main_container #defaultCanvases #lights {
+  z-index: 5;
+}
+#game #game_main_container #main_character {
   overflow: hidden;
   position: absolute;
   width: 3000px;
@@ -88,18 +64,29 @@ html, body {
   display: flex;
   flex-direction: column;
 }
-#game #main_character section {
-  display: flex;
-  flex-direction: row;
+#game #game_main_container #main_character #character_canvas {
+  width: 100px;
+  height: 81.25px;
+  left: 150px;
+  top: 100px;
+  position: absolute;
+}
+#game #other_instructions {
   width: 100%;
-  height: 10%;
-}
-#game #main_character section canvas {
-  border: 1px solid red;
   height: 100%;
-  width: 10%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 20;
+  /* on mobile */
 }
-#game #on_mobile {
+#game #other_instructions #fullScreenStart {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 900;
+}
+#game #other_instructions #on_mobile {
   position: absolute;
   width: 250px;
   height: 250px;
@@ -108,10 +95,10 @@ html, body {
   bottom: 0;
   left: 0;
 }
-#game #start {
+#game #other_instructions #start {
   display: none;
 }
-#game #loading {
+#game #other_instructions #loading {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -122,7 +109,7 @@ html, body {
   background-color: black;
   color: white;
 }
-#game #instructions {
+#game #other_instructions #instructions {
   background-color: white;
   position: fixed;
   left: 0;
@@ -135,10 +122,10 @@ html, body {
   min-height: 100px;
   max-height: 300px;
 }
-#game #text {
+#game #other_instructions #text {
   text-align: center;
 }
-#game #timer {
+#game #other_instructions #timer {
   background-color: black;
   color: white;
   position: absolute;
@@ -148,7 +135,7 @@ html, body {
   padding: 5px 20px;
   display: none;
 }
-#game #lose_screen, #game #win_screen {
+#game #other_instructions #lose_screen, #game #other_instructions #win_screen {
   display: none;
   justify-content: center;
   align-items: center;
@@ -159,7 +146,7 @@ html, body {
   background-color: black;
   color: white;
 }
-#game #settings_bar {
+#game #other_instructions #settings_bar {
   display: none;
   position: absolute;
   z-index: 30;
@@ -170,7 +157,7 @@ html, body {
   align-items: center;
   justify-content: center;
 }
-#game #settings_bar #main-settings {
+#game #other_instructions #settings_bar #main-settings {
   z-index: 30;
   width: 100%;
   height: 100%;
@@ -180,7 +167,7 @@ html, body {
   justify-content: center;
   gap: 20px;
 }
-#game #settings_bar #fps {
+#game #other_instructions #settings_bar #fps {
   width: 100%;
   z-index: 30;
   width: 100%;
@@ -191,13 +178,13 @@ html, body {
   gap: 20px;
   display: none;
 }
-#game #settings_bar #fps .active-button {
+#game #other_instructions #settings_bar #fps .active-button {
   background-color: green;
 }
-#game #settings_bar #fps .active-button:hover {
+#game #other_instructions #settings_bar #fps .active-button:hover {
   background-color: darkgreen;
 }
-#game #settings_bar button {
+#game #other_instructions #settings_bar button {
   width: 70%;
   border: none;
   border-radius: 10px;
@@ -205,10 +192,10 @@ html, body {
   background-color: rgb(0, 255, 0);
   transition: 0.5s background-color;
 }
-#game #settings_bar button:hover {
+#game #other_instructions #settings_bar button:hover {
   background-color: green;
 }
-#game #pause_button_top_left {
+#game #other_instructions #pause_button_top_left {
   position: absolute;
   z-index: 30;
   right: 100px;
@@ -219,7 +206,7 @@ html, body {
   background-color: rgb(0, 255, 0);
   transition: 0.5s background-color;
 }
-#game #pause_button_top_left:hover {
+#game #other_instructions #pause_button_top_left:hover {
   background-color: green;
 }
 @media (max-width: 1920px) {

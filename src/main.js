@@ -1,4 +1,5 @@
-import { setParameters, fullScreen } from './settings/setParameters.js';
+import { setParameters } from './settings/setParameters.js';
+import fullScreen from './settings/fullScreenMode.js';
 import loading from './story/loading.js';
 import { background_sea } from './background/sea.js';
 import { icebergs } from './objects/icebergs.js';
@@ -14,26 +15,27 @@ import './settings/setFPS.js';
 
 setParameters();
 document.querySelectorAll('.fullScreen').forEach(but => {
-    but.addEventListener('click', () => {
-        screen.width > screen.height ? fullScreen().then(() =>{
+    but.addEventListener('click', async () => {
+        if(screen.width > screen.height){
+            await fullScreen();
             if(!parameters.gameStarted){
                 parameters.gameStarted = true;
                 animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
                 checkDevice();
                 background_sea();
-                const {icebrg_coordinate_arr, iceberg_grid_position} = icebergs();
-                const {lights_coordinate_arr, lights_grid_position, lights_background} = lights(icebrg_coordinate_arr);
-                characterImages
-                    .then(characterImagesArray =>{
-                        character_moves(iceberg_grid_position, lights_grid_position, lights_background, characterImagesArray);
-                        parameters.images.characterImages = characterImagesArray;
-                        return characterImagesArray || null;
-                    })
-                    .then(characterImagesArray => {
-                        restart(characterImagesArray);
-                    });
+
+                const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
+                const { lightsCoordinateArr, lightsGridPosition, lightsBackground } = await lights(icebergCoordinateArr);
+                
+                const characterImagesArray = await characterImages;
+                character_moves(icebergGridPosition, lightsGridPosition, lightsBackground, characterImagesArray);
+                parameters.images.characterImages = characterImagesArray;
+                
+                restart(characterImagesArray);
                 loading(true, 100);
             }
-        }) : alert("Rotate your devise!");
+        }else{
+            alert("Rotate your devise!");
+        }
     });
-});
+}); 
