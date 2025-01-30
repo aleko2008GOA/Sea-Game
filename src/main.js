@@ -12,6 +12,7 @@ import { checkDevice } from './settings/onMobile.js';
 import { animations, parameters } from './globalVariables/globalVariables.js';
 import './settings/animationFrameFPS.js';
 import './settings/setFPS.js';
+import { drawRain } from './background/lightStorm.js';
 
 setParameters();
 document.querySelectorAll('.fullScreen').forEach(but => {
@@ -23,6 +24,7 @@ document.querySelectorAll('.fullScreen').forEach(but => {
                 animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
                 checkDevice();
                 background_sea();
+                drawRain();
 
                 const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
                 const { lightsCoordinateArr, lightsGridPosition, lightsBackground } = await lights(icebergCoordinateArr);

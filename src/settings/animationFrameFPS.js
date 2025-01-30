@@ -9,7 +9,7 @@ function startFrames(timestamp){
     let deltaStamp = (timestamp - parameters.lastStamp) / (1000 / 60);
     parameters.lastStamp = timestamp;
 
-    let index = parameters.fps === 'auto' ? null : 60 / parameters.FPS;
+    let index = parameters.FPS === 'auto' ? null : 60 / parameters.FPS;
     sumStamp += deltaStamp;
     
     if(index){

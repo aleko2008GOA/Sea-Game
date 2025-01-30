@@ -4,6 +4,7 @@ const defaultCanvases = document.getElementById('defaultCanvases');
 const onMobile = document.getElementById('on_mobile');
 const mainCharacter = document.getElementById('main_character');
 const characterCanvas = document.getElementById('character_canvas');
+const rain = document.getElementById('rain');
 
 const screenWidth = Math.max(screen.width, screen.height);
 const screenHeight = Math.min(screen.width, screen.height);
@@ -25,6 +26,11 @@ function setParameters(){
         canvas.height = parameters.standartSize.canvas.height;
         canvas.style.width = parameters.standartSize.canvas.width + 'px';
         canvas.style.height = parameters.standartSize.canvas.height + 'px';
+    });
+
+    rain.querySelectorAll('canvas').forEach(canvas =>{
+        canvas.style.width = parameters.standartSize.screenWidth + 'px';
+        canvas.style.height = parameters.standartSize.screenHeight + 'px';
     });
     
     mainCharacter.style.width = parameters.standartSize.canvas.width + 'px';

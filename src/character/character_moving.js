@@ -184,7 +184,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
 
     function drawOnCanvas(){
         characterBackground.clearRect(0, 0, characterCanvas.width, characterCanvas.height)
-        characterBackground.drawImage(characterImage, 0, 0, characterCanvas.width, characterCanvas.height);
+        if(!cleared) characterBackground.drawImage(characterImage, 0, 0, characterCanvas.width, characterCanvas.height);
         characterCanvas.style.left = (character_position.x - parameters.standartSize.character.width / 2) + 'px';
         characterCanvas.style.top = (character_position.y - parameters.standartSize.character.height * (260 / 320)) + 'px';
     }

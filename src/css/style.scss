@@ -48,6 +48,23 @@ html, body {
             #lights { z-index: 5; }
         }
 
+        #rain{
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 7;
+
+            canvas{
+                position: absolute;
+                left: 0;
+                top: 0;
+                display: none;
+            }
+        }
+
         /* character */
         #main_character {
             overflow: hidden;

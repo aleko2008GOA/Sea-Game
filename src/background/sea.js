@@ -1,12 +1,13 @@
 import { animations, parameters } from "../globalVariables/globalVariables.js";
+import { startRain } from "./lightStorm.js";
 // canvases
 /** @type {HTMLCanvasElement} */
-const sea_canvas_waves_left = document.getElementById('waves_left');
-const sea_canvas_waves_right = document.getElementById('waves_right');
+const seaCanvasWavesLeft = document.getElementById('waves_left');
+const seaCanvasWavesRight = document.getElementById('waves_right');
 
 /** @type {CanvasRenderingContext2D} */
-const sea_waves_left = sea_canvas_waves_left.getContext('2d');
-const sea_waves_right = sea_canvas_waves_right.getContext('2d');
+const seaWavesLeft = seaCanvasWavesLeft.getContext('2d');
+const seaWavesRight = seaCanvasWavesRight.getContext('2d');
 
 let left_display = 'block';
 let right_display = 'none';
@@ -25,11 +26,11 @@ function background_sea(){
     // images
     function loadImages(src_left, src_right){
         return new Promise((resolve, reject) =>{ 
-            const wave_left_img = new Image();
-            const wave_right_img = new Image();
+            const waveLeftImg = new Image();
+            const waveRightImg = new Image();
             
-            wave_left_img.src = src_left;
-            wave_right_img.src = src_right;
+            waveLeftImg.src = src_left;
+            waveRightImg.src = src_right;
 
             let loadedImages = 0;
             const images = [];
@@ -38,20 +39,20 @@ function background_sea(){
                 if (loadedImages === 2) resolve(images);
             }
     
-            wave_left_img.onload = () => {
+            waveLeftImg.onload = () => {
                 loadedImages++;
-                images[0] = wave_left_img;
+                images[0] = waveLeftImg;
                 checkResolve();
             };
     
-            wave_right_img.onload = () => {
+            waveRightImg.onload = () => {
                 loadedImages++;
-                images[1] = wave_right_img;
+                images[1] = waveRightImg;
                 checkResolve();
             };
 
-            wave_left_img.onerror = (e) => reject(e);
-            wave_right_img.onerror = (e) => reject(e);
+            waveLeftImg.onerror = (e) => reject(e);
+            waveRightImg.onerror = (e) => reject(e);
         });
     }
 
@@ -62,8 +63,6 @@ function background_sea(){
     const imgWidth = parameters.standartSize.wave.imgWidth;
     const imgHeight = parameters.standartSize.wave.imgHeight;
     let waves = 0;
-
-    let lastStamp = 0;
     let seconds = 0;
 
     // wave animation function
@@ -74,9 +73,9 @@ function background_sea(){
                 let y1 = waveHeight * (i - 1) + imgHeight;
 
                 if (j % 2 == waves) {
-                    sea_waves_left.drawImage(img_left, x1, y1, imgWidth, imgHeight);
+                    seaWavesLeft.drawImage(img_left, x1, y1, imgWidth, imgHeight);
                 } else {
-                    sea_waves_left.drawImage(img_right, x1, y1 + imgHeight, imgWidth, imgHeight);
+                    seaWavesLeft.drawImage(img_right, x1, y1 + imgHeight, imgWidth, imgHeight);
                 }
             }
         }
@@ -87,19 +86,21 @@ function background_sea(){
                 let y1 = waveHeight * (i - 1) + imgHeight;
 
                 if (j % 2 != waves) {
-                    sea_waves_right.drawImage(img_left, x1, y1, imgWidth, imgHeight);
+                    seaWavesRight.drawImage(img_left, x1, y1, imgWidth, imgHeight);
                 } else {
-                    sea_waves_right.drawImage(img_right, x1, y1 + imgHeight, imgWidth, imgHeight);
+                    seaWavesRight.drawImage(img_right, x1, y1 + imgHeight, imgWidth, imgHeight);
                 }
             }
         }
     }
 
     function startAnimation(deltaStamp){
-        if(animations.moment.gameProcess && !animations.moment.pause && animations.sea.waveSpeed > 200) seconds += deltaStamp;
+        startRain(deltaStamp);
+        if(animations.moment.gameProcess && !animations.moment.pause && animations.sea.waveSpeed > 200) 
+            seconds += 1000 / 60 * deltaStamp;
         
-        if(seconds >= 1){
-            animations.sea.waveSpeed -= 2.5 * Math.floor(seconds);
+        if(seconds >= 1000){
+            animations.sea.waveSpeed -= 3;
             seconds -= Math.floor(seconds);
         }
 
@@ -107,8 +108,8 @@ function background_sea(){
         else{
             index = 0;
 
-            sea_canvas_waves_left.style.display = left_display;
-            sea_canvas_waves_right.style.display = right_display;
+            seaCanvasWavesLeft.style.display = left_display;
+            seaCanvasWavesRight.style.display = right_display;
     
             left_display = left_display == 'block' ? 'none' : 'block';
             right_display = right_display == 'block' ? 'none' : 'block';

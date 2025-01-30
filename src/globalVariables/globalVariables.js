@@ -108,6 +108,10 @@ const parameters = {
             fullHeight: 15,
             imgWidth: 20,
             imgHeight: 5
+        },
+        drop: {
+            width: 1,
+            height: 35
         }
     },
     defaultScreen: {
