@@ -64,10 +64,20 @@ html, body {
   z-index: 7;
 }
 #game #game_main_container #rain canvas {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   display: none;
+  overflow: hidden;
+}
+#game #game_main_container #rain #lightning {
+  position: fixed;
+  display: none;
+  background-color: white;
+  opacity: 0.8;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 #game #game_main_container #main_character {
   overflow: hidden;

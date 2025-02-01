@@ -1,3 +1,4 @@
+import { lightning } from "../background/lightStorm.js";
 import win from "../game_over/win.js";
 import { parameters } from "../globalVariables/globalVariables.js";
 
@@ -35,6 +36,7 @@ function check_getting_lights(lights_ctx, character_position, lights_grid, isImm
     if(!immune){
         if(is_on_light){
             console.log(++parameters.collected + ' lights collected');
+            lightning();
         }
 
         if(rect_topLeft && (rect_topLeft.x < character_position.x + lightWidth && rect_topLeft.x > character_position.x - lightWidth) && (rect_topLeft.y < character_position.y + lightHeight && rect_topLeft.y > character_position.y - lightHeight)){

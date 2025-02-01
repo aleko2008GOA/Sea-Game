@@ -1,6 +1,7 @@
 import { parameters, animations } from "../globalVariables/globalVariables.js";
 
 const rain = document.getElementById('rain');
+const lightningDiv = document.getElementById('lightning');
 const rainCanvasFrames = [];
 const rainCanvasFramesContexts = [];
 const dropCoord = { x: 0, y: 0 };
@@ -66,4 +67,15 @@ function startRain(deltaStamp) {
         canvasToDisplayIndex = 4 * deltaStamp - rainCanvasFrames.length + canvasToDisplayIndex;
 }
 
-export { startRain, drawRain };
+function lightning(){
+    lightningDiv.style.backgroundColor = 'white';
+    lightningDiv.style.display = 'block';
+    setTimeout(() =>{
+        lightningDiv.style.backgroundColor = 'black';
+        setTimeout(() =>{
+            lightningDiv.style.display = 'none';
+        }, 700);
+    }, 300);
+}
+
+export { startRain, drawRain, lightning };
