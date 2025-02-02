@@ -8,6 +8,7 @@ const dropCoord = { x: 0, y: 0 };
 
 let canvasToDisplayIndex = 0;
 let lastCanvas = null;
+let lastCanvasDouble = null;
 
 function drawRain(){
     for(let i = 1; i <= 240; i++){
@@ -46,6 +47,7 @@ function drawRain(){
                     ctx.lineTo(coordX, coordY + height);
                     ctx.stroke();
                 }
+
                 coordY += rainCanvasFrames[index].height / rainCanvasFramesContexts.length;
                 if(coordY > rainCanvasFrames[index].height) coordY = 0;
             });
@@ -54,28 +56,38 @@ function drawRain(){
         dropCoord.y += margin.y + margin.y * (Math.random() * 2 - 1);
         dropCoord.x = 0;
     }
-    lastCanvas = rainCanvasFrames[0];
 }
 
 function startRain(deltaStamp) {
-    lastCanvas.style.display = 'none';
-    rainCanvasFrames[Math.floor(canvasToDisplayIndex)].style.display = 'block';
-
-    lastCanvas = rainCanvasFrames[Math.floor(canvasToDisplayIndex)];
-    canvasToDisplayIndex + 4 * deltaStamp < rainCanvasFrames.length ? 
-        canvasToDisplayIndex += 4 * deltaStamp : 
-        canvasToDisplayIndex = 4 * deltaStamp - rainCanvasFrames.length + canvasToDisplayIndex;
+    let index = Math.floor(canvasToDisplayIndex);
+    let indexDouble = rainCanvasFrames.length / 2 - 1 >= index ? rainCanvasFrames.length / 2 - 1 + index : index - (rainCanvasFrames.length / 2 - 1);
+    
+    if(animations.moment.lightstrom){
+        if(lastCanvas) lastCanvas.style.display = 'none';
+        rainCanvasFrames[index].style.display = 'block';
+        lastCanvas = rainCanvasFrames[index];
+    }
+    if(animations.moment.doubleStorm){
+        if(lastCanvasDouble) lastCanvasDouble.style.display = 'none';
+        rainCanvasFrames[indexDouble].style.display = 'block';
+        lastCanvasDouble = rainCanvasFrames[indexDouble];
+    }
+    if(index + 4 * deltaStamp < rainCanvasFrames.length) index += 4 * deltaStamp
+    else index = 4 * deltaStamp - rainCanvasFrames.length + index;
+    canvasToDisplayIndex = index;
 }
 
-function lightning(){
-    lightningDiv.style.backgroundColor = 'white';
-    lightningDiv.style.display = 'block';
-    setTimeout(() =>{
-        lightningDiv.style.backgroundColor = 'black';
-        setTimeout(() =>{
-            lightningDiv.style.display = 'none';
-        }, 700);
-    }, 300);
+function lightning(collected){
+    if(collected >= 1){
+        setTimeout(() => {
+            lightningDiv.style.animation = "none";
+            void lightningDiv.offsetWidth;
+            lightningDiv.style.animation = "lightning 1s linear";
+
+            if(collected === 1) animations.moment.lightstrom = true;
+            if(collected === 2) animations.moment.doubleStorm = true;
+        }, Math.random() * 1000);
+    }
 }
 
 export { startRain, drawRain, lightning };

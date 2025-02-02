@@ -22,8 +22,10 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     characterImage = imgs[0][0][4];
     characterImages.push(...imgs);
     // charcter starts at
-    const character_position = {x: 3 * characterWidth, y: 2 * characterHeight};
-    const moving_direction = {left: false, right: false, up: false, down: false};
+    const characterPosition = parameters.position;
+    const characterStylePosition = parameters.stylePosition;
+
+    const movingDirection = { left: false, right: false, up: false, down: false };
     const speed = parameters.speed;
     // chracter stats
     let isStunned = false;
@@ -41,23 +43,23 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
     animations.immutableFunc = immutableFunc;
 
     // character display
-    chraracter_start();
+    chraracterStart();
 
     // moving
-    function chraracter_start(){
+    function chraracterStart(){
         drawOnCanvas();
 
         document.addEventListener('keydown', (e) =>{
-            if(e.key === 'ArrowLeft' || e.key === 'a') if(!parameters.immutable) moving_direction.left = true;
-            if(e.key === 'ArrowRight' || e.key === 'd') if(!parameters.immutable) moving_direction.right = true;
-            if(e.key === 'ArrowUp' || e.key === 'w') if(!parameters.immutable) moving_direction.up = true;
-            if(e.key === 'ArrowDown' || e.key === 's') if(!parameters.immutable) moving_direction.down = true;
+            if(e.key === 'ArrowLeft' || e.key === 'a') if(!parameters.immutable) movingDirection.left = true;
+            if(e.key === 'ArrowRight' || e.key === 'd') if(!parameters.immutable) movingDirection.right = true;
+            if(e.key === 'ArrowUp' || e.key === 'w') if(!parameters.immutable) movingDirection.up = true;
+            if(e.key === 'ArrowDown' || e.key === 's') if(!parameters.immutable) movingDirection.down = true;
         });
         document.addEventListener('keyup', (e) =>{
-            if(e.key === 'ArrowLeft' || e.key === 'a') moving_direction.left = false;
-            if(e.key === 'ArrowRight' || e.key === 'd') moving_direction.right = false;
-            if(e.key === 'ArrowUp' || e.key === 'w') moving_direction.up = false;
-            if(e.key === 'ArrowDown' || e.key === 's') moving_direction.down = false;
+            if(e.key === 'ArrowLeft' || e.key === 'a') movingDirection.left = false;
+            if(e.key === 'ArrowRight' || e.key === 'd') movingDirection.right = false;
+            if(e.key === 'ArrowUp' || e.key === 'w') movingDirection.up = false;
+            if(e.key === 'ArrowDown' || e.key === 's') movingDirection.down = false;
         });
 
         animations.animationFrameFunc = move;
@@ -72,53 +74,61 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
         let deltaSpeed = parameters.charDeltaSpeed60FPS * deltaStamp ** 2;
 
         if(parameters.device.includes('Mobile') || parameters.device.includes('Tablet') || parameters.device.includes('Ebook'))
-            moved = moveMobile(speed, character_position, isStunned, maxSpeed, deltaSpeed);
+            moved = moveMobile(speed, characterPosition, isStunned, maxSpeed, deltaSpeed);
         else{
             // left
-            if(moving_direction.left && !isStunned){
+            if(movingDirection.left && !isStunned){
                 if(speed.left < maxSpeed) speed.left += deltaSpeed;
                 else speed.left = maxSpeed;
-                character_position.x -= speed.left;
+                characterPosition.x -= speed.left;
+                characterStylePosition.x -= speed.left;
                 moved = true;
             }else if(speed.left > 0) {
                 speed.left = speed.left - deltaSpeed >= 0 ? speed.left - deltaSpeed : 0;
-                character_position.x -= speed.left;
+                characterPosition.x -= speed.left;
+                characterStylePosition.x -= speed.left;
                 moved = true;
             }else if(speed.left < 0) speed.left = 0;
 
             // right
-            if(moving_direction.right && !isStunned){
+            if(movingDirection.right && !isStunned){
                 if(speed.right < maxSpeed) speed.right += deltaSpeed;
                 else speed.right = maxSpeed;
-                character_position.x += speed.right;
+                characterPosition.x += speed.right;
+                characterStylePosition.x += speed.right;
                 moved = true;
             }else if(speed.right > 0) {
                 speed.right = speed.right - deltaSpeed >= 0 ? speed.right - deltaSpeed : 0;
-                character_position.x += speed.right;
+                characterPosition.x += speed.right;
+                characterStylePosition.x += speed.right;
                 moved = true;
             }else if(speed.right < 0) speed.right = 0;
 
             // up
-            if(moving_direction.up && !isStunned){
+            if(movingDirection.up && !isStunned){
                 if(speed.up < maxSpeed) speed.up += deltaSpeed;
                 else speed.up = maxSpeed;
-                character_position.y -= speed.up;
+                characterPosition.y -= speed.up;
+                characterStylePosition.y -= speed.up;
                 moved = true;
             }else if(speed.up > 0) {
                 speed.up = speed.up - deltaSpeed >= 0 ? speed.up - deltaSpeed : 0;
-                character_position.y -= speed.up;
+                characterPosition.y -= speed.up;
+                characterStylePosition.y -= speed.up;
                 moved = true;
             }else if(speed.up < 0) speed.up = 0;
 
             // down
-            if(moving_direction.down && !isStunned){
+            if(movingDirection.down && !isStunned){
                 if(speed.down < maxSpeed) speed.down += deltaSpeed;
                 else speed.down = maxSpeed;
-                character_position.y += speed.down;
+                characterPosition.y += speed.down;
+                characterStylePosition.y += speed.down;
                 moved = true;
             }else if(speed.down > 0) {
                 speed.down = speed.down - deltaSpeed >= 0 ? speed.down - deltaSpeed : 0;
-                character_position.y += speed.down;
+                characterPosition.y += speed.down;
+                characterStylePosition.y += speed.down;
                 moved = true;
             }else if(speed.down < 0) speed.down = 0;
         }
@@ -126,11 +136,11 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
         if(moved){
             drawOnCanvas();
             
-            camera_moving(character_position, speed);
+            camera_moving(characterPosition, speed);
 
             // getting everythig about lights or crashing
-            check_getting_lights(lights_ctx, character_position, lights_grid, isImmune); // check if I get  any light
-            let { stun, immune } = check_crashing(character_position, iceberg_grid, speed, isStunned, isImmune, deltaStamp); // check if I lose any heart
+            check_getting_lights(lights_ctx, characterPosition, lights_grid, isImmune, deltaStamp); // check if I get  any light
+            let { stun, immune } = check_crashing(characterPosition, iceberg_grid, speed, isStunned, isImmune, deltaStamp); // check if I lose any heart
             characterImage = useCharacterImages(characterImages, characterImage, speed, deltaStamp);
 
             isStunned = stun;
@@ -178,15 +188,16 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             removeImmune = true;
             
             drawOnCanvas();
-            check_getting_lights(lights_ctx, character_position, lights_grid, isImmune);
+            check_getting_lights(lights_ctx, characterPosition, lights_grid, isImmune);
         }
     }
 
     function drawOnCanvas(){
         characterBackground.clearRect(0, 0, characterCanvas.width, characterCanvas.height)
         if(!cleared) characterBackground.drawImage(characterImage, 0, 0, characterCanvas.width, characterCanvas.height);
-        characterCanvas.style.left = (character_position.x - parameters.standartSize.character.width / 2) + 'px';
-        characterCanvas.style.top = (character_position.y - parameters.standartSize.character.height * (260 / 320)) + 'px';
+        characterBackground.strokeRect(characterPosition.x - parseFloat(characterCanvas.style.left), characterPosition.y - parseFloat(characterCanvas.style.top), characterWidth, characterHeight);
+        characterCanvas.style.left = characterStylePosition.x + 'px';
+        characterCanvas.style.top = characterStylePosition.y + 'px';
     }
 }
 

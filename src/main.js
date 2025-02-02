@@ -23,8 +23,8 @@ document.querySelectorAll('.fullScreen').forEach(but => {
                 parameters.gameStarted = true;
                 animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
                 checkDevice();
-                background_sea();
                 drawRain();
+                background_sea();
 
                 const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
                 const { lightsCoordinateArr, lightsGridPosition, lightsBackground } = await lights(icebergCoordinateArr);

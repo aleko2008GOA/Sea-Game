@@ -20,7 +20,9 @@ const animations = {
         loseWinPause: false,
         gameProcess: false,
         gameWinLose: false,
-        pause: false
+        pause: false,
+        lightstrom: false,
+        doubleStorm: false
     },
     // character
     animationFrameFunc: null,
@@ -49,6 +51,8 @@ const parameters = {
     speed: {
         left: 0, right: 0, up: 0, down: 0
     },
+    position: { x: 0, y: 0 },
+    stylePosition: { x: 0, y: 0 },
     immutable: true,
     timeInterval: null,
     timeChangeFunc: null,

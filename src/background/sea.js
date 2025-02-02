@@ -1,5 +1,5 @@
 import { animations, parameters } from "../globalVariables/globalVariables.js";
-import { startRain } from "./lightStorm.js";
+import { lightning, startRain } from "./lightStorm.js";
 // canvases
 /** @type {HTMLCanvasElement} */
 const seaCanvasWavesLeft = document.getElementById('waves_left');

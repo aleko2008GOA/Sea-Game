@@ -28,7 +28,7 @@ html, body {
         z-index: 2;
         overflow: hidden;
 
-        #defaultCanvases {
+        #defaultCanvases {            
             > * {
                 width: 3000px;
                 height: 3000px;
@@ -48,34 +48,6 @@ html, body {
             #lights { z-index: 5; }
         }
 
-        #rain{
-            overflow: hidden;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            z-index: 7;
-
-            canvas{
-                position: fixed;
-                left: 0;
-                top: 0;
-                display: none;
-                overflow: hidden;
-            }
-
-            #lightning {
-                position: fixed;
-                display: none;
-                background-color: white;
-                opacity: 0.8;
-                width: 100%;
-                height: 100%;
-                overflow: hidden;
-            }
-        }
-
         /* character */
         #main_character {
             overflow: hidden;
@@ -93,6 +65,52 @@ html, body {
                 left: 150px;
                 top: 100px;
                 position: absolute;
+            }
+        }
+    }
+
+    #rain {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 7;
+
+        canvas{
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            overflow: hidden;
+        }
+
+        #lightning {
+            position: absolute;
+            background-color: white;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+
+            &.start-lightning-animation { 
+                animation: lightning 1s ease-in;
+            }
+
+            @keyframes lightning {
+                0% { opacity: 0; }
+                7% { opacity: 0.7; }
+                10% { opacity: 0.5; }
+                19% { opacity: 1; }
+                27% { opacity: 0.8; }
+                30% { opacity: 1; }
+                33% { opacity: 1; }
+                37% { opacity: 0.6; }
+                40% { opacity: 1; }
+                53% { opacity: 0.3; }
+                56% { opacity: 0.5; }
+                63% { opacity: 0.3; }
+                66% { opacity: 0.5; }
+                100% { opacity: 0; }    
             }
         }
     }
