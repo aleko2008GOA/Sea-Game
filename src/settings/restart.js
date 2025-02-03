@@ -11,6 +11,9 @@ const restart_button = document.querySelectorAll('.restart');
 const loading_screen = document.getElementById('loading');
 const settingsBar = document.getElementById('settings_bar');
 const pauseButtonTopLeft = document.getElementById('pause_button_top_left');
+const lightsCounter = document.getElementById('lightsCounter');
+const rain = document.getElementById('rain');
+const characterCanvas = document.getElementById('character_canvas');
 
 function restart(characterImagesArray){
     restart_button.forEach(button =>{
@@ -51,19 +54,31 @@ function restartAllFunctions(characterImagesArray){
     parameters.timeChangeFunc = null;
     parameters.immutable = true;
 
+    characterCanvas.style.left = parameters.standartSize.character.width * 2.5 + 'px';
+    characterCanvas.style.top = parameters.standartSize.character.height * (2 - 260 / 320) + 'px';
+
+    parameters.position.x = parseFloat(characterCanvas.style.left) + parameters.standartSize.character.width / 2;
+    parameters.position.y = parseFloat(characterCanvas.style.top) + characterCanvas.height - parameters.standartSize.character.height;
+    parameters.stylePosition.x = parseFloat(characterCanvas.style.left);
+    parameters.stylePosition.y = parseFloat(characterCanvas.style.top);
+
     canvases.forEach(val =>{
         if(val.id != 'waves_left' && val.id != 'waves_right' && val.id != 'sea'){
             const canvas = val.getContext('2d');
             canvas.clearRect(0, 0, val.width, val.height);
         }
     });
-    settings.forEach(val =>{
-        val.style.display = 'none';
+    settings.forEach(val => {
+        if(val.style.display !== 'none') val.style.display = 'none'
     });
+    rain.querySelectorAll('canvas').forEach(canvas => {
+        if(canvas.style.display !== 'none') canvas.style.display = 'none';
+    })
 
     loading_screen.style.display = 'flex';
     settingsBar.style.display = 'none';
     pauseButtonTopLeft.style.display = 'inline';
+    lightsCounter.querySelector('span').textContent = parameters.collected;
 
     palyground.scrollTo({
         top: 0,

@@ -11,7 +11,7 @@ let lastCanvas = null;
 let lastCanvasDouble = null;
 
 function drawRain(){
-    for(let i = 1; i <= 240; i++){
+    for(let i = 1; i <= 144; i++){
         /** @type {HTMLCanvasElement} */
         const canvas = document.createElement('canvas');
 
@@ -28,7 +28,7 @@ function drawRain(){
 
     const margin = { x: parameters.standartSize.drop.width * 10, y: parameters.standartSize.drop.height };
     
-    while(dropCoord.y < rainCanvasFrames[0].height){
+    while(dropCoord.y < rainCanvasFrames[0].height - parameters.standartSize.drop.height){
         while(dropCoord.x < rainCanvasFrames[0].width){
             const width = Math.round(parameters.standartSize.drop.width);
             const height = Math.round(parameters.standartSize.drop.height * Math.floor(1 + Math.random() * 4) / 3);
@@ -59,6 +59,8 @@ function drawRain(){
 }
 
 function startRain(deltaStamp) {
+    deltaStamp = Math.min(deltaStamp, 4);
+    
     let index = Math.floor(canvasToDisplayIndex);
     let indexDouble = rainCanvasFrames.length / 2 - 1 >= index ? rainCanvasFrames.length / 2 - 1 + index : index - (rainCanvasFrames.length / 2 - 1);
     
@@ -72,20 +74,22 @@ function startRain(deltaStamp) {
         rainCanvasFrames[indexDouble].style.display = 'block';
         lastCanvasDouble = rainCanvasFrames[indexDouble];
     }
-    if(index + 4 * deltaStamp < rainCanvasFrames.length) index += 4 * deltaStamp
-    else index = 4 * deltaStamp - rainCanvasFrames.length + index;
+    const stormSpeed = animations.moment.fastStorm ? 8 : 4;
+    if(index + stormSpeed * deltaStamp < rainCanvasFrames.length) index += stormSpeed * deltaStamp
+    else index = stormSpeed * deltaStamp - rainCanvasFrames.length + index;
     canvasToDisplayIndex = index;
 }
 
 function lightning(collected){
-    if(collected >= 1){
+    if(collected >= 6){
         setTimeout(() => {
             lightningDiv.style.animation = "none";
             void lightningDiv.offsetWidth;
             lightningDiv.style.animation = "lightning 1s linear";
 
-            if(collected === 1) animations.moment.lightstrom = true;
-            if(collected === 2) animations.moment.doubleStorm = true;
+            if(collected === 6) animations.moment.lightstrom = true;
+            if(collected === 8) animations.moment.doubleStorm = true;
+            if(collected === 10) animations.moment.fastStorm = true;
         }, Math.random() * 1000);
     }
 }

@@ -22,7 +22,8 @@ const animations = {
         gameWinLose: false,
         pause: false,
         lightstrom: false,
-        doubleStorm: false
+        doubleStorm: false,
+        fastStorm: false
     },
     // character
     animationFrameFunc: null,
@@ -116,7 +117,8 @@ const parameters = {
         drop: {
             width: 1,
             height: 35
-        }
+        },
+        snowflake: 3
     },
     defaultScreen: {
         width: 800,

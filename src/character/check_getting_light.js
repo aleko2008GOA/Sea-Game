@@ -2,6 +2,8 @@ import { lightning, startRain } from "../background/lightStorm.js";
 import win from "../game_over/win.js";
 import { parameters } from "../globalVariables/globalVariables.js";
 
+const lightsCounter = document.getElementById('lightsCounter');
+
 function check_getting_lights(lights_ctx, character_position, lights_grid, isImmune){
     const lightWidth = Math.round(parameters.standartSize.light.width);
     const lightHeight = Math.round(parameters.standartSize.light.height);
@@ -36,6 +38,7 @@ function check_getting_lights(lights_ctx, character_position, lights_grid, isImm
     if(!immune){
         if(is_on_light){
             console.log(++parameters.collected + ' lights collected');
+            lightsCounter.querySelector('span').textContent = parameters.collected;
             lightning(parameters.collected);
         }
 

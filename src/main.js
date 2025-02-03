@@ -13,6 +13,7 @@ import { animations, parameters } from './globalVariables/globalVariables.js';
 import './settings/animationFrameFPS.js';
 import './settings/setFPS.js';
 import { drawRain } from './background/lightStorm.js';
+import { drawSnow } from './background/snow.js';
 
 setParameters();
 document.querySelectorAll('.fullScreen').forEach(but => {
@@ -24,6 +25,7 @@ document.querySelectorAll('.fullScreen').forEach(but => {
                 animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
                 checkDevice();
                 drawRain();
+                drawSnow();
                 background_sea();
 
                 const { icebergCoordinateArr, icebergGridPosition } = await icebergs();

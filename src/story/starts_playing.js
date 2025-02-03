@@ -23,6 +23,7 @@ function start_playing(){
 
         start_timer();
         document.getElementById('pause_button_top_left').style.display = 'inline';
+        document.getElementById('lightsCounter').style.display = 'block';
     }, 4000);
 }
 
