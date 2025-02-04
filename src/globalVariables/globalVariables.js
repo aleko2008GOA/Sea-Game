@@ -23,7 +23,8 @@ const animations = {
         pause: false,
         lightstrom: false,
         doubleStorm: false,
-        fastStorm: false
+        fastStorm: false,
+        snow: true
     },
     // character
     animationFrameFunc: null,

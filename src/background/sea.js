@@ -1,5 +1,6 @@
 import { animations, parameters } from "../globalVariables/globalVariables.js";
 import { lightning, startRain } from "./lightStorm.js";
+import { startSnow } from "./snow.js";
 // canvases
 /** @type {HTMLCanvasElement} */
 const seaCanvasWavesLeft = document.getElementById('waves_left');
@@ -96,6 +97,7 @@ function background_sea(){
 
     function startAnimation(deltaStamp){
         startRain(deltaStamp);
+        startSnow(deltaStamp);
         if(animations.moment.gameProcess && !animations.moment.pause && animations.sea.waveSpeed > 200) 
             seconds += 1000 / 60 * deltaStamp;
         

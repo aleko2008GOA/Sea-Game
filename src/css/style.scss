@@ -1,4 +1,4 @@
-$standart-size-index: 450px / 800px;
+$standart-size-index: 450 / 800;
 
 * {
     box-sizing: border-box;
@@ -304,19 +304,19 @@ html, body {
 
     @media (max-width: 1920px) {
         width: 768px;
-        height: $standart-size-index * 768px;
+        height: calc(#{$standart-size-index} * 768px);
         font-size: 16px;
     }
 
     @media (max-width: 768px) {
         width: 480px;
-        height: $standart-size-index * 480px;
+        height: calc(#{$standart-size-index} * 480px);
         font-size: 14px;
     }
 
     @media (max-width: 480px) {
         width: 100%;
-        height: $standart-size-index * 480px;
+        height: auto;
         font-size: 10px;
     }
 }

@@ -29,9 +29,12 @@ function drawSnow(){
     while(flakeCoord.y < snowCanvasFrames[0].height){
         while(flakeCoord.x < snowCanvasFrames[0].width){
             const radius = Math.round(parameters.standartSize.snowflake * (Math.random() * 2.7 + 0.3) / 2);
+            let diffX = [0 - 2 * margin, 2 * margin][Math.floor(Math.random() * 2)];
 
-            let coordY = flakeCoord.y + radius * (Math.random() * 0.5 + 1);
-            let coordX = flakeCoord.x + radius * (Math.random() * 0.5 + 1);
+            const startY = flakeCoord.y + radius * (Math.random() * 0.5 + 1);
+            const startX = flakeCoord.x + radius * (Math.random() * 0.5 + 1);
+            let coordY = startY;
+            let coordX = startX;
 
             snowCanvasFramesContexs.forEach((ctx, index) =>{
                 if(coordY + radius < snowCanvasFrames[index].height){
@@ -44,13 +47,35 @@ function drawSnow(){
 
                 coordY += snowCanvasFrames[index].height / snowCanvasFramesContexs.length;
                 if(coordY > snowCanvasFrames[index].height) coordY = 0;
+
+                const N = snowCanvasFrames.length;
+                const factor = index < N / 2 ? (N - index) : (index - N);
+                const realDiffX = diffX * 2 * factor / N;
+
+                if(diffX > 0) coordX < startX + realDiffX ? coordX += radius * 0.1 : diffX = 0 - diffX;
+                else if(diffX < 0) coordX > startX + realDiffX ? coordX -= radius * 0.1 : diffX = 0 - diffX;
             });
-            flakeCoord.x += margin + margin * (Math.random() * 2 - 1);
+            flakeCoord.x += margin + margin * (Math.random() * 0.2 - 0.4);
         }
-        flakeCoord.y += margin + margin * (Math.random() * 2 - 1);
+        flakeCoord.y += margin + margin * (Math.random() * 0.2 - 0.4);
         flakeCoord.x = 0;
     }
-    snowCanvasFrames[0].style.display = 'block'
 }
 
-export { drawSnow }
+function startSnow(deltaStamp){
+    deltaStamp = Math.min(deltaStamp, snowCanvasFrames.length / 60);
+    
+    let index = canvasToDisplayIndex;
+    
+    if(animations.moment.snow){
+        if(lastCanvas) lastCanvas.style.display = 'none';
+        snowCanvasFrames[Math.floor(index)].style.display = 'block';
+        lastCanvas = snowCanvasFrames[Math.floor(index)];
+    }
+    
+    if(index + deltaStamp < snowCanvasFrames.length) index += deltaStamp
+    else index = deltaStamp - snowCanvasFrames.length + index;
+    canvasToDisplayIndex = index;
+}
+
+export { drawSnow, startSnow }

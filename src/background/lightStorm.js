@@ -51,30 +51,30 @@ function drawRain(){
                 coordY += rainCanvasFrames[index].height / rainCanvasFramesContexts.length;
                 if(coordY > rainCanvasFrames[index].height) coordY = 0;
             });
-            dropCoord.x += margin.x + margin.x * (Math.random() * 2 - 1);
+            dropCoord.x += margin.x + margin.x * (Math.random() * 0.4 - 0.2);
         }
-        dropCoord.y += margin.y + margin.y * (Math.random() * 2 - 1);
+        dropCoord.y += margin.y + margin.y * (Math.random() * 0.4 - 0.2);
         dropCoord.x = 0;
     }
 }
 
 function startRain(deltaStamp) {
-    deltaStamp = Math.min(deltaStamp, 4);
+    deltaStamp = Math.min(deltaStamp, rainCanvasFrames.length / 60);
     
-    let index = Math.floor(canvasToDisplayIndex);
+    let index = canvasToDisplayIndex;
     let indexDouble = rainCanvasFrames.length / 2 - 1 >= index ? rainCanvasFrames.length / 2 - 1 + index : index - (rainCanvasFrames.length / 2 - 1);
     
     if(animations.moment.lightstrom){
         if(lastCanvas) lastCanvas.style.display = 'none';
-        rainCanvasFrames[index].style.display = 'block';
-        lastCanvas = rainCanvasFrames[index];
+        rainCanvasFrames[Math.floor(index)].style.display = 'block';
+        lastCanvas = rainCanvasFrames[Math.floor(index)];
     }
     if(animations.moment.doubleStorm){
         if(lastCanvasDouble) lastCanvasDouble.style.display = 'none';
-        rainCanvasFrames[indexDouble].style.display = 'block';
-        lastCanvasDouble = rainCanvasFrames[indexDouble];
+        rainCanvasFrames[Math.floor(indexDouble)].style.display = 'block';
+        lastCanvasDouble = rainCanvasFrames[Math.floor(indexDouble)];
     }
-    const stormSpeed = animations.moment.fastStorm ? 8 : 4;
+    const stormSpeed = animations.moment.fastStorm ? 2 * rainCanvasFrames.length / 60 : rainCanvasFrames.length / 60;
     if(index + stormSpeed * deltaStamp < rainCanvasFrames.length) index += stormSpeed * deltaStamp
     else index = stormSpeed * deltaStamp - rainCanvasFrames.length + index;
     canvasToDisplayIndex = index;
