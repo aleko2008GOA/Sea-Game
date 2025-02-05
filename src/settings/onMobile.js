@@ -10,11 +10,12 @@ let startPointX;
 let startPointY;
 let joisticRadius;
 let circleRadius;
+let deviceType = null;
 
 function checkDevice(){
     const userAgent = navigator.userAgent.toLowerCase();
-    let sensore = navigator.maxTouchPoints;
-    let deviceType = null;
+    const sensore = navigator.maxTouchPoints;
+
     if((userAgent.includes('macintosh') || userAgent.includes('mac os x') || userAgent.includes('linux') || userAgent.includes('windows nt')) && !userAgent.includes('mobile')){
         deviceType = sensore > 0 ? 'Notebook' : 'PC/Notebook';
     }else if(userAgent.includes('iphone') || userAgent.includes('ipod') || userAgent.includes('windows phone') || userAgent.includes('mobile')){
@@ -28,7 +29,9 @@ function checkDevice(){
     }else deviceType = 'Unknown';
 
     parameters.device = deviceType;
+}
 
+function drawJoistick(){
     startPointX = parameters.standartSize.joystick.width / 2;
     startPointY = parameters.standartSize.joystick.height / 2;
     joisticRadius = parameters.standartSize.joystick.joisticRadius;
@@ -178,4 +181,4 @@ function drawOnCanvas(diagonal, x, y){
     }
 }
 
-export { checkDevice, moveMobile };
+export { checkDevice, moveMobile, drawJoistick };

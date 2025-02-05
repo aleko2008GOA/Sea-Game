@@ -8,7 +8,7 @@ import { character_moves } from './character/character_moving.js';
 import { restart } from './settings/restart.js';
 import characterImages from './images/loadingImages/character_images.js';
 import './settings/pause.js';
-import { checkDevice } from './settings/onMobile.js';
+import { checkDevice, drawJoistick } from './settings/onMobile.js';
 import { animations, parameters } from './globalVariables/globalVariables.js';
 import './settings/animationFrameFPS.js';
 import './settings/setFPS.js';
@@ -16,9 +16,14 @@ import { drawRain } from './background/lightStorm.js';
 import { drawSnow } from './background/snow.js';
 
 setParameters();
+checkDevice();
 document.querySelectorAll('.fullScreen').forEach(but => {
     but.addEventListener('click', async () => {
-        if(window.matchMedia("(orientation: landscape)")){
+        if(
+            (window.matchMedia("(orientation: landscape)").matches && 
+            (parameters.device.includes('Mobile') || parameters.device.includes('Tablet') || parameters.device.includes('Ebook'))) || 
+            (screen.width > screen.height)
+        ){
             await fullScreen();
             setTimeout(startGame, 0); // Microtasks did not work (I think full screen is macro) so i used Macrotask by timeout
         }else alert("Rotate your devise!");
@@ -29,7 +34,7 @@ async function startGame() {
     if(!parameters.gameStarted){
         parameters.gameStarted = true;
         animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
-        checkDevice();
+        drawJoistick();
         drawRain();
         drawSnow();
         background_sea();

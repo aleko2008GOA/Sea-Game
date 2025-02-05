@@ -41,6 +41,9 @@ function restartAllFunctions(characterImagesArray){
     animations.moment.startSrceen = true;
 
     animations.sea.waveSpeed = 1000;
+    parameters.images.lastRainCanvas = null;
+    parameters.images.lastDoubleRainCanvas = null;
+    parameters.images.lastSnowCanvas = null;
 
     animations.generator.interval = null;
     animations.generator.intervalFunc = null;

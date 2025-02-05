@@ -71,6 +71,7 @@ function startSnow(deltaStamp){
         if(lastCanvas) lastCanvas.style.display = 'none';
         snowCanvasFrames[Math.floor(index)].style.display = 'block';
         lastCanvas = snowCanvasFrames[Math.floor(index)];
+        parameters.images.lastSnowCanvas = lastCanvas;
     }
     
     if(index + deltaStamp < snowCanvasFrames.length) index += deltaStamp

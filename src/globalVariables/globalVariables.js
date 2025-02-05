@@ -127,7 +127,10 @@ const parameters = {
     },
 
     images: {
-        characterImages: null
+        characterImages: null,
+        lastRainCanvas: null,
+        lastDoubleRainCanvas: null,
+        lastSnowCanvas: null
     },
     FPS: 'auto'
 }
