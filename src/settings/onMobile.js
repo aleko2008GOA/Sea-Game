@@ -82,7 +82,10 @@ function drawJoistick(){
     } 
 }
 
-function moveMobile(speed, character_position, isStunned, maxSpeed, deltaSpeed){
+function moveMobile(speed, isStunned, maxSpeed, deltaSpeed){
+    const characterPosition = parameters.position;
+    const characterStylePosition = parameters.stylePosition;
+
     let moved = false;
     let x = parameters.positionMobile.x;
     let y = parameters.positionMobile.y;
@@ -106,46 +109,54 @@ function moveMobile(speed, character_position, isStunned, maxSpeed, deltaSpeed){
         // left
         if(speed.left < parameters.charMaxSpeed60FPSMobile.left) speed.left += deltaSpeed;
         else speed.left = parameters.charMaxSpeed60FPSMobile.left;
-        character_position.x -= speed.left;
+        characterPosition.x -= speed.left;
+        characterStylePosition.x -= speed.left;
 
         // right
         if(speed.right < parameters.charMaxSpeed60FPSMobile.right) speed.right += deltaSpeed;
         else speed.right = parameters.charMaxSpeed60FPSMobile.right;
-        character_position.x += speed.right;
+        characterPosition.x += speed.right;
+        characterStylePosition.x += speed.right;
 
         // up
         if(speed.up < parameters.charMaxSpeed60FPSMobile.up) speed.up += deltaSpeed;
         else speed.up = parameters.charMaxSpeed60FPSMobile.up;
-        character_position.y -= speed.up;
+        characterPosition.y -= speed.up;
+        characterStylePosition.y -= speed.up;
 
         // down 
         if(speed.down < parameters.charMaxSpeed60FPSMobile.down) speed.down += deltaSpeed;
         else speed.down = parameters.charMaxSpeed60FPSMobile.down;
-        character_position.y += speed.down;
+        characterPosition.y += speed.down;
+        characterStylePosition.y += speed.down;
 
         moved = true;
     }else{
         if(speed.left > 0) {
             speed.left = speed.left - deltaSpeed >= 0 ? speed.left - deltaSpeed : 0;
-            character_position.x -= speed.left;
+            characterPosition.x -= speed.left;
+            characterStylePosition.x -= speed.left;
             moved = true;
         }else if(speed.left < 0) speed.left = 0;
         
         if(speed.right > 0) {
             speed.right = speed.right - deltaSpeed >= 0 ? speed.right - deltaSpeed : 0;
-            character_position.x += speed.right;
+            characterPosition.x += speed.right;
+            characterStylePosition.x += speed.right;
             moved = true;
         }else if(speed.right < 0) speed.right = 0;
         
         if(speed.up > 0) {
             speed.up = speed.up - deltaSpeed >= 0 ? speed.up - deltaSpeed : 0;
-            character_position.y -= speed.up;
+            characterPosition.y -= speed.up;
+            characterStylePosition.y -= speed.up;
             moved = true;
         }else if(speed.up < 0) speed.up = 0;
         
         if(speed.down > 0) {
             speed.down = speed.down - deltaSpeed >= 0 ? speed.down - deltaSpeed : 0;
-            character_position.y += speed.down;
+            characterPosition.y += speed.down;
+            characterStylePosition.y += speed.down;
             moved = true;
         }else if(speed.down < 0) speed.down = 0;
     }
