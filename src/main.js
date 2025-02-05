@@ -20,26 +20,28 @@ document.querySelectorAll('.fullScreen').forEach(but => {
     but.addEventListener('click', async () => {
         if(screen.width > screen.height){
             await fullScreen();
-            if(!parameters.gameStarted){
-                parameters.gameStarted = true;
-                animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
-                checkDevice();
-                drawRain();
-                drawSnow();
-                background_sea();
-
-                const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
-                const { lightsCoordinateArr, lightsGridPosition, lightsBackground } = await lights(icebergCoordinateArr);
-                
-                const characterImagesArray = await characterImages;
-                character_moves(icebergGridPosition, lightsGridPosition, lightsBackground, characterImagesArray);
-                parameters.images.characterImages = characterImagesArray;
-                
-                restart(characterImagesArray);
-                loading(true, 100);
-            }
-        }else{
-            alert("Rotate your devise!");
-        }
+            setTimeout(startGame, 0); // Microtasks did not work (I think full screen is macro) so i used Macrotask by timeout
+        }else alert("Rotate your devise!");
     });
 }); 
+
+async function startGame() {
+    if(!parameters.gameStarted){
+        parameters.gameStarted = true;
+        animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
+        checkDevice();
+        drawRain();
+        drawSnow();
+        background_sea();
+
+        const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
+        const { lightsCoordinateArr, lightsGridPosition, lightsBackground } = await lights(icebergCoordinateArr);
+        
+        const characterImagesArray = await characterImages;
+        character_moves(icebergGridPosition, lightsGridPosition, lightsBackground, characterImagesArray);
+        parameters.images.characterImages = characterImagesArray;
+        
+        restart(characterImagesArray);
+        loading(true, 100);
+    }
+}
