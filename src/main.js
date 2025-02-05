@@ -18,7 +18,7 @@ import { drawSnow } from './background/snow.js';
 setParameters();
 document.querySelectorAll('.fullScreen').forEach(but => {
     but.addEventListener('click', async () => {
-        if(screen.width > screen.height){
+        if(window.matchMedia("(orientation: landscape)")){
             await fullScreen();
             setTimeout(startGame, 0); // Microtasks did not work (I think full screen is macro) so i used Macrotask by timeout
         }else alert("Rotate your devise!");
