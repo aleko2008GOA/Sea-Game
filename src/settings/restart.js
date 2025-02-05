@@ -41,6 +41,10 @@ function restartAllFunctions(characterImagesArray){
     animations.moment.startSrceen = true;
 
     animations.sea.waveSpeed = 1000;
+
+    if(parameters.images.lastRainCanvas) parameters.images.lastRainCanvas.style.display = 'none';
+    if(parameters.images.lastDoubleRainCanvas) parameters.images.lastDoubleRainCanvas.style.display = 'none';
+    if(parameters.images.lastSnowCanvas) parameters.images.lastSnowCanvas.style.display = 'none';
     parameters.images.lastRainCanvas = null;
     parameters.images.lastDoubleRainCanvas = null;
     parameters.images.lastSnowCanvas = null;

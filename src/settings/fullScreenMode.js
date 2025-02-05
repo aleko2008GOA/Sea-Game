@@ -36,6 +36,8 @@ async function fullScreen(){
                 await game.webkitRequestFullscreen();
             else if(game.msRequestFullscreen) // Internet Explorer / Edge
                 await game.msRequestFullscreen();
+
+            await waitForFullscreenChange(); // To be sure that we are fullscreen
             
             if(parameters.gameStarted){
                 await startAgain(parameters.images.characterImages);
@@ -61,6 +63,22 @@ async function fullScreen(){
         console.error('Your browser does not support out game, check for updates');
         console.error(new Error(err));
     }
+}
+
+function waitForFullscreenChange() {
+    return new Promise(resolve => {
+        const handler = () => {
+            document.removeEventListener('fullscreenchange', handler);
+            document.removeEventListener('webkitfullscreenchange', handler);
+            document.removeEventListener('mozfullscreenchange', handler);
+            document.removeEventListener('MSFullscreenChange', handler);
+            resolve();
+        };
+        document.addEventListener('fullscreenchange', handler);
+        document.addEventListener('webkitfullscreenchange', handler);
+        document.addEventListener('mozfullscreenchange', handler);
+        document.addEventListener('MSFullscreenChange', handler);
+    });
 }
 
 export default fullScreen;

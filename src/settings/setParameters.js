@@ -13,9 +13,15 @@ function setParameters(){
     let index = screenWidth / screenHeight >= 16 / 9 
         ? screenHeight / parameters.standartSize.screen.height 
         : screenWidth / parameters.standartSize.screen.width;
-    Object.keys(parameters.standartSize).forEach(key =>{
-        Object.keys(parameters.standartSize[key]).forEach(miniKey => parameters.standartSize[key][miniKey] *= index);
-    });
+
+    function setSize(obj) {
+        for (const key in obj) {
+            if(obj[key] && typeof obj[key] === "object") setSize(obj[key]);
+            else if(typeof obj[key] === "number") obj[key] *= index;
+        }
+    }
+    setSize(parameters.standartSize);
+
     parameters.charMaxSpeed60FPS *= index;
     parameters.charDeltaSpeed60FPS *= index;
     parameters.standartSize.screen.width = screenWidth;

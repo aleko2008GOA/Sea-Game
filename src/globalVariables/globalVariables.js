@@ -24,7 +24,7 @@ const animations = {
         lightstrom: false,
         doubleStorm: false,
         fastStorm: false,
-        snow: true
+        snow: false
     },
     // character
     animationFrameFunc: null,
@@ -119,7 +119,7 @@ const parameters = {
             width: 1,
             height: 35
         },
-        snowflake: 3
+        snowflake: 1.8
     },
     defaultScreen: {
         width: 800,
