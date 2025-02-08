@@ -8,15 +8,16 @@ import { character_moves } from './character/character_moving.js';
 import { restart } from './settings/restart.js';
 import characterImages from './images/loadingImages/character_images.js';
 import './settings/pause.js';
-import { checkDevice, drawJoistick } from './settings/onMobile.js';
+import { checkDevice } from './settings/onMobile.js';
+import { drawJoystick } from './settings/joystick.js';
 import { animations, parameters } from './globalVariables/globalVariables.js';
 import './settings/animationFrameFPS.js';
 import './settings/setFPS.js';
 import { drawRain } from './background/lightStorm.js';
 import { drawSnow } from './background/snow.js';
 
-setParameters();
-checkDevice();
+setParameters(); // set parameters by device
+checkDevice(); // check device
 document.querySelectorAll('.fullScreen').forEach(but => {
     but.addEventListener('click', async () => {
         if(
@@ -24,29 +25,49 @@ document.querySelectorAll('.fullScreen').forEach(but => {
             (parameters.device.includes('Mobile') || parameters.device.includes('Tablet') || parameters.device.includes('Ebook'))) || 
             (screen.width > screen.height)
         ){
-            await fullScreen();
+            await fullScreen(); // fullScreen mode
             setTimeout(startGame, 0); // Microtasks did not work (I think full screen is macro) so i used Macrotask by timeout
-        }else alert("Rotate your devise!");
+        }else alert("Rotate your devise!"); // device should be landscape
     });
 }); 
 
 async function startGame() {
     if(!parameters.gameStarted){
+        // gameStarted
         parameters.gameStarted = true;
+        await loading(1);
+        // start all animation
         animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
-        drawJoistick();
+        await loading(2);
+        // draw joistick
+        drawJoystick();
+        await loading(5);
+        // draw rain animation
         drawRain();
+        await loading(35);
+        // draw snow animation
         drawSnow();
+        await loading(65);
+        // draw sea
         background_sea();
-
+        await loading(70);
+        // draw icebergs
         const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
+        await loading(75);
+        // draw lights
         const { lightsCoordinateArr, lightsGridPosition, lightsBackground } = await lights(icebergCoordinateArr);
-        
+        await loading(80);
+        // load character position images
         const characterImagesArray = await characterImages;
+        await loading(85);
+        // character move logic
         character_moves(icebergGridPosition, lightsGridPosition, lightsBackground, characterImagesArray);
+        await loading(95);
+        // add images to global variables
         parameters.images.characterImages = characterImagesArray;
-        
+        await loading(99);
+        // restart function
         restart(characterImagesArray);
-        loading(true, 100);
+        await loading(100);
     }
 }

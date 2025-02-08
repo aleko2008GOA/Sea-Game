@@ -48,7 +48,7 @@ function setParameters(){
     characterCanvas.style.height = parameters.standartSize.character.height * 2 * (260 / 320) + 'px';
     characterCanvas.style.left = parameters.standartSize.character.width * 2.5 + 'px';
     characterCanvas.style.top = parameters.standartSize.character.height * (2 - 260 / 320) + 'px';
-
+    
     parameters.position.x = parseFloat(characterCanvas.style.left) + parameters.standartSize.character.width / 2;
     parameters.position.y = parseFloat(characterCanvas.style.top) + characterCanvas.height - parameters.standartSize.character.height;
     parameters.stylePosition.x = parseFloat(characterCanvas.style.left);

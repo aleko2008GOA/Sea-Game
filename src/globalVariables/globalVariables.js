@@ -45,6 +45,7 @@ const animations = {
 const parameters = {
     // device
     device: null,
+    joystick: false,
     // health
     hearts: 3,
     // lights
@@ -62,12 +63,8 @@ const parameters = {
 
     charWidthHeight: 50,
     charMaxSpeed60FPS: 2,
-    charMaxSpeed60FPSMobile: {
-        left: 0, right: 0, up: 0, down: 0
-    },
-    positionMobile: {
-        x: 0, y: 0
-    },
+    charMaxSpeed60FPSMobile: { left: 0, right: 0, up: 0, down: 0 },
+    positionMobile: { x: 0, y: 0 },
     charDeltaSpeed60FPS: 0.02,
     lastStamp: null,
     gameStarted: false,

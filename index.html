@@ -23,6 +23,7 @@
             </div>
         </div>
         <div id = "rain">
+            <canvas id="rainCanvas"></canvas>
             <div id = "lightning"></div>
         </div>
         <div id = "snow"></div>
@@ -36,6 +37,7 @@
 
             <div id = 'loading' class = 'settings'>
                 <h1>LOADING</h1>
+                <progress value = '0' max = '100' id = 'loadingProgressBar'></progress>
                 <button id = 'start'>Start</button>
             </div>
 
@@ -64,6 +66,7 @@
                     <button class = "restart">RESTART</button>
                     <button class = "fullScreen">EXIT</button>
                     <button class = "fps">FPS ></button>
+                    <button class = "joystick">Joystick ON</button>
                 </div>
                 <div id = "fps">
                     <button>30</button>

@@ -3,6 +3,7 @@ import { animations } from "../globalVariables/globalVariables.js";
 
 const loading_screen = document.getElementById('loading');
 const start_button = document.getElementById('start');
+const progressBar = document.getElementById('loadingProgressBar');
 
 start_button.addEventListener('click', () =>{
     animations.moment.startSrceen = false;
@@ -12,13 +13,18 @@ start_button.addEventListener('click', () =>{
     start_button.style.display = 'none';
     start_generation_text();
 });
-let loadingPercent = 0;
 
-function loading(ended, percent){
-    animations.moment.startSrceen = true;
-    
-    loadingPercent += percent;
-    if(ended) start_button.style.display = 'inline';
+async function loading(percent){
+    if(percent < 100){
+        progressBar.value = percent;
+        await new Promise(resolve => setTimeout(resolve, 0));
+    }else{
+        progressBar.value = percent;
+        setTimeout(() => {
+            animations.moment.startSrceen = true;
+            start_button.style.display = 'inline';
+        }, 1000);
+    }
 }
 
 export default loading;

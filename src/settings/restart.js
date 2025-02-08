@@ -95,10 +95,13 @@ function restartAllFunctions(characterImagesArray){
 
 async function startAgain(characterImagesArray){
     animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
+    await loading(24);
     const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
+    await loading(60);
     const { lightsCoordinateArr, lightsGridPosition, lightsBackground } = await lights(icebergCoordinateArr);
+    await loading(99);
     character_moves(icebergGridPosition, lightsGridPosition, lightsBackground, characterImagesArray);
-    loading(true, 100);
+    await loading(100);
 }
 
 export { restart, restartAllFunctions, startAgain };

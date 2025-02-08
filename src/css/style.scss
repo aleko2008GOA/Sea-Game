@@ -179,6 +179,7 @@ html, body {
     
         #loading {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             position: absolute;
@@ -187,6 +188,10 @@ html, body {
             z-index: 100;
             background-color: black;
             color: white;
+
+            * {
+                margin: 0;
+            }
         }
     
         #instructions {

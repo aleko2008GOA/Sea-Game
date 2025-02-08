@@ -197,6 +197,7 @@ html, body {
 }
 #game #other_instructions #loading {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: absolute;
@@ -205,6 +206,9 @@ html, body {
   z-index: 100;
   background-color: black;
   color: white;
+}
+#game #other_instructions #loading * {
+  margin: 0;
 }
 #game #other_instructions #instructions {
   background-color: white;

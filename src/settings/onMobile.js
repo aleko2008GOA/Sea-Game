@@ -1,88 +1,27 @@
 import { parameters } from "../globalVariables/globalVariables.js";
-
-/** @type {HTMLCanvasElement} */
-const onMobile = document.getElementById('on_mobile');
-
-/** @type {CanvasRenderingContext2D} */
-const onMobileCanvas = onMobile.getContext('2d');
-
-let startPointX;
-let startPointY;
-let joisticRadius;
-let circleRadius;
-let deviceType = null;
+import { drawOnCanvas } from "./joystick.js";
 
 function checkDevice(){
     const userAgent = navigator.userAgent.toLowerCase();
     const sensore = navigator.maxTouchPoints;
 
-    if((userAgent.includes('macintosh') || userAgent.includes('mac os x') || userAgent.includes('linux') || userAgent.includes('windows nt')) && !userAgent.includes('mobile')){
-        deviceType = sensore > 0 ? 'Notebook' : 'PC/Notebook';
-    }else if(userAgent.includes('iphone') || userAgent.includes('ipod') || userAgent.includes('windows phone') || userAgent.includes('mobile')){
-        deviceType = 'Mobile';
-    }else if(userAgent.includes('ipad')){
-        deviceType = 'Tablet';
-    }else if((userAgent.includes('android') || userAgent.includes('linux')) && userAgent.includes('mobile')){
-        deviceType = 'Mobile/Tablet';
-    }else if(userAgent.includes('kindle') || userAgent.includes('kobo') || userAgent.includes('ebook')){
-        deviceType = 'Ebook';
-    }else deviceType = 'Unknown';
+    if((userAgent.includes('macintosh') || userAgent.includes('mac os x') || userAgent.includes('linux') || userAgent.includes('windows nt')) && !userAgent.includes('mobile'))
+        var deviceType = sensore > 0 ? 'Notebook' : 'PC/Notebook';
+    else if(userAgent.includes('iphone') || userAgent.includes('ipod') || userAgent.includes('windows phone') || userAgent.includes('mobile'))
+        var deviceType = 'Mobile';
+    else if(userAgent.includes('ipad'))
+        var deviceType = 'Tablet';
+    else if((userAgent.includes('android') || userAgent.includes('linux')) && userAgent.includes('mobile'))
+        var deviceType = 'Mobile/Tablet';
+    else if(userAgent.includes('kindle') || userAgent.includes('kobo') || userAgent.includes('ebook'))
+        var deviceType = 'Ebook';
+    else var deviceType = 'Unknown';
 
     parameters.device = deviceType;
 }
 
-function drawJoistick(){
-    startPointX = parameters.standartSize.joystick.width / 2;
-    startPointY = parameters.standartSize.joystick.height / 2;
-    joisticRadius = parameters.standartSize.joystick.joisticRadius;
-    circleRadius = parameters.standartSize.joystick.joisticCircleRadius;
-
-    if(deviceType.includes('Mobile') || deviceType.includes('Tablet') || deviceType.includes('Ebook')){
-        onMobile.style.display = 'block';
-
-        onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
-        onMobileCanvas.beginPath();
-
-        onMobileCanvas.arc(startPointX, startPointY, joisticRadius, 0, 2 * Math.PI);
-        onMobileCanvas.fill();
-
-        onMobile.addEventListener('mousedown', e =>{
-            parameters.positionMobile.x = e.clientX - onMobile.getBoundingClientRect().left - startPointX;
-            parameters.positionMobile.y = e.clientY - onMobile.getBoundingClientRect().top - startPointY;
-        });
-        onMobile.addEventListener('mousemove', e =>{
-            parameters.positionMobile.x = e.clientX - onMobile.getBoundingClientRect().left - startPointX;
-            parameters.positionMobile.y = e.clientY - onMobile.getBoundingClientRect().top - startPointY;
-        });
-        onMobile.addEventListener('mouseup', () =>{
-            Object.keys(parameters.charMaxSpeed60FPSMobile).forEach(key => parameters.charMaxSpeed60FPSMobile[key] = 0);
-            onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
-            onMobileCanvas.beginPath();
-            onMobileCanvas.clearRect(0, 0, onMobile.width, onMobile.height);
-            onMobileCanvas.arc(startPointX, startPointY, joisticRadius, 0, 2 * Math.PI);
-            onMobileCanvas.fill();
-        });
-
-        onMobile.addEventListener('touchstart', e =>{
-            parameters.positionMobile.x = e.touches[0].clientX - onMobile.getBoundingClientRect().left - startPointX;
-            parameters.positionMobile.y = e.touches[0].clientY - onMobile.getBoundingClientRect().top - startPointY;
-        });
-        onMobile.addEventListener('touchmove', e =>{
-            parameters.positionMobile.x = e.touches[0].clientX - onMobile.getBoundingClientRect().left - startPointX;
-            parameters.positionMobile.y = e.touches[0].clientY - onMobile.getBoundingClientRect().top - startPointY;
-        });
-        onMobile.addEventListener("touchend", () =>{
-            Object.keys(parameters.charMaxSpeed60FPSMobile).forEach(key => parameters.charMaxSpeed60FPSMobile[key] = 0);
-            onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
-            onMobileCanvas.beginPath();
-            onMobileCanvas.clearRect(0, 0, onMobile.width, onMobile.height);
-            onMobileCanvas.arc(startPointX, startPointY, joisticRadius, 0, 2 * Math.PI);
-            onMobileCanvas.fill();
-        })
-    } 
-}
-
 function moveMobile(speed, isStunned, maxSpeed, deltaSpeed){
+    const circleRadius = parameters.standartSize.joystick.joisticCircleRadius;
     const characterPosition = parameters.position;
     const characterStylePosition = parameters.stylePosition;
 
@@ -162,34 +101,7 @@ function moveMobile(speed, isStunned, maxSpeed, deltaSpeed){
     }
 
     drawOnCanvas(diagonal, x, y);
-
     return moved;
 }
 
-function drawOnCanvas(diagonal, x, y){
-    if(diagonal < 0.6 * circleRadius){
-        onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
-        onMobileCanvas.beginPath();
-        onMobileCanvas.clearRect(0, 0, onMobile.width, onMobile.height);
-        onMobileCanvas.arc(startPointX, startPointY, joisticRadius, 0, 2 * Math.PI);
-        onMobileCanvas.fill();
-    }else{
-        onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
-        onMobileCanvas.beginPath();
-        onMobileCanvas.clearRect(0, 0, onMobile.width, onMobile.height);
-        onMobileCanvas.arc(startPointX, startPointY, joisticRadius, 0, 2 * Math.PI);
-        onMobileCanvas.fill();
-
-        onMobileCanvas.beginPath();
-        onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.7)";
-        if(diagonal < joisticRadius){
-            onMobileCanvas.arc(x + startPointX, y + startPointY, circleRadius, 0, 2 * Math.PI);
-        }else{
-            let k = joisticRadius / diagonal;
-            onMobileCanvas.arc(k * x + startPointX, k * y + startPointY, circleRadius, 0, 2 * Math.PI);
-        }
-        onMobileCanvas.fill();
-    }
-}
-
-export { checkDevice, moveMobile, drawJoistick };
+export { checkDevice, moveMobile };
