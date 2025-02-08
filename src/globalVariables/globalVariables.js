@@ -51,15 +51,14 @@ const parameters = {
     // lights
     collected: 0,
     // other
-    speed: {
-        left: 0, right: 0, up: 0, down: 0
-    },
+    speed: { left: 0, right: 0, up: 0, down: 0 },
     position: { x: 0, y: 0 },
     stylePosition: { x: 0, y: 0 },
     immutable: true,
     timeInterval: null,
     timeChangeFunc: null,
     time: 300,
+    delay: 0.01,
 
     charWidthHeight: 50,
     charMaxSpeed60FPS: 2,
@@ -68,6 +67,11 @@ const parameters = {
     charDeltaSpeed60FPS: 0.02,
     lastStamp: null,
     gameStarted: false,
+
+    iceberg: { 
+        grid: { x: 0, y: 0 }, 
+        position: { x: 0, y: 0 }
+    },
     // object sizes
     standartSize: {
         chunck: {

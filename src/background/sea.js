@@ -98,13 +98,6 @@ function background_sea(){
     function startAnimation(deltaStamp){
         startRain(deltaStamp);
         startSnow(deltaStamp);
-        if(animations.moment.gameProcess && !animations.moment.pause && animations.sea.waveSpeed > 200) 
-            seconds += 1000 / 60 * deltaStamp;
-        
-        if(seconds >= 1000){
-            animations.sea.waveSpeed -= 3;
-            seconds -= Math.floor(seconds);
-        }
 
         if(index < animations.sea.waveSpeed / 1000 * (60 / deltaStamp)) index++;
         else{

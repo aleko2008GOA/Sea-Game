@@ -3,6 +3,7 @@ import { icebergs } from '../objects/icebergs.js';
 import { lights } from '../objects/lights.js';
 import { character_moves } from '../character/character_moving.js';
 import { animations, parameters } from '../globalVariables/globalVariables.js';
+import { drawJoystick } from './joystick.js';
 
 const palyground = document.getElementById('game_main_container');
 const canvases = document.querySelectorAll('canvas');
@@ -24,7 +25,7 @@ function restart(characterImagesArray){
     });
 }
 
-function restartAllFunctions(characterImagesArray){
+function restartAllFunctions(){
     cancelAnimationFrame(animations.allFrameId);
     clearInterval(animations.generator.interval);
     clearInterval(parameters.timeInterval);
@@ -54,6 +55,7 @@ function restartAllFunctions(characterImagesArray){
 
     parameters.timeInterval = null;
     parameters.time = 300;
+    parameters.delay = 0.01;
     parameters.hearts = 3;
     Object.keys(parameters.speed).forEach(key => parameters.speed[key] = 0);
     parameters.collected = 0;
@@ -96,11 +98,13 @@ function restartAllFunctions(characterImagesArray){
 async function startAgain(characterImagesArray){
     animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
     await loading(24);
-    const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
+    drawJoystick();
     await loading(60);
-    const { lightsCoordinateArr, lightsGridPosition, lightsBackground } = await lights(icebergCoordinateArr);
+    const { icebergGridPosition } = await icebergs();
+    await loading(70);
+    await lights(icebergGridPosition);
     await loading(99);
-    character_moves(icebergGridPosition, lightsGridPosition, lightsBackground, characterImagesArray);
+    character_moves(icebergGridPosition, characterImagesArray);
     await loading(100);
 }
 

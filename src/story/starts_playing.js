@@ -30,13 +30,13 @@ function start_playing(){
 function start_timer(){
     parameters.immutable = false;
     timer.style.display = 'block';
-    parameters.timeInterval = setInterval(() => timeChangeFunction(), 10);
+    parameters.timeInterval = setInterval(timeChangeFunction, 10);
 }
 
 function timeChangeFunction(){
     if(parameters.time > 0){
         time.textContent = Math.floor(parameters.time / 60) + ':' + (parameters.time % 60).toFixed(2);
-        parameters.time -= 0.01;
+        parameters.time -= parameters.delay;
     }else{
         clearInterval(parameters.timeInterval);
         parameters.timeInterval = null;

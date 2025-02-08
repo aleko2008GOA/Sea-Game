@@ -10,57 +10,64 @@ const lightsBackground = lightsCanvas.getContext('2d');
 
 let lightImage = null;
 
-async function lights(icebergCoordinateArr){
+async function lights(icebergGridPosition){
     if(!lightImage) lightImage = await light_normal_image;
 
-    const lightWidth = Math.round(parameters.standartSize.light.width);
-    const lightHeight = Math.round(parameters.standartSize.light.height);
-    const canvasWidth = Math.round(parameters.standartSize.canvas.width);
-    const canvasHeight = Math.round(parameters.standartSize.canvas.height);
-    const chunkX = canvasWidth / 10;
-    const chunkY = canvasHeight / 10;
+    const lightWidth = parameters.standartSize.light.width;
+    const lightHeight = parameters.standartSize.light.height;
+    lightsCanvas.width = lightWidth;
+    lightsCanvas.height = lightHeight;
+    lightsCanvas.style.width = lightWidth + 'px';
+    lightsCanvas.style.height = lightHeight + 'px';
+    const chunkX = parameters.standartSize.canvas.width / 10;
+    const chunkY = parameters.standartSize.canvas.height / 10;
 
-    const { lightsCoordinateArr, lightsGridPosition } = createRandomLights(icebergCoordinateArr, lightWidth, lightHeight, chunkX, chunkY);
-    
-    return { lightsCoordinateArr, lightsGridPosition, lightsBackground };
+    createRandomLights(icebergGridPosition, lightWidth, lightHeight, chunkX, chunkY);
 }
 
 // creating lights in random position on canvas
-function createRandomLights(icebergCoordinateArr, lightWidth, lightHeight, chunkX, chunkY){
-    const lightsCoordinateArr = [];
-    const lightsGridPosition = Array.from({ length: 10 }, () => 
-        Array.from({ length: 10 }, () => null)
-    );
-    const lights = [];
+function createRandomLights(icebergGridPosition, lightWidth, lightHeight, chunkX, chunkY, lightGrid = null){
+    const chunck = { x: Math.floor(Math.random() * 9 + 1), y: Math.floor(Math.random() * 9 + 1) };
 
-    for(let y = 0; y < 8; y++){
-        for(let x = 0; x < 8; x++){
-            let coord = {x: (x + 1) * chunkX, y: (y + 1) * chunkY};
-            lights.push(coord);
-        }
-    }
-
-    const setOfLights = new Set(lights);
-
-    for(let i = 0; i < 12; i++){
-        const lightCoord = Array.from(setOfLights)[Math.floor(Math.random() * Array.from(setOfLights).length)];
-        
+    if(lightGrid){
         do {
-            var x = Math.floor(Math.random() * 251) + lightCoord.x;
-            var y = Math.floor(Math.random() * 251) + lightCoord.y;
-        }while(icebergCoordinateArr.find(val => {
-            return (val.x < x + lightWidth && val.x > x - lightWidth) && (val.y < y + lightHeight && val.y > y - lightHeight);
-        }));
-        setOfLights.delete(lightCoord);
+            var x = Math.floor(Math.random() * 9 + 1);
+            var y = Math.floor(Math.random() * 9 + 1);
+        } while(Math.abs(lightGrid.x - x) <= 1 && Math.abs(lightGrid.y - y) <= 1);
 
-        lightsBackground.strokeRect(x, y, lightWidth, lightHeight);
-        lightsBackground.drawImage(lightImage, x, y, lightWidth, lightHeight);
-
-        lightsCoordinateArr.push({x, y});
-        lightsGridPosition[Math.floor(y / chunkY)][Math.floor(x / chunkX)] = {x, y};
+        chunck.x = x;
+        chunck.y = y;
     }
+    const icebergsPosition = icebergGridPosition[chunck.y][chunck.x];
+    
+    do {
+        var x = Math.floor(Math.random() * (chunkX - lightWidth)) + chunck.x * chunkX;
+        var y = Math.floor(Math.random() * (chunkY - lightHeight)) + chunck.y * chunkY;
+    } while(
+        Array.isArray(icebergsPosition) ?
+        icebergsPosition.some(iceberg => 
+            iceberg.x < x + lightWidth && iceberg.x > x - lightWidth && 
+            iceberg.y < y + lightHeight && iceberg.y > y - lightHeight
+        ) :
+        icebergsPosition.x < x + lightWidth && icebergsPosition.x > x - lightWidth && 
+        icebergsPosition.y < y + lightHeight && icebergsPosition.y > y - lightHeight
+    );
 
-    return { lightsCoordinateArr, lightsGridPosition };
+    if(!lightGrid){
+        lightsBackground.strokeRect(0, 0, lightsCanvas.width, lightsCanvas.height);
+        lightsBackground.drawImage(lightImage, 0, 0, lightsCanvas.width, lightsCanvas.height);
+    }
+    lightsCanvas.style.left = x + 'px';
+    lightsCanvas.style.top = y + 'px';
+
+    const lightCoordinate = { x, y };
+    const lightGridPosition = chunck;
+
+    parameters.iceberg.grid.x = lightGridPosition.x;
+    parameters.iceberg.grid.y = lightGridPosition.y;
+    parameters.iceberg.position.x = lightCoordinate.x;
+    parameters.iceberg.position.y = lightCoordinate.y;
+    console.log(lightCoordinate, lightGridPosition)
 }
 
-export { lights };
+export { lights, createRandomLights };

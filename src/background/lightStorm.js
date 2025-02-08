@@ -91,7 +91,12 @@ function lightning(collected){
 
             if(collected === 6) animations.moment.lightstrom = true;
             if(collected === 8) animations.moment.doubleStorm = true;
-            if(collected === 10) animations.moment.fastStorm = true;
+            if(collected === 10){
+                animations.moment.fastStorm = true;
+                parameters.delay = 0.02;
+            }
+            if(collected === 11) parameters.delay = 0.03;
+            animations.sea.waveSpeed -= 130;
         }, Math.random() * 1000);
     }
 }

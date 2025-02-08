@@ -52,16 +52,16 @@ async function startGame() {
         background_sea();
         await loading(70);
         // draw icebergs
-        const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
+        const { icebergGridPosition } = await icebergs();
         await loading(75);
         // draw lights
-        const { lightsCoordinateArr, lightsGridPosition, lightsBackground } = await lights(icebergCoordinateArr);
+        await lights(icebergGridPosition);
         await loading(80);
         // load character position images
         const characterImagesArray = await characterImages;
         await loading(85);
         // character move logic
-        character_moves(icebergGridPosition, lightsGridPosition, lightsBackground, characterImagesArray);
+        character_moves(icebergGridPosition, characterImagesArray);
         await loading(95);
         // add images to global variables
         parameters.images.characterImages = characterImagesArray;

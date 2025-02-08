@@ -15,7 +15,10 @@ const characterBackground = characterCanvas.getContext('2d');
 const characterImages = [];
 let characterImage;
 
-function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
+function character_moves(icebergGrid, imgs){
+    const lightGrid = parameters.iceberg.grid;
+    const lightPosition = parameters.iceberg.position;
+    
     let characterWidth = parameters.standartSize.character.width;
     let characterHeight = parameters.standartSize.character.height;
     
@@ -138,8 +141,8 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             camera_moving(characterPosition, speed);
 
             // getting everythig about lights or crashing
-            check_getting_lights(lights_ctx, characterPosition, lights_grid, isImmune, deltaStamp); // check if I get  any light
-            let { stun, immune } = check_crashing(characterPosition, iceberg_grid, speed, isStunned, isImmune, deltaStamp); // check if I lose any heart
+            check_getting_lights(icebergGrid, characterPosition, lightGrid, lightPosition, isImmune); // check if I get  any light
+            let { stun, immune } = check_crashing(characterPosition, icebergGrid, speed, isStunned, isImmune, deltaStamp); // check if I lose any heart
             characterImage = useCharacterImages(characterImages, characterImage, speed, deltaStamp);
 
             isStunned = stun;
@@ -187,7 +190,7 @@ function character_moves(iceberg_grid, lights_grid, lights_ctx, imgs){
             removeImmune = true;
             
             drawOnCanvas();
-            check_getting_lights(lights_ctx, characterPosition, lights_grid, isImmune);
+            check_getting_lights(icebergGrid, characterPosition, lightGrid, lightPosition, isImmune);
         }
     }
 

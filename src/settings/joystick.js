@@ -18,6 +18,30 @@ let joystickActive = false;
 let startPointX;
 let startPointY;
 
+onMobile.addEventListener('mousedown', (e) => calculatePosition(e, true));
+onMobile.addEventListener('mousemove', calculatePosition);
+onMobile.addEventListener('mouseup', stopJoystick);
+onMobile.addEventListener('mouseleave', stopJoystick);
+
+onMobile.addEventListener('touchstart', (e) => calculatePosition(e, true));
+onMobile.addEventListener('touchmove', calculatePosition);
+onMobile.addEventListener("touchend", stopJoystick);
+
+joystickSetting.forEach(joystick =>{
+    joystick.addEventListener('click', () =>{
+        if(buttonVal === 'ON'){
+            onMobile.style.display = 'block';
+            parameters.joystick = true;
+            buttonVal = 'OFF';
+        }else{
+            onMobile.style.display = 'none';
+            parameters.joystick = false;
+            buttonVal = 'ON';
+        }
+        joystick.textContent = 'Joystick ' + buttonVal;
+    });
+});
+
 function drawJoystick(){
     circleRadius = parameters.standartSize.joystick.joisticCircleRadius;
     joisticRadius = parameters.standartSize.joystick.joisticRadius;
@@ -38,33 +62,9 @@ function drawJoystick(){
 
     onMobileCanvas.arc(startPointX, startPointY, joisticRadius, 0, 2 * Math.PI);
     onMobileCanvas.fill();
-
-    onMobile.addEventListener('mousedown', (e) => calculatePosition(e, true));
-    onMobile.addEventListener('mousemove', calculatePosition);
-    onMobile.addEventListener('mouseup', stopJoystick);
-    onMobile.addEventListener('mouseleave', stopJoystick);
-
-    onMobile.addEventListener('touchstart', (e) => calculatePosition(e, true));
-    onMobile.addEventListener('touchmove', calculatePosition);
-    onMobile.addEventListener("touchend", stopJoystick);
-
-    joystickSetting.forEach(joystick =>{
-        joystick.addEventListener('click', () =>{
-            if(buttonVal === 'ON'){
-                onMobile.style.display = 'block';
-                parameters.joystick = true;
-                buttonVal = 'OFF';
-            }else{
-                onMobile.style.display = 'none';
-                parameters.joystick = false;
-                buttonVal = 'ON';
-            }
-            joystick.textContent = 'Joystick ' + buttonVal;
-        });
-    });
 }
 
-function drawOnCanvas(diagonal, x, y){
+function drawOnCanvas(diagonal = 0, x = 0, y = 0){
     if(joystickActive){
         if(diagonal < 0.6 * circleRadius){
             onMobileCanvas.fillStyle = "rgba(20, 20, 20, 0.3)";
