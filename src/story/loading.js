@@ -15,7 +15,7 @@ start_button.addEventListener('click', () =>{
 });
 
 async function loading(percent){
-    if(percent < 1000){
+    if(percent < 5000){
         progressBar.value = percent;
         await new Promise(resolve => setTimeout(resolve, 0));
     }else{
