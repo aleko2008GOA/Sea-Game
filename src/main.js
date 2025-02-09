@@ -46,7 +46,7 @@ async function startGame() {
         await drawRain();
         await loading(35);
         // draw snow animation
-        drawSnow();
+        await drawSnow();
         await loading(65);
         // draw sea
         background_sea();
