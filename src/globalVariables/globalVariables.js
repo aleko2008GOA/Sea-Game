@@ -46,6 +46,7 @@ const parameters = {
     // device
     device: null,
     joystick: false,
+    loaded: 0,
     // health
     hearts: 3,
     // lights

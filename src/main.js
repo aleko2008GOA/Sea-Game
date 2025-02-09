@@ -43,7 +43,7 @@ async function startGame() {
         drawJoystick();
         await loading(5);
         // draw rain animation
-        drawRain();
+        await drawRain();
         await loading(35);
         // draw snow animation
         drawSnow();
@@ -68,6 +68,6 @@ async function startGame() {
         await loading(99);
         // restart function
         restart(characterImagesArray);
-        await loading(100);
+        await loading(5000);
     }
 }

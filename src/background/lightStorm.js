@@ -1,4 +1,5 @@
 import { parameters, animations } from "../globalVariables/globalVariables.js";
+import loading from "../story/loading.js";
 
 const rain = document.getElementById('rain');
 const lightningDiv = document.getElementById('lightning');
@@ -10,7 +11,7 @@ let canvasToDisplayIndex = 0;
 let lastCanvas = null;
 let lastCanvasDouble = null;
 
-function drawRain(){
+async function drawRain(){
     for(let i = 1; i <= 144; i++){
         /** @type {HTMLCanvasElement} */
         const canvas = document.createElement('canvas');
@@ -36,21 +37,25 @@ function drawRain(){
             let coordY = dropCoord.y + height * (Math.random() * 0.5 + 1);
             let coordX = dropCoord.x + width * (5 * Math.random() - 2);
 
-            rainCanvasFramesContexts.forEach((ctx, index) =>{
-                if(coordY + height < rainCanvasFrames[index].height){
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.3})`;
-                    ctx.lineWidth = width;
-                    ctx.lineCap = 'round';
+            await new Promise(resolve =>{
+                rainCanvasFramesContexts.forEach((ctx, index) =>{
+                    if(coordY + height < rainCanvasFrames[index].height){
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.3})`;
+                        ctx.lineWidth = width;
+                        ctx.lineCap = 'round';
 
-                    ctx.beginPath();
-                    ctx.moveTo(coordX, coordY);
-                    ctx.lineTo(coordX, coordY + height);
-                    ctx.stroke();
-                }
+                        ctx.beginPath();
+                        ctx.moveTo(coordX, coordY);
+                        ctx.lineTo(coordX, coordY + height);
+                        ctx.stroke();
+                    }
 
-                coordY += rainCanvasFrames[index].height / rainCanvasFramesContexts.length;
-                if(coordY > rainCanvasFrames[index].height) coordY = 0;
+                    coordY += rainCanvasFrames[index].height / rainCanvasFramesContexts.length;
+                    if(coordY > rainCanvasFrames[index].height) coordY = 0;
+                });
+                setTimeout(resolve, 0);
             });
+            await loading(++parameters.loaded);
             dropCoord.x += margin.x + margin.x * (Math.random() * 0.4 - 0.2);
         }
         dropCoord.y += margin.y + margin.y * (Math.random() * 0.4 - 0.2);
