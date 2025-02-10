@@ -18,8 +18,9 @@ async function loading(percent){
     if(percent < 5000){
         progressBar.value = percent;
         await new Promise(resolve => setTimeout(resolve, 0));
-    }else{
+    }else if(!animations.moment.notLoaded){
         progressBar.value = percent;
+
         setTimeout(() => {
             animations.moment.startSrceen = true;
             start_button.style.display = 'inline';

@@ -14,7 +14,6 @@ const animations = {
     },
     // game moment
     moment: {
-        notLoaded: true,
         startSrceen: false,
         generating: false,
         loseWinPause: false,
@@ -47,6 +46,7 @@ const parameters = {
     device: null,
     joystick: false,
     loaded: 0,
+    loadingProcces: false,
     // health
     hearts: 3,
     // lights

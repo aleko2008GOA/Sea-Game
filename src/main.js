@@ -16,8 +16,8 @@ import './settings/setFPS.js';
 import { drawRain } from './background/lightStorm.js';
 import { drawSnow } from './background/snow.js';
 
-setParameters(); // set parameters by device
 checkDevice(); // check device
+setParameters(); // set parameters by device
 document.querySelectorAll('.fullScreen').forEach(but => {
     but.addEventListener('click', async () => {
         if(
@@ -27,12 +27,13 @@ document.querySelectorAll('.fullScreen').forEach(but => {
         ){
             await fullScreen(); // fullScreen mode
             setTimeout(startGame, 0); // Microtasks did not work (I think full screen is macro) so i used Macrotask by timeout
-        }else alert("Rotate your devise!"); // device should be landscape
+        } else alert("Rotate your devise!"); // device should be landscape
     });
 }); 
 
 async function startGame() {
     if(!parameters.gameStarted){
+        parameters.loadingProcces = true;
         // gameStarted
         parameters.gameStarted = true;
         await loading(1);
@@ -69,5 +70,6 @@ async function startGame() {
         // restart function
         restart(characterImagesArray);
         await loading(5000);
+        parameters.loadingProcces = false;
     }
 }

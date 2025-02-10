@@ -5,6 +5,7 @@ const lose_screen = document.getElementById('lose_screen');
 
 function game_lost(text){ // losing screen
     animations.moment.loseWinPause = false;
+    animations.moment.gameProcess = false;
     animations.moment.gameWinLose = true;
 
     lose_screen.style.display = 'flex';

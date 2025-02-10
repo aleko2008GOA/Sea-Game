@@ -17,6 +17,8 @@ function checkDevice(){
         var deviceType = 'Ebook';
     else var deviceType = 'Unknown';
 
+    if(deviceType.includes('Mobile') || deviceType.includes('Tablet') || deviceType.includes('Ebook'))
+        for(const key in parameters.standartSize.joystick) parameters.standartSize.joystick[key] *= 1.6;
     parameters.device = deviceType;
 }
 
