@@ -1,5 +1,5 @@
 import start_generation_text from "./start_story.js";
-import { animations } from "../globalVariables/globalVariables.js";
+import { animations, parameters } from "../globalVariables/globalVariables.js";
 
 const loading_screen = document.getElementById('loading');
 const start_button = document.getElementById('start');
@@ -15,13 +15,13 @@ start_button.addEventListener('click', () =>{
 });
 
 async function loading(percent){
-    if(percent < 5000){
+    if(percent < 100){
         progressBar.value = percent;
         await new Promise(resolve => setTimeout(resolve, 0));
     }else if(!animations.moment.notLoaded){
         progressBar.value = percent;
 
-        setTimeout(() => {
+        animations.loadingTimeout = setTimeout(() => {
             animations.moment.startSrceen = true;
             start_button.style.display = 'inline';
         }, 1000);

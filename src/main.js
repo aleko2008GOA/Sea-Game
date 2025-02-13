@@ -44,10 +44,10 @@ async function startGame() {
         drawJoystick();
         await loading(5);
         // draw rain animation
-        await drawRain();
+        drawRain();
         await loading(35);
         // draw snow animation
-        await drawSnow();
+        drawSnow();
         await loading(65);
         // draw sea
         background_sea();
@@ -69,7 +69,7 @@ async function startGame() {
         await loading(99);
         // restart function
         restart(characterImagesArray);
-        await loading(5000);
+        await loading(100);
         parameters.loadingProcces = false;
     }
 }

@@ -38,7 +38,10 @@ const animations = {
     eventListenersAdded: false,
 
     allFrameId: null,
-    allFrameFunc: null
+    allFrameFunc: null,
+
+    loadingTimeout: null,
+    startingGameTimeout: null
 }
 
 const parameters = {
@@ -119,9 +122,13 @@ const parameters = {
         },
         drop: {
             width: 1,
-            height: 35
+            height: 35,
+            speed: 8
         },
-        snowflake: 1.8
+        snowflake: {
+            radius: 1.8,
+            speed: 1
+        }
     },
     defaultScreen: {
         width: 800,

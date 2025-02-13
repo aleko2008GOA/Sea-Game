@@ -21,12 +21,19 @@
             <div id = 'main_character'>
                 <canvas id = "character_canvas" width="100" height="81.25"></canvas>
             </div>
+            <div id = 'whale'>
+                <canvas id = 'whaleCanvas'></canvas>
+            </div>
         </div>
         <div id = "rain">
-            <canvas id="rainCanvas"></canvas>
+            <canvas id = "rainCanvas"></canvas>
+            <canvas id = 'helperRainCanvas'></canvas>
             <div id = "lightning"></div>
         </div>
-        <div id = "snow"></div>
+        <div id = "snow">
+            <canvas id = "snowCanvas"></canvas>
+            <canvas id = 'helperSnowCanvas'></canvas>
+        </div>
         <div id = 'other_instructions'>
             <button id = "fullScreenStart" class = "fullScreen">Full screen</button>
 
@@ -37,7 +44,7 @@
 
             <div id = 'loading' class = 'settings'>
                 <h1>LOADING</h1>
-                <progress value = '0' max = '5000' id = 'loadingProgressBar'></progress>
+                <progress value = '0' max = '100' id = 'loadingProgressBar'></progress>
                 <button id = 'start'>Start</button>
             </div>
 

@@ -7,11 +7,23 @@ const fullScreenButtonMain = document.getElementById('fullScreenStart');
 const startButton = document.getElementById('start');
 
 document.addEventListener('fullscreenchange', () =>{
+    if(animations.loadingTimeout){
+        clearTimeout(animations.loadingTimeout);
+        animations.loadingTimeout = null;
+    }
+    if(animations.startingGameTimeout){
+        clearTimeout(animations.startingGameTimeout);
+        animations.startingGameTimeout = null;
+    }
     if (!document.fullscreenElement) {
         if(!parameters.loadingProcces) restartAllFunctions(parameters.images.characterImages);
         fullScreenButtonMain.style.display = 'inline';
         startButton.style.display = 'none';
     }
+});
+
+window.addEventListener('orientationchange', async () => {
+    if(!window.matchMedia("(orientation: landscape)").matches) await fullScreen();
 });
 
 document.addEventListener('visibilitychange', () =>{

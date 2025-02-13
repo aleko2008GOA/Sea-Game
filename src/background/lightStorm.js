@@ -1,61 +1,56 @@
 import { parameters, animations } from "../globalVariables/globalVariables.js";
-import loading from "../story/loading.js";
 
-const rain = document.getElementById('rain');
+/** @type {HTMLCanvasElement} */
+const rainCanvas = document.getElementById('rainCanvas');
+/** @type {HTMLCanvasElement} */
+const helperCanvas = window.OffscreenCanvas ? new OffscreenCanvas(screen.width, screen.height) : document.getElementById('helperRainCanvas');
+
+/** @type {CanvasRenderingContext2D} */
+const ctx = rainCanvas.getContext('2d');
+/** @type {CanvasRenderingContext2D} */
+const helperCtx = helperCanvas.getContext('2d');
+
+const drops = [];
 const lightningDiv = document.getElementById('lightning');
-const rainCanvasFrames = [];
-const rainCanvasFramesContexts = [];
-const dropCoord = { x: 0, y: 0 };
 
-let canvasToDisplayIndex = 0;
-let lastCanvas = null;
-let lastCanvasDouble = null;
+function drawRain(){
+    rainCanvas.width = parameters.standartSize.screen.width;
+    rainCanvas.height = parameters.standartSize.screen.height;
+    rainCanvas.style.width = parameters.standartSize.screen.width + 'px';
+    rainCanvas.style.height = parameters.standartSize.screen.height + 'px';
 
-async function drawRain(){
-    for(let i = 1; i <= 144; i++){
-        /** @type {HTMLCanvasElement} */
-        const canvas = document.createElement('canvas');
-
-        /** @type {CanvasRenderingContext2D} */
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = parameters.standartSize.screen.width;
-        canvas.height = parameters.standartSize.screen.height;
-
-        rainCanvasFrames.push(canvas);
-        rainCanvasFramesContexts.push(ctx);
-        rain.appendChild(canvas);
+    helperCanvas.width = parameters.standartSize.screen.width;
+    helperCanvas.height = parameters.standartSize.screen.height;
+    if (!(helperCanvas instanceof OffscreenCanvas)){
+        helperCanvas.style.width = parameters.standartSize.screen.width + 'px';
+        helperCanvas.style.height = parameters.standartSize.screen.height + 'px';
     }
 
+    const dropCoord = { x: 0, y: 0 };
     const margin = { x: parameters.standartSize.drop.width * 10, y: parameters.standartSize.drop.height };
-    
-    while(dropCoord.y < rainCanvasFrames[0].height - parameters.standartSize.drop.height){
-        while(dropCoord.x < rainCanvasFrames[0].width){
+
+    while(dropCoord.y < rainCanvas.height - parameters.standartSize.drop.height){
+        while(dropCoord.x < rainCanvas.width){
             const width = Math.round(parameters.standartSize.drop.width);
             const height = Math.round(parameters.standartSize.drop.height * Math.floor(1 + Math.random() * 4) / 3);
 
-            let coordY = dropCoord.y + height * (Math.random() * 0.5 + 1);
-            let coordX = dropCoord.x + width * (5 * Math.random() - 2);
+            const coordY = dropCoord.y + height * (Math.random() * 0.5 + 1);
+            const coordX = dropCoord.x + width * (5 * Math.random() - 2);
 
-            await new Promise(resolve =>{
-                rainCanvasFramesContexts.forEach((ctx, index) =>{
-                    if(coordY + height < rainCanvasFrames[index].height){
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.3})`;
-                        ctx.lineWidth = width;
-                        ctx.lineCap = 'round';
+            if(coordY + height < rainCanvas.height){
+                const color = Math.random() * 0.3 + 0.3;
+                drops.push({ x: coordX, y: coordY, width, height, color });
 
-                        ctx.beginPath();
-                        ctx.moveTo(coordX, coordY);
-                        ctx.lineTo(coordX, coordY + height);
-                        ctx.stroke();
-                    }
+                ctx.strokeStyle = `rgba(255, 255, 255, ${color})`;
+                ctx.lineWidth = width;
+                ctx.lineCap = 'round';
 
-                    coordY += rainCanvasFrames[index].height / rainCanvasFramesContexts.length;
-                    if(coordY > rainCanvasFrames[index].height) coordY = 0;
-                });
-                setTimeout(resolve, 0);
-            });
-            await loading(++parameters.loaded);
+                ctx.beginPath();
+                ctx.moveTo(coordX, coordY);
+                ctx.lineTo(coordX, coordY + height);
+                ctx.stroke();
+            }
+
             dropCoord.x += margin.x + margin.x * (Math.random() * 0.4 - 0.2);
         }
         dropCoord.y += margin.y + margin.y * (Math.random() * 0.4 - 0.2);
@@ -64,27 +59,64 @@ async function drawRain(){
 }
 
 function startRain(deltaStamp) {
-    deltaStamp = Math.min(deltaStamp, rainCanvasFrames.length / 60);
-    
-    let index = canvasToDisplayIndex;
-    let indexDouble = rainCanvasFrames.length / 2 - 1 >= index ? rainCanvasFrames.length / 2 - 1 + index : index - (rainCanvasFrames.length / 2 - 1);
-    
     if(animations.moment.lightstrom){
-        if(lastCanvas) lastCanvas.style.display = 'none';
-        rainCanvasFrames[Math.floor(index)].style.display = 'block';
-        lastCanvas = rainCanvasFrames[Math.floor(index)];
-        parameters.images.lastRainCanvas = lastCanvas;
+        helperCtx.clearRect(0, 0, helperCanvas.width, helperCanvas.height);
+
+        for(let i = 0; i < drops.length; i++){ // It is faster thar forEach of for...of
+            drops[i].y += deltaStamp * parameters.standartSize.drop.speed * (drops[i].height / parameters.standartSize.drop.height);
+            
+            if(drops[i].y > rainCanvas.height) drops[i].y -= helperCanvas.height;
+            else if(drops[i].y + drops[i].height > rainCanvas.height){
+                helperCtx.strokeStyle = `rgba(255, 255, 255, ${drops[i].color})`;
+                helperCtx.lineWidth = drops[i].width;
+                helperCtx.lineCap = 'round';
+
+                helperCtx.beginPath();
+                helperCtx.moveTo(drops[i].x, 0);
+                helperCtx.lineTo(drops[i].x, drops[i].y + drops[i].height - helperCanvas.height);
+                helperCtx.stroke();
+            }
+
+            helperCtx.strokeStyle = `rgba(255, 255, 255, ${drops[i].color})`;
+            helperCtx.lineWidth = drops[i].width;
+            helperCtx.lineCap = 'round';
+
+            helperCtx.beginPath();
+            helperCtx.moveTo(drops[i].x, drops[i].y);
+            helperCtx.lineTo(drops[i].x, drops[i].y + drops[i].height);
+            helperCtx.stroke();
+        }
+
+        if(animations.moment.doubleStorm){
+            for(let i = 0; i < drops.length; i++){ // It is faster thar forEach of for...of
+                let y = drops[i].y + rainCanvas.height / 2;
+
+                if(y > rainCanvas.height) y -= helperCanvas.height;
+                else if(y + drops[i].height > rainCanvas.height){
+                    helperCtx.strokeStyle = `rgba(255, 255, 255, ${drops[i].color})`;
+                    helperCtx.lineWidth = drops[i].width;
+                    helperCtx.lineCap = 'round';
+    
+                    helperCtx.beginPath();
+                    helperCtx.moveTo(drops[i].x, 0);
+                    helperCtx.lineTo(drops[i].x, y + drops[i].height - helperCanvas.height);
+                    helperCtx.stroke();
+                }
+    
+                helperCtx.strokeStyle = `rgba(255, 255, 255, ${drops[i].color})`;
+                helperCtx.lineWidth = drops[i].width;
+                helperCtx.lineCap = 'round';
+    
+                helperCtx.beginPath();
+                helperCtx.moveTo(drops[i].x, y);
+                helperCtx.lineTo(drops[i].x, y + drops[i].height);
+                helperCtx.stroke();
+            }
+        }
+
+        ctx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
+        ctx.drawImage(helperCanvas, 0, 0, helperCanvas.width, helperCanvas.height);
     }
-    if(animations.moment.doubleStorm){
-        if(lastCanvasDouble) lastCanvasDouble.style.display = 'none';
-        rainCanvasFrames[Math.floor(indexDouble)].style.display = 'block';
-        lastCanvasDouble = rainCanvasFrames[Math.floor(indexDouble)];
-        parameters.images.lastDoubleRainCanvas = lastCanvas;
-    }
-    const stormSpeed = animations.moment.fastStorm ? 2 * rainCanvasFrames.length / 60 : rainCanvasFrames.length / 60;
-    if(index + stormSpeed * deltaStamp < rainCanvasFrames.length) index += stormSpeed * deltaStamp
-    else index = stormSpeed * deltaStamp - rainCanvasFrames.length + index;
-    canvasToDisplayIndex = index;
 }
 
 function lightning(collected){
@@ -94,7 +126,10 @@ function lightning(collected){
             void lightningDiv.offsetWidth;
             lightningDiv.style.animation = "lightning 1s linear";
 
-            if(collected === 6) animations.moment.lightstrom = true;
+            if(collected === 6) {
+                animations.moment.lightstrom = true;
+                rainCanvas.style.display = 'block';
+            }
             if(collected === 8) animations.moment.doubleStorm = true;
             if(collected === 10){
                 animations.moment.fastStorm = true;

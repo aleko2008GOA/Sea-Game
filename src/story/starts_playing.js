@@ -6,25 +6,26 @@ const time = document.getElementById('time');
 
 function start_playing(){
     parameters.timeChangeFunc = timeChangeFunction;
-    setTimeout(() =>{
+    animations.startingGameTimeout = setTimeout(() =>{
         console.log(3);
+        animations.startingGameTimeout = setTimeout(() =>{
+            console.log(2);
+            animations.startingGameTimeout = setTimeout(() =>{
+                console.log(1);
+                animations.startingGameTimeout = setTimeout(() =>{
+                    console.log('start');
+            
+                    animations.moment.loseWinPause = false;
+                    animations.moment.gameProcess = true;
+            
+                    start_timer();
+                    document.getElementById('pause_button_top_left').style.display = 'inline';
+                    document.getElementById('lightsCounter').style.display = 'block';
+                    animations.startingGameTimeout = null;
+                }, 1000);
+            }, 1000);
+        }, 1000);
     }, 1000);
-    setTimeout(() =>{
-        console.log(2);
-    }, 2000);
-    setTimeout(() =>{
-        console.log(1);
-    }, 3000);
-    setTimeout(() =>{
-        console.log('start');
-
-        animations.moment.loseWinPause = false;
-        animations.moment.gameProcess = true;
-
-        start_timer();
-        document.getElementById('pause_button_top_left').style.display = 'inline';
-        document.getElementById('lightsCounter').style.display = 'block';
-    }, 4000);
 }
 
 function start_timer(){

@@ -64,7 +64,6 @@ function background_sea(){
     const imgWidth = parameters.standartSize.wave.imgWidth;
     const imgHeight = parameters.standartSize.wave.imgHeight;
     let waves = 0;
-    let seconds = 0;
 
     // wave animation function
     function wave_animation(img_left, img_right){

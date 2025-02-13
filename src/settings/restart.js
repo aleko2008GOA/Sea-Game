@@ -105,7 +105,7 @@ async function startAgain(characterImagesArray){
     await lights(icebergGridPosition);
     await loading(99);
     character_moves(icebergGridPosition, characterImagesArray);
-    await loading(5000);
+    await loading(100);
 }
 
 export { restart, restartAllFunctions, startAgain };

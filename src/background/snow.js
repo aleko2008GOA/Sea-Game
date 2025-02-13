@@ -1,67 +1,54 @@
 import { parameters, animations } from "../globalVariables/globalVariables.js";
-import loading from "../story/loading.js";
 
-const snow = document.getElementById('snow');
-const snowCanvasFrames = [];
-const snowCanvasFramesContexs = [];
-const flakeCoord = { x: 0, y: 0 };
+/** @type {HTMLCanvasElement} */
+const snowCanvas = document.getElementById('snowCanvas');
+/** @type {HTMLCanvasElement} */
+const helperCanvas = window.OffscreenCanvas ? new OffscreenCanvas(screen.width, screen.height) : document.getElementById('helperRainCanvas');
 
-let canvasToDisplayIndex = 0;
-let lastCanvas = null;
+/** @type {CanvasRenderingContext2D} */
+const ctx = snowCanvas.getContext('2d');
+/** @type {CanvasRenderingContext2D} */
+const helperCtx = helperCanvas.getContext('2d');
 
-async function drawSnow(){
-    for(let i = 1; i <= 432; i++){
-        /** @type {HTMLCanvasElement} */
-        const canvas = document.createElement('canvas');
+const flakes = [];
 
-        /** @type {CanvasRenderingContext2D} */
-        const ctx = canvas.getContext('2d');
+function drawSnow(){
+    snowCanvas.width = parameters.standartSize.screen.width;
+    snowCanvas.height = parameters.standartSize.screen.height;
+    snowCanvas.style.width = parameters.standartSize.screen.width + 'px';
+    snowCanvas.style.height = parameters.standartSize.screen.height + 'px';
 
-        canvas.width = parameters.standartSize.screen.width;
-        canvas.height = parameters.standartSize.screen.height;
-
-        snowCanvasFrames.push(canvas);
-        snowCanvasFramesContexs.push(ctx);
-        snow.appendChild(canvas);
+    helperCanvas.width = parameters.standartSize.screen.width;
+    helperCanvas.height = parameters.standartSize.screen.height;
+    if (!(helperCanvas instanceof OffscreenCanvas)){
+        helperCanvas.style.width = parameters.standartSize.screen.width + 'px';
+        helperCanvas.style.height = parameters.standartSize.screen.height + 'px';
     }
 
-    const margin = parameters.standartSize.snowflake * 10;
+    const flakeCoord = { x: 0, y: 0 };
+    const margin = parameters.standartSize.snowflake.radius * 10;
     
-    while(flakeCoord.y < snowCanvasFrames[0].height){
-        while(flakeCoord.x < snowCanvasFrames[0].width){
-            const radius = Math.round(parameters.standartSize.snowflake * (Math.random() * 2.7 + 0.3) / 2);
-            let diffX = [0 - 2 * margin, 2 * margin][Math.floor(Math.random() * 2)];
+    while(flakeCoord.y < snowCanvas.height){
+        while(flakeCoord.x < snowCanvas.width){
+            const color = Math.random() * 0.3 + 0.7;
+            const radius = Math.round(parameters.standartSize.snowflake.radius * (Math.random() * 2.7 + 0.3) / 2);
 
             const startY = flakeCoord.y + radius * (Math.random() * 0.5 + 1);
             const startX = flakeCoord.x + radius * (Math.random() * 0.5 + 1);
-            let coordY = startY;
-            let coordX = startX;
+            const coordY = startY;
+            const coordX = startX;
 
-            await new Promise(resolve =>{
-                snowCanvasFramesContexs.forEach((ctx, index) =>{
-                    if(coordY + radius < snowCanvasFrames[index].height){
-                        ctx.fillStyle = `rgb(255, 255, 255)`;
+            if(coordY + radius < snowCanvas.height){
+                flakes.push({ x: coordX, y: coordY, radius, startX, dir: Math.random() < 0.5 ? 'left' : 'right', color });
 
-                        ctx.beginPath();
-                        ctx.arc(coordX, coordY, radius, 0, Math.PI * 2);
-                        ctx.fill();
-                    }
+                ctx.fillStyle = `rgba(255, 255, 255, ${color})`;
 
-                    coordY += snowCanvasFrames[index].height / snowCanvasFramesContexs.length;
-                    if(coordY > snowCanvasFrames[index].height) coordY = 0;
+                ctx.beginPath();
+                ctx.arc(coordX, coordY, radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
 
-                    const N = snowCanvasFrames.length;
-                    const factor = index < N / 2 ? (N - index) : (index - N);
-                    const realDiffX = diffX * 2 * factor / N;
-
-                    if(diffX > 0) coordX < startX + realDiffX ? coordX += radius * 0.1 : diffX = 0 - diffX;
-                    else if(diffX < 0) coordX > startX + realDiffX ? coordX -= radius * 0.1 : diffX = 0 - diffX;
-                });
-                flakeCoord.x += margin + margin * (Math.random() * 0.2 - 0.4);
-                
-                setTimeout(resolve, 0);
-            });
-            await loading(++parameters.loaded);
+            flakeCoord.x += margin + margin * (Math.random() * 0.2 - 0.4);
         }
         flakeCoord.y += margin + margin * (Math.random() * 0.2 - 0.4);
         flakeCoord.x = 0;
@@ -69,20 +56,31 @@ async function drawSnow(){
 }
 
 function startSnow(deltaStamp){
-    deltaStamp = Math.min(deltaStamp, snowCanvasFrames.length / 60);
-    
-    let index = canvasToDisplayIndex;
-    
+    helperCtx.clearRect(0, 0, helperCanvas.width, helperCanvas.height);
+
     if(animations.moment.snow){
-        if(lastCanvas) lastCanvas.style.display = 'none';
-        snowCanvasFrames[Math.floor(index)].style.display = 'block';
-        lastCanvas = snowCanvasFrames[Math.floor(index)];
-        parameters.images.lastSnowCanvas = lastCanvas;
+        for(let i = 0; i < flakes.length; i++){ // It is faster thar forEach of for...of
+            const diff = deltaStamp * parameters.standartSize.snowflake.speed * (flakes[i].radius / parameters.standartSize.snowflake.radius);
+
+            if(Math.abs(flakes[i].startX - flakes[i].x) > parameters.standartSize.snowflake.radius * 10){
+                flakes[i].dir = flakes[i].dir === 'right' ? 'left' : 'right';
+                flakes[i].startX = flakes[i].x + Math.random() * 6 * flakes[i].radius - 3 * flakes[i].radius;
+            }
+
+            flakes[i].dir === 'right' ? flakes[i].x += diff / 5 : flakes[i].x -= diff / 5; 
+            flakes[i].y += diff;
+
+            if(flakes[i].y > snowCanvas.height) flakes[i].y -= snowCanvas.height;
+            helperCtx.fillStyle = `rgba(255, 255, 255, ${flakes[i].color})`;
+
+            helperCtx.beginPath();
+            helperCtx.arc(flakes[i].x, flakes[i].y, flakes[i].radius, 0, Math.PI * 2);
+            helperCtx.fill();
+        }
+
+        ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+        ctx.drawImage(helperCanvas, 0, 0, helperCanvas.width, helperCanvas.height);
     }
-    
-    if(index + deltaStamp < snowCanvasFrames.length) index += deltaStamp
-    else index = deltaStamp - snowCanvasFrames.length + index;
-    canvasToDisplayIndex = index;
 }
 
 export { drawSnow, startSnow }
