@@ -4,6 +4,8 @@ import { lights } from '../objects/lights.js';
 import { character_moves } from '../character/character_moving.js';
 import { animations, parameters } from '../globalVariables/globalVariables.js';
 import { drawJoystick } from './joystick.js';
+import { drawWhale } from '../objects/whale.js';
+import { drawShadows } from '../objects/shadows.js';
 
 const palyground = document.getElementById('game_main_container');
 const canvases = document.querySelectorAll('canvas');
@@ -15,6 +17,9 @@ const pauseButtonTopLeft = document.getElementById('pause_button_top_left');
 const lightsCounter = document.getElementById('lightsCounter');
 const rain = document.getElementById('rain');
 const characterCanvas = document.getElementById('character_canvas');
+const icebergFront = document.getElementById('iceberg_map_front');
+const icebergBack = document.getElementById('iceberg_map_back');
+const icebergShadows = document.getElementById('icebergs_shadows');
 
 function restart(characterImagesArray){
     restart_button.forEach(button =>{
@@ -71,6 +76,11 @@ function restartAllFunctions(){
     parameters.stylePosition.x = parseFloat(characterCanvas.style.left);
     parameters.stylePosition.y = parseFloat(characterCanvas.style.top);
 
+    Array.from(icebergShadows.children).forEach(shadow => icebergShadows.removeChild(shadow));
+    Array.from(icebergFront.children).forEach(canvas => icebergFront.removeChild(canvas));
+    Array.from(icebergBack.children).forEach(canvas =>{
+        if(canvas.id !== 'iceberg_map_walls') icebergBack.removeChild(canvas);
+    });
     canvases.forEach(val =>{
         if(val.id != 'waves_left' && val.id != 'waves_right' && val.id != 'sea'){
             const canvas = val.getContext('2d');
@@ -78,11 +88,11 @@ function restartAllFunctions(){
         }
     });
     settings.forEach(val => {
-        if(val.style.display !== 'none') val.style.display = 'none'
+        if(val.style.display !== 'none') val.style.display = 'none';
     });
     rain.querySelectorAll('canvas').forEach(canvas => {
         if(canvas.style.display !== 'none') canvas.style.display = 'none';
-    })
+    });
 
     loading_screen.style.display = 'flex';
     settingsBar.style.display = 'none';
@@ -97,13 +107,17 @@ function restartAllFunctions(){
 
 async function startAgain(characterImagesArray){
     animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
-    await loading(24);
+    await loading(5);
+    drawWhale();
+    await loading(10)
     drawJoystick();
+    await loading(40);
+    const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
     await loading(60);
-    const { icebergGridPosition } = await icebergs();
-    await loading(70);
     await lights(icebergGridPosition);
-    await loading(99);
+    await loading(90);
+    drawShadows(icebergCoordinateArr);
+    loading(99);
     character_moves(icebergGridPosition, characterImagesArray);
     await loading(100);
 }

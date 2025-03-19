@@ -40,26 +40,20 @@ html, body {
   z-index: 1;
 }
 #game #game_main_container #defaultCanvases #waves_left, #game #game_main_container #defaultCanvases #waves_right {
-  z-index: 3;
+  z-index: 4;
 }
 #game #game_main_container #defaultCanvases #waves_right {
   display: none;
 }
-#game #game_main_container #defaultCanvases #iceberg_map_front {
-  z-index: 6;
-}
-#game #game_main_container #defaultCanvases #iceberg_map_back {
-  z-index: 4;
-}
 #game #game_main_container #defaultCanvases #lights {
-  z-index: 5;
+  z-index: 6;
 }
 #game #game_main_container #main_character {
   overflow: hidden;
   position: absolute;
   width: 3000px;
   height: 3000px;
-  z-index: 5;
+  z-index: 6;
   background-color: transparent;
   display: flex;
   flex-direction: column;
@@ -71,26 +65,69 @@ html, body {
   top: 100px;
   position: absolute;
 }
-#game #game_main_container #whale {
+#game #game_main_container #iceberg_map_front, #game #game_main_container #iceberg_map_back {
+  overflow: hidden;
+  position: absolute;
+  width: 3000px;
+  height: 3000px;
+  background-color: transparent;
+}
+#game #game_main_container #iceberg_map_front canvas, #game #game_main_container #iceberg_map_back canvas {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+}
+#game #game_main_container #iceberg_map_front canvas#iceberg_map_walls, #game #game_main_container #iceberg_map_back canvas#iceberg_map_walls {
   width: 100%;
   height: 100%;
-  background-color: transparent;
+}
+#game #game_main_container #iceberg_map_front {
+  z-index: 7;
+}
+#game #game_main_container #iceberg_map_back, #game #game_main_container #iceberg_map_walls {
+  z-index: 5;
+}
+#game #game_main_container #whale {
+  width: 200px;
+  height: 100px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgb(0, 0, 139);
+  filter: blur(5px);
+  opacity: 0;
   position: absolute;
   left: 0;
   top: 0;
   z-index: 2;
 }
-#game #game_main_container #whale #whaleCanvas {
+#game #game_main_container #shadows {
+  overflow: hidden;
+  width: 3000px;
+  height: 3000px;
   position: absolute;
-  width: 30%;
-  height: 30%;
+  z-index: 3;
+}
+#game #game_main_container #shadows #character_shadow {
+  width: 100px;
+  height: 81.25px;
+  position: absolute;
+}
+#game #game_main_container #shadows #icebergs_shadows {
+  width: 3000px;
+  height: 3000px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#game #game_main_container #shadows #icebergs_shadows canvas {
+  position: absolute;
 }
 #game #rain {
   overflow: hidden;
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 7;
+  z-index: 8;
 }
 #game #rain canvas {
   position: absolute;
@@ -159,7 +196,7 @@ html, body {
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 7;
+  z-index: 8;
 }
 #game #snow canvas {
   position: absolute;

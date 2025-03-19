@@ -34,6 +34,7 @@ async function fullScreen(){
     try{
         if(!document.fullscreenElement){
             if(game.requestFullscreen) await game.requestFullscreen();
+            if (screen.orientation) screen.orientation.lock("landscape").catch(err => console.log("Can not stop auto rotation: ", err));  
 
             await waitForFullscreenChange(); // To be sure that we are fullscreen
             

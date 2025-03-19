@@ -5,6 +5,8 @@ import { lose_hearts } from "../game_over/lose_hearts.js";
 import useCharacterImages from "../images/useImages/character.js";
 import { animations, parameters } from "../globalVariables/globalVariables.js";
 import { moveMobile } from "../settings/onMobile.js";
+import { changeWhale } from "../objects/whale.js";
+import { animateCharacterShadows } from "../objects/shadows.js";
 
 /** @type {HTMLCanvasElement} */
 const characterCanvas = document.getElementById('character_canvas');
@@ -75,6 +77,8 @@ function character_moves(icebergGrid, imgs){
 
         let maxSpeed = parameters.charMaxSpeed60FPS * deltaStamp;
         let deltaSpeed = parameters.charDeltaSpeed60FPS * deltaStamp ** 2;
+
+        changeWhale();
 
         if(parameters.joystick) moved = moveMobile(speed, isStunned, maxSpeed, deltaSpeed);
         else{
@@ -195,11 +199,14 @@ function character_moves(icebergGrid, imgs){
     }
 
     function drawOnCanvas(){
-        characterBackground.clearRect(0, 0, characterCanvas.width, characterCanvas.height)
-        if(!cleared) characterBackground.drawImage(characterImage, 0, 0, characterCanvas.width, characterCanvas.height);
+        characterBackground.clearRect(0, 0, characterCanvas.width, characterCanvas.height);
+        if(!cleared)
+            characterBackground.drawImage(characterImage, 0, 0, characterCanvas.width, characterCanvas.height);
         characterBackground.strokeRect(characterPosition.x - parseFloat(characterCanvas.style.left), characterPosition.y - parseFloat(characterCanvas.style.top), characterWidth, characterHeight);
         characterCanvas.style.left = characterStylePosition.x + 'px';
         characterCanvas.style.top = characterStylePosition.y + 'px';
+
+        animateCharacterShadows(characterImage, cleared);
     }
 }
 

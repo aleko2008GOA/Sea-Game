@@ -15,6 +15,8 @@ import './settings/animationFrameFPS.js';
 import './settings/setFPS.js';
 import { drawRain } from './background/lightStorm.js';
 import { drawSnow } from './background/snow.js';
+import { drawWhale } from './objects/whale.js';
+import { drawShadows } from './objects/shadows.js';
 
 checkDevice(); // check device
 setParameters(); // set parameters by device
@@ -37,12 +39,19 @@ async function startGame() {
         // gameStarted
         parameters.gameStarted = true;
         await loading(1);
+        // load character position images
+        const characterImagesArray = await characterImages;
+        parameters.images.characterImages = characterImagesArray;
+        await loading(5);
         // start all animation
         animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
-        await loading(2);
+        await loading(10);
         // draw joistick
         drawJoystick();
-        await loading(5);
+        await loading(15);
+        // draw whale
+        drawWhale();
+        await loading(20);
         // draw rain animation
         drawRain();
         await loading(35);
@@ -53,13 +62,13 @@ async function startGame() {
         background_sea();
         await loading(70);
         // draw icebergs
-        const { icebergGridPosition } = await icebergs();
+        const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
         await loading(75);
         // draw lights
         await lights(icebergGridPosition);
         await loading(80);
-        // load character position images
-        const characterImagesArray = await characterImages;
+        // draw shadows
+        drawShadows(icebergCoordinateArr);
         await loading(85);
         // character move logic
         character_moves(icebergGridPosition, characterImagesArray);

@@ -76,6 +76,10 @@ const parameters = {
         grid: { x: 0, y: 0 }, 
         position: { x: 0, y: 0 }
     },
+    light: {
+        grid: { x: 0, y: 0 }, 
+        position: { x: 0, y: 0 }
+    },
     // object sizes
     standartSize: {
         chunck: {
@@ -106,13 +110,31 @@ const parameters = {
             width: 50,
             height: 50
         },
+        styleCharacter: {
+            width: 50 * 2,
+            height: 50 * 2 * (260 / 320)
+        },
         iceberg: {
             width: 50,
             height: 50
         },
+        icebergStyle: {
+            front: {
+                width: 50,
+                height: 30
+            },
+            back: {
+                width: 50,
+                height: 50
+            }
+        },
         light: {
             width: 50,
             height: 50
+        },
+        whale: {
+            width: 200,
+            height: 100
         },
         wave: {
             fullWidth: 30,
@@ -128,6 +150,11 @@ const parameters = {
         snowflake: {
             radius: 1.8,
             speed: 1
+        },
+        shadows: {
+            character: { width: 50 * 2, height: 50 * (260 / 320) },
+            light: { width: 50, height: 25 },
+            iceberg: { width: 50, height: 40 }
         }
     },
     defaultScreen: {
@@ -136,6 +163,10 @@ const parameters = {
     },
 
     images: {
+        lightImage: null,
+        icebergImage: null,
+        icebergFrontImage: null,
+        icebergBackImage: null,
         characterImages: null,
         lastRainCanvas: null,
         lastDoubleRainCanvas: null,

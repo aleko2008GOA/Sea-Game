@@ -63,10 +63,10 @@ function createRandomLights(icebergGridPosition, lightWidth, lightHeight, chunkX
     const lightCoordinate = { x, y };
     const lightGridPosition = chunck;
 
-    parameters.iceberg.grid.x = lightGridPosition.x;
-    parameters.iceberg.grid.y = lightGridPosition.y;
-    parameters.iceberg.position.x = lightCoordinate.x;
-    parameters.iceberg.position.y = lightCoordinate.y;
+    parameters.light.grid.x = lightGridPosition.x;
+    parameters.light.grid.y = lightGridPosition.y;
+    parameters.light.position.x = lightCoordinate.x;
+    parameters.light.position.y = lightCoordinate.y;
     console.log(lightCoordinate, lightGridPosition)
 }
 
