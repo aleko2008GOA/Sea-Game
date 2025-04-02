@@ -111,8 +111,8 @@ const parameters = {
             height: 50
         },
         styleCharacter: {
-            width: 50 * 2,
-            height: 50 * 2 * (260 / 320)
+            width: 80,
+            height: 65
         },
         iceberg: {
             width: 50,
@@ -152,7 +152,7 @@ const parameters = {
             speed: 1
         },
         shadows: {
-            character: { width: 50 * 2, height: 50 * (260 / 320) },
+            character: { width: 80, height: 65 / 2 },
             light: { width: 50, height: 25 },
             iceberg: { width: 50, height: 40 }
         }
