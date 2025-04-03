@@ -1,5 +1,5 @@
 import check_crashing from "./check_crashing.js";
-import check_getting_lights from "./check_getting_light.js";
+import checkGettingLights from "./check_getting_light.js";
 import camera_moving from "./camera_moving.js";
 import { lose_hearts } from "../game_over/lose_hearts.js";
 import useCharacterImages from "../images/useImages/character.js";
@@ -19,7 +19,7 @@ let characterImage;
 
 function character_moves(icebergGrid, imgs){
     const lightGrid = parameters.iceberg.grid;
-    const lightPosition = parameters.iceberg.position;
+    const lightPosition = parameters.light.position;
     
     let characterWidth = parameters.standartSize.character.width;
     let characterHeight = parameters.standartSize.character.height;
@@ -145,7 +145,7 @@ function character_moves(icebergGrid, imgs){
             camera_moving(characterPosition, speed);
 
             // getting everythig about lights or crashing
-            check_getting_lights(icebergGrid, characterPosition, lightGrid, lightPosition, isImmune); // check if I get  any light
+            checkGettingLights(icebergGrid, characterPosition, lightGrid, lightPosition, isImmune); // check if I get  any light
             let { stun, immune } = check_crashing(characterPosition, icebergGrid, speed, isStunned, isImmune, deltaStamp); // check if I lose any heart
             characterImage = useCharacterImages(characterImages, characterImage, speed, deltaStamp);
 
@@ -194,7 +194,7 @@ function character_moves(icebergGrid, imgs){
             removeImmune = true;
             
             drawOnCanvas();
-            check_getting_lights(icebergGrid, characterPosition, lightGrid, lightPosition, isImmune);
+            checkGettingLights(icebergGrid, characterPosition, lightGrid, lightPosition, isImmune);
         }
     }
 

@@ -5,7 +5,7 @@ import { createRandomLights } from "../objects/lights.js";
 
 const lightsCounter = document.getElementById('lightsCounter');
 
-function check_getting_lights(icebergGrid, characterPosition, lightGrid, lightPosition, isImmune){
+function checkGettingLights(icebergGrid, characterPosition, lightGrid, lightPosition, isImmune){
     const lightWidth = parameters.standartSize.light.width;
     const lightHeight = parameters.standartSize.light.height;
     const charWidth = parameters.standartSize.character.width;
@@ -35,4 +35,4 @@ function check_getting_lights(icebergGrid, characterPosition, lightGrid, lightPo
     if(parameters.collected === 12) win();
 }
 
-export default check_getting_lights;
+export default checkGettingLights;
