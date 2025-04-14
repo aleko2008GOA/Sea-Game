@@ -20,6 +20,7 @@ const characterCanvas = document.getElementById('character_canvas');
 const icebergFront = document.getElementById('iceberg_map_front');
 const icebergBack = document.getElementById('iceberg_map_back');
 const icebergShadows = document.getElementById('icebergs_shadows');
+const startGameScreen = document.getElementById('start_game_screen');
 
 function restart(characterImagesArray){
     restart_button.forEach(button =>{
@@ -41,6 +42,8 @@ function restartAllFunctions(){
     animations.stunFrameId = false;
     animations.immutableFunc = null;
     animations.immutableFrameId = false;
+    animations.lightFrameFunc = null;
+    animations.lightframeId = false;
     animations.sea.seaAnimationFrameId = true;
 
     Object.keys(animations.moment).forEach(key => animations.moment[key] = false);
@@ -96,6 +99,7 @@ function restartAllFunctions(){
 
     loading_screen.style.display = 'flex';
     settingsBar.style.display = 'none';
+    startGameScreen.style.display = 'none';
     pauseButtonTopLeft.style.display = 'inline';
     lightsCounter.querySelector('span').textContent = parameters.collected;
 
@@ -114,7 +118,7 @@ async function startAgain(characterImagesArray){
     await loading(40);
     const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
     await loading(60);
-    await lights(icebergGridPosition);
+    await lights(icebergGridPosition, parameters.images.lightImages);
     await loading(90);
     drawShadows(icebergCoordinateArr);
     loading(99);

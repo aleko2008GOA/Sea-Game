@@ -1,4 +1,5 @@
 import { animations, parameters } from "../globalVariables/globalVariables.js";
+import { animateLights } from "../objects/lights.js";
 
 let sumStamp = 0;
 
@@ -21,6 +22,8 @@ function startFrames(timestamp){
 
             if(animations.stunFrameId) animations.stunFunc(index);
             if(animations.immutableFrameId) animations.immutableFunc(index);
+
+            if(animations.lightframeId) animations.lightFrameFunc(index);
         }
     }else{
         if(animations.animationFrameId) animations.animationFrameFunc(deltaStamp);
@@ -28,6 +31,8 @@ function startFrames(timestamp){
 
         if(animations.stunFrameId) animations.stunFunc(deltaStamp);
         if(animations.immutableFrameId) animations.immutableFunc(deltaStamp);
+
+        if(animations.lightframeId) animations.lightFrameFunc(deltaStamp);
     }
 
     animations.allFrameId = requestAnimationFrame(startFrames);

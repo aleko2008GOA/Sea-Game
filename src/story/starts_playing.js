@@ -3,17 +3,26 @@ import { animations, parameters } from "../globalVariables/globalVariables.js";
 
 const timer = document.getElementById('timer');
 const time = document.getElementById('time');
+const countdown = document.getElementById('countdown');
+const startGameScreen = document.getElementById('start_game_screen');
 
 function start_playing(){
     parameters.timeChangeFunc = timeChangeFunction;
+
+    startGameScreen.style.display = 'flex';
+    countdown.textContent = '3';
     animations.startingGameTimeout = setTimeout(() =>{
         console.log(3);
+        countdown.textContent = '2';
         animations.startingGameTimeout = setTimeout(() =>{
             console.log(2);
+            countdown.textContent = '1';
             animations.startingGameTimeout = setTimeout(() =>{
                 console.log(1);
+                countdown.textContent = 'GO!';
                 animations.startingGameTimeout = setTimeout(() =>{
                     console.log('start');
+                    startGameScreen.style.display = 'none';
             
                     animations.moment.loseWinPause = false;
                     animations.moment.gameProcess = true;

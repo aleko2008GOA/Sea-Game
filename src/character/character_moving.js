@@ -7,6 +7,7 @@ import { animations, parameters } from "../globalVariables/globalVariables.js";
 import { moveMobile } from "../settings/onMobile.js";
 import { changeWhale } from "../objects/whale.js";
 import { animateCharacterShadows } from "../objects/shadows.js";
+import defineDirection from "../objects/lightPointer.js";
 
 /** @type {HTMLCanvasElement} */
 const characterCanvas = document.getElementById('character_canvas');
@@ -24,7 +25,7 @@ function character_moves(icebergGrid, imgs){
     let characterWidth = parameters.standartSize.character.width;
     let characterHeight = parameters.standartSize.character.height;
     
-    characterImage = imgs[0][0][4];
+    characterImage = imgs[0][0][0][4];
     characterImages.push(...imgs);
     // charcter starts at
     const characterPosition = parameters.position;
@@ -143,6 +144,7 @@ function character_moves(icebergGrid, imgs){
             drawOnCanvas();
             
             camera_moving(characterPosition, speed);
+            defineDirection();
 
             // getting everythig about lights or crashing
             checkGettingLights(icebergGrid, characterPosition, lightGrid, lightPosition, isImmune); // check if I get  any light

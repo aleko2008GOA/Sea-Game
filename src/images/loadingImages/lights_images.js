@@ -7,6 +7,12 @@ function loadImage(src){
     });
 }
 
-const light_normal_image = loadImage('./src/assets/lights/light1.png');
+async function loadLightImages(){
+    const lightsImageArr = [
+        await loadImage('./src/assets/lights/lanternMain.png'),
+        await loadImage('./src/assets/lights/lanternSecond.png'),
+    ];
+    return lightsImageArr;
+}
 
-export default light_normal_image;
+export default loadLightImages;

@@ -9,14 +9,14 @@ let top = 0;
 let down = 0;
 
 // on character moving move camera
-function camera_moving(character_position, speed){
+function camera_moving(characterPosition, speed){
     const minLeft = parameters.standartSize.screen.width * 3 / 10;
     const maxLeft = parameters.standartSize.screen.width * 7 / 10 - parameters.standartSize.character.width;
     const minTop = parameters.standartSize.screen.height * 3 / 10;
     const maxTop = parameters.standartSize.screen.height * 7 / 10 - parameters.standartSize.character.height;
 
-    const characterX = character_position.x - container.scrollLeft; // get x scroll
-    const characterY = character_position.y - container.scrollTop; // get y scroll
+    const characterX = characterPosition.x - container.scrollLeft; // get x scroll
+    const characterY = characterPosition.y - container.scrollTop; // get y scroll
     
     // check if he needs to scroll horizontaly
     if(characterX <= minLeft && speed.right - speed.left < 0) scrollLeft();

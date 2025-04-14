@@ -127,7 +127,7 @@ html, body {
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 8;
+  z-index: 9;
 }
 #game #rain canvas {
   position: absolute;
@@ -196,7 +196,7 @@ html, body {
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 8;
+  z-index: 9;
 }
 #game #snow canvas {
   position: absolute;
@@ -204,6 +204,21 @@ html, body {
   top: 0;
   display: none;
   overflow: hidden;
+}
+#game #light_direction {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 8;
+}
+#game #light_direction #helper_light {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  bottom: 100px;
+  right: 100px;
+  background-color: red;
 }
 #game #other_instructions {
   width: 100%;
@@ -297,6 +312,18 @@ html, body {
   z-index: 100;
   background-color: black;
   color: white;
+}
+#game #other_instructions #start_game_screen {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 80;
+}
+#game #other_instructions #start_game_screen #countdown {
+  font-size: 120px;
 }
 #game #other_instructions #settings_bar {
   display: none;

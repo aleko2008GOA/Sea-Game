@@ -33,7 +33,11 @@ function useCharacterImages(imgArr, img, speed, deltaStemp){
         else return img;
     };
 
-    return imgArr[parameters.hearts > 0 ? 3 - parameters.hearts : 0][index][a >= 11.5 ? Math.round((a - 11.25) / 22.5) % 16 : 0];
+    return imgArr
+        [parameters.collected <= 3 ? parameters.collected : 3]
+        [parameters.hearts > 0 ? 3 - parameters.hearts : 0]
+        [index]
+        [a >= 11.5 ? Math.round((a - 11.25) / 22.5) % 16 : 0];
 }
 
 export default useCharacterImages;

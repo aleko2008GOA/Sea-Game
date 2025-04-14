@@ -12,7 +12,7 @@ const icebergsShadows = document.getElementById('icebergs_shadows');
 const charStylePosition = parameters.stylePosition;
 const lightPosition = parameters.light.grid;
 
-function drawShadows(icebergsPosition){
+function drawShadows(icebergsPosition) {
     // chracter
     characterShadow.style.width = parameters.standartSize.shadows.character.width + 'px';
     characterShadow.style.height = parameters.standartSize.shadows.character.height + 'px';
@@ -24,10 +24,10 @@ function drawShadows(icebergsPosition){
 
     characterCtx.globalAlpha = 0.5;
     characterCtx.scale(1, -1);
-    characterCtx.drawImage(parameters.images.characterImages[0][0][4], 0, -characterShadow.height, characterShadow.width, characterShadow.height);
+    characterCtx.drawImage(parameters.images.characterImages[0][0][0][4], 0, -characterShadow.height, characterShadow.width, characterShadow.height);
 
     // icebegrs
-    for(let i = 0; i < 70; i++) {
+    for (let i = 0; i < 70; i++) {
         const iceberg = document.createElement('canvas');
         const ctx = iceberg.getContext('2d');
 
@@ -42,14 +42,14 @@ function drawShadows(icebergsPosition){
         ctx.globalAlpha = 0.5;
         ctx.scale(1, -1);
         ctx.drawImage(parameters.images.icebergImage, 0, -iceberg.height, iceberg.width, iceberg.height);
-        
+
         icebergsShadows.appendChild(iceberg);
     }
 }
 
-function animateCharacterShadows(img, cleared){
+function animateCharacterShadows(img, cleared) {
     characterCtx.clearRect(0, -characterShadow.height, characterShadow.width, characterShadow.height);
-    if(!cleared) 
+    if (!cleared)
         characterCtx.drawImage(img, 0, -characterShadow.height, characterShadow.width, characterShadow.height);
     characterShadow.style.left = charStylePosition.x + 'px';
     characterShadow.style.top = charStylePosition.y + parameters.standartSize.styleCharacter.height + 'px';

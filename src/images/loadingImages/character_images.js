@@ -7,39 +7,31 @@ function loadImage(src){
     });
 }
 
-const normalCharacterImagePromises = [];
-const movedCharacterImagePromises = [];
+async function loadCharacters(){
+    const fullCharacterImagesPromises = [];
+    const boatState = ["boat normal", "boat halfBroken", "boat broken"];
 
-const normalCharacterImagePromisesHalfBoat = [];
-const movedCharacterImagePromisesHalfBoat = [];
+    for(let i = 0; i <= 3; i++){
+        fullCharacterImagesPromises.push([]);
 
-const normalCharacterImagePromisesBrokenBoat = [];
-const movedCharacterImagePromisesBrokenBoat = [];
+        for(let j = 0; j < 3; j++){
+            fullCharacterImagesPromises[i].push([[], []]);
 
-for(let i = 1; i <= 16; i++){
-    normalCharacterImagePromises.push(loadImage(`./src/assets/character/boat normal/main position/${i}.png`));
-    movedCharacterImagePromises.push(loadImage(`./src/assets/character/boat normal/second position/${i}.png`));
+            for(let k = 1; k <= 16; k++){
+                fullCharacterImagesPromises[i][j][0].push(await loadImage(`./src/assets/character/${"shine " + i}/${boatState[j]}/main position/${k}.png`));
+                fullCharacterImagesPromises[i][j][1].push(await loadImage(`./src/assets/character/${"shine " + i}/${boatState[j]}/second position/${k}.png`));
+            }
+        }
+    }
 
-    normalCharacterImagePromisesHalfBoat.push(loadImage(`./src/assets/character/boat halfBroken/main position/${i}.png`));
-    movedCharacterImagePromisesHalfBoat.push(loadImage(`./src/assets/character/boat halfBroken/second position/${i}.png`));
+    async function promiseImages(arr){
+        if(Array.isArray(arr[0]))
+            return Promise.all(arr.map(promiseImages));
+        return await Promise.all(arr);
+    }
+    const fullCharacterImages = await promiseImages(fullCharacterImagesPromises);
 
-    normalCharacterImagePromisesBrokenBoat.push(loadImage(`./src/assets/character/boat broken/main position/${i}.png`));
-    movedCharacterImagePromisesBrokenBoat.push(loadImage(`./src/assets/character/boat broken/second position/${i}.png`));
+    return fullCharacterImages;
 }
 
-const characterImages = Promise.all([
-    Promise.all([
-        Promise.all(normalCharacterImagePromises).then(imgs => imgs).catch(err => console.log('Error: ' + err)),
-        Promise.all(movedCharacterImagePromises).then(imgs => imgs).catch(err => console.log('Error: ' + err))
-    ]),
-    Promise.all([
-        Promise.all(normalCharacterImagePromisesHalfBoat).then(imgs => imgs).catch(err => console.log('Error: ' + err)),
-        Promise.all(movedCharacterImagePromisesHalfBoat).then(imgs => imgs).catch(err => console.log('Error: ' + err))
-    ]),
-    Promise.all([
-        Promise.all(normalCharacterImagePromisesBrokenBoat).then(imgs => imgs).catch(err => console.log('Error: ' + err)),
-        Promise.all(movedCharacterImagePromisesBrokenBoat).then(imgs => imgs).catch(err => console.log('Error: ' + err))
-    ])
-]);
-
-export default characterImages;
+export default loadCharacters;

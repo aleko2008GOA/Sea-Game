@@ -41,7 +41,10 @@ const animations = {
     allFrameFunc: null,
 
     loadingTimeout: null,
-    startingGameTimeout: null
+    startingGameTimeout: null,
+
+    lightFrameFunc: null,
+    lightframeId: false
 }
 
 const parameters = {
@@ -129,7 +132,11 @@ const parameters = {
             }
         },
         light: {
-            width: 50,
+            width: 30,
+            height: 30
+        },
+        styleLight: {
+            width: 33,
             height: 50
         },
         whale: {
@@ -163,7 +170,7 @@ const parameters = {
     },
 
     images: {
-        lightImage: null,
+        lightImages: null,
         icebergImage: null,
         icebergFrontImage: null,
         icebergBackImage: null,

@@ -6,7 +6,7 @@ import { icebergs } from './objects/icebergs.js';
 import { lights } from './objects/lights.js';
 import { character_moves } from './character/character_moving.js';
 import { restart } from './settings/restart.js';
-import characterImages from './images/loadingImages/character_images.js';
+import loadCharacters from './images/loadingImages/character_images.js';
 import './settings/pause.js';
 import { checkDevice } from './settings/onMobile.js';
 import { drawJoystick } from './settings/joystick.js';
@@ -17,6 +17,7 @@ import { drawRain } from './background/lightStorm.js';
 import { drawSnow } from './background/snow.js';
 import { drawWhale } from './objects/whale.js';
 import { drawShadows } from './objects/shadows.js';
+import loadLightImages from './images/loadingImages/lights_images.js';
 
 checkDevice(); // check device
 setParameters(); // set parameters by device
@@ -40,9 +41,13 @@ async function startGame() {
         parameters.gameStarted = true;
         await loading(1);
         // load character position images
-        const characterImagesArray = await characterImages;
+        const characterImagesArray = await loadCharacters();
         parameters.images.characterImages = characterImagesArray;
         await loading(5);
+        // load lantern images
+        const lightImagesArray = await loadLightImages();
+        parameters.images.lightImages = lightImagesArray;
+        await loading(8);
         // start all animation
         animations.allFrameId = requestAnimationFrame(animations.allFrameFunc);
         await loading(10);
@@ -65,7 +70,7 @@ async function startGame() {
         const { icebergCoordinateArr, icebergGridPosition } = await icebergs();
         await loading(75);
         // draw lights
-        await lights(icebergGridPosition);
+        await lights(icebergGridPosition, lightImagesArray);
         await loading(80);
         // draw shadows
         drawShadows(icebergCoordinateArr);
