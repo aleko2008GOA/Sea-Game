@@ -80,6 +80,7 @@ function character_moves(icebergGrid, imgs){
         let deltaSpeed = parameters.charDeltaSpeed60FPS * deltaStamp ** 2;
 
         changeWhale();
+        defineDirection();
 
         if(parameters.joystick) moved = moveMobile(speed, isStunned, maxSpeed, deltaSpeed);
         else{

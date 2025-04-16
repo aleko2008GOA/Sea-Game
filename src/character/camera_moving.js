@@ -41,7 +41,7 @@ function camera_moving(characterPosition, speed){
             container.scrollTo({
                 left: container.scrollLeft + Math.ceil(right),
             });
-            right -= Math.floor(right);
+            right -= Math.ceil(right);
         }
     }
 
@@ -62,7 +62,7 @@ function camera_moving(characterPosition, speed){
             container.scrollTo({
                 top: container.scrollTop + Math.ceil(down),
             });
-            down -= Math.floor(down);
+            down -= Math.ceil(down);
             timer.style.top = container.scrollTop;
         }
     }
