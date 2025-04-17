@@ -11,5 +11,9 @@
   "description": "",
   "devDependencies": {
     "sass": "^1.83.1"
+  },
+  "dependencies": {
+    "imagemin": "^9.0.1",
+    "imagemin-webp": "^8.0.0"
   }
 }

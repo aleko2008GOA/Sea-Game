@@ -39,9 +39,9 @@ function camera_moving(characterPosition, speed){
         right += (speed.right - speed.left);
         if(right >= 1){
             container.scrollTo({
-                left: container.scrollLeft + Math.ceil(right),
+                left: container.scrollLeft + Math.floor(right),
             });
-            right -= Math.ceil(right);
+            right -= Math.floor(right);
         }
     }
 
@@ -60,9 +60,9 @@ function camera_moving(characterPosition, speed){
         down += (speed.down - speed.up);
         if(down >= 1){
             container.scrollTo({
-                top: container.scrollTop + Math.ceil(down),
+                top: container.scrollTop + Math.floor(down),
             });
-            down -= Math.ceil(down);
+            down -= Math.floor(down);
             timer.style.top = container.scrollTop;
         }
     }
